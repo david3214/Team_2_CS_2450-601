@@ -9,10 +9,8 @@
 
 
 class GenPayReport:
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Underline Reports navigation component

@@ -13,10 +13,8 @@ import Components.Panels.GeneralInfo
 
 
 class AddEmployee(Admin):
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create new empty Employee object.

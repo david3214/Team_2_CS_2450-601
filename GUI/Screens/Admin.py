@@ -17,10 +17,8 @@ import Components.Panels.AdminInfo
 
 
 class Admin(Profile):
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create new window components to display information

@@ -15,10 +15,8 @@ import Components.EmployeeResult
 
 
 class Search:
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Underline Search navigation component

@@ -16,10 +16,8 @@ import Components.Panels.AdminInfo
 
 
 class Archived(User):
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create new window components to display information

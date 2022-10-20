@@ -9,10 +9,8 @@
 
 
 class Login:
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create and place labels, inputs, buttons, etc.

@@ -12,10 +12,8 @@ import Components.Panels.PermittedInfo
 
 
 class Permitted(Profile):
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create new window components to display information

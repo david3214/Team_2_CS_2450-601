@@ -1,11 +1,9 @@
 '''
-    TODO
+    An abstraction of all the employee's admin level information to be used by multiple screens
 '''
 
 
 class Admin:
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass

@@ -7,10 +7,8 @@
 import Components.Panels.GeneralInfo
 
 class Profile:
-    '''TODO'''
 
     def __init__(self) -> None:
-        '''TODO'''
         pass
 
 # Create new window components to display information

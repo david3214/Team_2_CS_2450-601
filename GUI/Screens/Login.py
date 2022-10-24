@@ -8,10 +8,12 @@
 '''
 
 
-class Login:
+import tkinter as tk
 
-    def __init__(self) -> None:
-        pass
+class Login (tk.Frame):
+    def __init__(self, master=None) -> None:
+        super().__init__(master)
+        self.pack()
 
 # Create and place labels, inputs, buttons, etc.
 # Get user input

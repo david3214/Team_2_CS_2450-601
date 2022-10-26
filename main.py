@@ -3,13 +3,13 @@
 '''
 #? TODO: Decide if we want to refactor p5.py into this new entry point
 
-import GUI.Window
-import GUI.Screens.Login
+from GUI.Window import Window
+from GUI.Screens.Profile import Profile as screen
 
 
 def main():
-    window = GUI.Window.Window()
-    window.switchFrame(GUI.Screens.Login.Login)
+    window = Window()
+    window.switchFrame(screen)
     window.mainloop()
 
 

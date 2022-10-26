@@ -4,12 +4,21 @@
     Uses GeneralInfo
 '''
 
-import Components.Panels.GeneralInfo
 
-class Profile:
+import tkinter as tk
+from typing import Type
+from ..Components.Panels.GeneralInfo import GeneralInfo as GI
 
-    def __init__(self) -> None:
-        pass
+
+class Profile (tk.Frame):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bg=bgColor)
+        self.generalInfo = GI(self)
+        self.generalInfo.grid()
+        #self.img = tk.Label(master, image=)
+        #self.img.grid(column=1)
+
+        self.pack(expand=1, fill='both')
 
 # Create new window components to display information
 #   Image

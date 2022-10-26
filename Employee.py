@@ -1,5 +1,4 @@
 from datetime import datetime
-from msilib.schema import Property
 
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext

@@ -1,11 +1,11 @@
 from xmlrpc.client import Boolean
-import Employee
+from Employee import Employee
 from Address import Address
 from datetime import datetime
 
 
 class EmployeeContainer():
-    def __init__(self, employee: Employee.Employee) -> None:
+    def __init__(self, employee: Employee) -> None:
         self._employee = employee
 
     def getName(self):

@@ -18,7 +18,8 @@ class Login (tk.Frame):
         self.columnconfigure(1, weight=1)
 
         # image
-        self.image_label = tk.Label(self, text='Image will go here')
+        self.image = tk.PhotoImage(file='test.png')
+        self.image_label = tk.Label(self, image=self.image)
         self.image_label.grid(column=0, row=0, sticky=tk.NS)
 
         # login header

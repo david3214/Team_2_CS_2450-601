@@ -7,6 +7,7 @@
     Loads into user profile with the permission level of the user (general, admin, permitted)
 '''
 
+from PIL import Image, ImageTk
 import tkinter as tk
 
 
@@ -17,28 +18,28 @@ class Login (tk.Frame):
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
 
-        # image
-        self.image = tk.PhotoImage(file='test.png')
+        # Image
+        self.image = ImageTk.PhotoImage(Image.open('images/employee-image.png').resize([360, 360]))
         self.image_label = tk.Label(self, image=self.image)
         self.image_label.grid(column=0, row=0, sticky=tk.NS)
 
-        # login header
+        # Login header
         self.username_label = tk.Label(self, text='Login')
         self.username_label.grid(column=1, row=0, sticky=tk.NS)
 
-        # employee ID
+        # Employee ID
         self.username_label = tk.Label(self, text='Employee ID:')
         self.username_label.grid(column=1, row=1, sticky=tk.W)
         self.username_entry = tk.Entry(self)
         self.username_entry.grid(column=1, row=2, sticky=tk.NS)
 
-        # password
+        # Password
         self.password_label = tk.Label(self, text='Password:')
         self.password_label.grid(column=1, row=3, sticky=tk.W)
         self.password_entry = tk.Entry(self,  show='*')
         self.password_entry.grid(column=1, row=4, sticky=tk.NS)
 
-        # login button
+        # Login button
         self.login_button = tk.Button(self, text='Login')
         self.login_button.grid(column=1, row=5, sticky=tk.E)
         self.login_button['command'] = self.login_clicked

@@ -47,13 +47,16 @@ class Login (tk.Frame):
         # Login button
         self.login_button = tk.Button(self, text='Login →', font=entry_label_font)
         self.login_button.grid(column=1, row=19, sticky=tk.E)
-        self.login_button['command'] = self.login_clicked
+        self.login_button['command'] = self.login
 
         # Get user input
         # Validate credentials
         # Load user’s own profile
         self.pack(expand=True)
 
-    def login_clicked(self):
-        print('Button clicked!')
+    def login(self):
+        given_username = self.username_entry.get()
+        given_password = self.password_entry.get()
+
+        print(f'Checking that {given_username} and {given_password} are valid')
 

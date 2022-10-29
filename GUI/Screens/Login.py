@@ -24,9 +24,9 @@ class Login (tk.Frame):
         self.columnconfigure(1, weight=1)
 
         # Image
-        self.image = ImageTk.PhotoImage(Image.open('images/employee-image.png').resize([360, 360]))
+        self.image = ImageTk.PhotoImage(Image.open('images/employee-image.png').resize([380, 380]))
         self.image_label = tk.Label(self, image=self.image)
-        self.image_label.grid(column=0, row=0, sticky=tk.NS)
+        self.image_label.grid(column=0, row=0, rowspan=18)
 
         # Login header
         self.username_label = tk.Label(self, text='Login', font=header_font)
@@ -34,19 +34,19 @@ class Login (tk.Frame):
 
         # Employee ID
         self.username_label = tk.Label(self, text='Employee ID:', font=entry_label_font)
-        self.username_label.grid(column=1, row=1, sticky=tk.W)
+        self.username_label.grid(column=1, row=4, sticky=tk.W)
         self.username_entry = tk.Entry(self, font=entry_font)
-        self.username_entry.grid(column=1, row=2, sticky=tk.NS)
+        self.username_entry.grid(column=1, row=5, sticky=tk.NS)
 
         # Password
         self.password_label = tk.Label(self, text='Password:', font=entry_label_font)
-        self.password_label.grid(column=1, row=3, sticky=tk.W)
+        self.password_label.grid(column=1, row=6, sticky=tk.W)
         self.password_entry = tk.Entry(self, show='*', font=entry_font)
-        self.password_entry.grid(column=1, row=4, sticky=tk.NS)
+        self.password_entry.grid(column=1, row=7, sticky=tk.NS)
 
         # Login button
         self.login_button = tk.Button(self, text='Login →', font=entry_label_font)
-        self.login_button.grid(column=1, row=5, sticky=tk.E)
+        self.login_button.grid(column=1, row=19, sticky=tk.E)
         self.login_button['command'] = self.login_clicked
 
         # Get user input

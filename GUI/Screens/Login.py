@@ -14,6 +14,11 @@ import tkinter as tk
 class Login (tk.Frame):
     def __init__(self, master=None) -> None:
         super().__init__(master)
+
+        header_font = ('Arial bold', 26)
+        entry_label_font = ('Arial bold', 14)
+        entry_font = ('Arial', 14)
+
         # Configure grid
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -24,23 +29,23 @@ class Login (tk.Frame):
         self.image_label.grid(column=0, row=0, sticky=tk.NS)
 
         # Login header
-        self.username_label = tk.Label(self, text='Login')
+        self.username_label = tk.Label(self, text='Login', font=header_font)
         self.username_label.grid(column=1, row=0, sticky=tk.NS)
 
         # Employee ID
-        self.username_label = tk.Label(self, text='Employee ID:')
+        self.username_label = tk.Label(self, text='Employee ID:', font=entry_label_font)
         self.username_label.grid(column=1, row=1, sticky=tk.W)
-        self.username_entry = tk.Entry(self)
+        self.username_entry = tk.Entry(self, font=entry_font)
         self.username_entry.grid(column=1, row=2, sticky=tk.NS)
 
         # Password
-        self.password_label = tk.Label(self, text='Password:')
+        self.password_label = tk.Label(self, text='Password:', font=entry_label_font)
         self.password_label.grid(column=1, row=3, sticky=tk.W)
-        self.password_entry = tk.Entry(self,  show='*')
+        self.password_entry = tk.Entry(self, show='*', font=entry_font)
         self.password_entry.grid(column=1, row=4, sticky=tk.NS)
 
         # Login button
-        self.login_button = tk.Button(self, text='Login')
+        self.login_button = tk.Button(self, text='Login →', font=entry_label_font)
         self.login_button.grid(column=1, row=5, sticky=tk.E)
         self.login_button['command'] = self.login_clicked
 

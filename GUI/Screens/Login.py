@@ -24,13 +24,13 @@ class Login (tk.Frame):
         self.columnconfigure(1, weight=1)
 
         # Image
-        self.image = ImageTk.PhotoImage(Image.open('images/employee-image.png').resize([380, 380]))
-        self.image_label = tk.Label(self, image=self.image)
-        self.image_label.grid(column=0, row=0, rowspan=18)
+        self.header_image = ImageTk.PhotoImage(Image.open('images/employee-image.png').resize([380, 380]))
+        self.image_label = tk.Label(self, image=self.header_image)
+        self.image_label.grid(column=0, row=0, rowspan=18, padx=30)
 
         # Login header
         self.username_label = tk.Label(self, text='Login', font=header_font)
-        self.username_label.grid(column=1, row=0, sticky=tk.NS)
+        self.username_label.grid(column=1, row=0)
 
         # Employee ID
         self.username_label = tk.Label(self, text='Employee ID:', font=entry_label_font)

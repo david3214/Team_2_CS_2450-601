@@ -6,23 +6,59 @@
     Button to import database file
     Button to generate the report
 '''
-from msilib.schema import Font
 import tkinter as tk
-from tkinter import colorchooser
 from PIL import ImageTk, Image
+from styles import med_bold, background_color, text_color, btn_color
 from typing import Type
 
 class Report (tk.Frame):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
-        super().__init__(master, bg=bgColor)
-        self.grid(row=1, column=0)
-        self.pack(expand=1, fill='both')
-        self.archived_enabled = Toggle_Lbl(self, bgColor, width=60, height=30)
-        self.archived_lbl = tk.Label(self, text='Archived Employees', font=('Arial', 25), bg='grey', foreground='white')
-        self.admin_enabled = Toggle_Lbl(self, bgColor, width=60, height=30)
-        self.archived_lbl.grid(row=1, column=0)
-        self.archived_enabled.grid(row=1, column=1)
-        self.admin_enabled.grid(row=1, column=3)
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+        super().__init__(master, bg=bgColor, width=master.winfo_width())
+        self.configure_columns_n_rows(master)
+        self.grid(row=1, sticky='WENS')
+        
+        self.create_gui_elements()
+        
+
+
+    def configure_columns_n_rows(self, master):
+        master.rowconfigure(0, weight=1)
+        master.rowconfigure(1, weight=9)
+        master.columnconfigure(0, weight=10)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=7)
+        self.columnconfigure(1, weight=2)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(2, weight=1)
+        self.columnconfigure(3, weight=1)
+        self.columnconfigure(4, weight=5)
+
+    def create_gui_elements(self):
+        ## Create the archived label and toggle
+        self.archived_enabled = Toggle_Lbl(self, background_color, width=60, height=30)
+        self.archived_lbl = tk.Label(self, text='Archived Employees', 
+                                     font=med_bold, bg=background_color, foreground=text_color)
+        
+        ## Create the admin Label and toggle
+        self.admin_enabled = Toggle_Lbl(self, background_color, width=60, height=30)
+        self.admin_lbl = tk.Label(self, text='Admin Info', 
+                                     font=med_bold, bg=background_color, foreground=text_color)
+        
+        ## Create the import and export buttons
+        self.export_btn = tk.Button(self, text='Export Database Report', font=med_bold, foreground=text_color, 
+                                        background=btn_color)
+        self.import_btn = tk.Button(self, text='Import Database File', font=med_bold, foreground=text_color, 
+                                        background=btn_color)
+
+        ## Place the first row of items    
+        self.archived_lbl.grid(row=0, column=0)
+        self.archived_enabled.grid(row=0, column=1)
+        self.admin_lbl.grid(row=0, column=2)
+        self.admin_enabled.grid(row=0, column=3)
+        self.export_btn.grid(row=0, column=4)
+
+        ## Place the import button on the second row, centered at the top
+        self.import_btn.grid(row=1, column=0, columnspan=5, sticky='N')
 
 
 
@@ -47,16 +83,6 @@ class Toggle_Lbl(tk.Label):
         else:
             self.IsEnabled = True
             self.config(image = self.on_image)
-
-    def _resize_image(self, event):
-
-        new_width = event.width
-        new_height = event.height
-
-        self.image = self.img_copy.resize((new_width, new_height))
-
-        self.background_image = ImageTk.PhotoImage(self.image)
-        self.background.configure(image =  self.background_image)
 
     
 

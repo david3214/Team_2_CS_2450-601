@@ -5,11 +5,11 @@
 
 import GUI.Window
 import GUI.Screens.Login
-
+from GUI.Screens.Report import Report
 
 def main():
     window = GUI.Window.Window()
-    window.switchFrame(GUI.Screens.Login.Login)
+    window.switchFrame(Report)
     window.mainloop()
 
 

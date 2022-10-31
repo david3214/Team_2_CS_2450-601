@@ -2,6 +2,8 @@ from asyncio.windows_events import NULL
 import os
 from abc import ABC, abstractmethod
 from functools import reduce
+import tkinter.filedialog
+import tkinter as tk
 from turtle import width
 from fpdf import FPDF
 
@@ -261,22 +263,22 @@ def process_receipts():
             emp.classification.receipts = receipts[1:]
 
 
-def run_payroll():
-    """Deletes old paylog file if it exists
-    Writes down every employee's payment to text file"""
+# def run_payroll():
+#     """Deletes old paylog file if it exists
+#     Writes down every employee's payment to text file"""
 
-    if os.path.exists(PAY_LOGFILE):
-        os.remove(PAY_LOGFILE)
-    for emp in employees:
-        emp.issue_payment()
+#     if os.path.exists(PAY_LOGFILE):
+#         os.remove(PAY_LOGFILE)
+#     for emp in employees:
+#         emp.issue_payment()
 
 
-def find_employee_by_id(eid):
-    """Uses unique employee id to find Employee object"""
+# def find_employee_by_id(eid):
+#     """Uses unique employee id to find Employee object"""
 
-    for emp in employees:
-        if emp.emp_id == eid:
-            return emp
+#     for emp in employees:
+#         if emp.emp_id == eid:
+#             return emp
 
 WIDTH = 210
 HEIGHT = 297
@@ -298,7 +300,7 @@ def set_fonts(pdf, type="header"):
         pdf.set_font('Arial', '', 13)
 
 def create_heading(pdf, emp):
-    pdf.image("./imgaes/border.png", BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
+    pdf.image("./images/border.png", BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
 
     pdf.ln(MARGIN)
     set_fonts(pdf, "header")
@@ -344,13 +346,17 @@ def create_payment_info(pdf, emp):
     pdf.cell(cell_width, 8, f"Commissions:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"25", 0, 1, 'L')
 
-def generate_pay_report(emp, filename="report.pdf"):
+def generate_pay_report(emp):
+    
     pdf = FPDF() # A4 (210 by 297 mm)
     pdf.add_page()
     create_heading(pdf, emp)
     create_payment_info(pdf, emp)
 
     pdf.image("./images/employee-image.png", 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
-    pdf.output(filename, 'F')
+    
+    pdfPath = tk.filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
+    if pdfPath:
+        pdf.output(pdfPath, 'F')
 
 generate_pay_report(NULL)

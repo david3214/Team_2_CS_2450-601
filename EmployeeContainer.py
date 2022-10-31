@@ -1,5 +1,5 @@
 from xmlrpc.client import Boolean
-from Employee import Employee
+from Employee import INVALID_DATETIME, INVALID_STR, Employee
 from Address import Address
 from datetime import datetime
 
@@ -13,6 +13,23 @@ class EmployeeContainer():
 
     def setName(self, val: str) -> Boolean:
         return False
+
+    def getFName(self):
+        name = self.getName()
+        if name == INVALID_STR:
+            return name
+        else:
+            return name.split()[0]
+
+    def getLName(self):
+        name = self.getName()
+        if name == INVALID_STR:
+            return name
+        else:
+            if len(name.split()) >= 2:
+                return name.split()[1]
+            else:
+                return INVALID_STR
 
     def getAddress(self):
         return Address()
@@ -33,7 +50,7 @@ class EmployeeContainer():
         return False
 
     def getDOB(self):
-        return datetime.min
+        return INVALID_DATETIME
 
     def setDOB(self, val: datetime) -> Boolean:
         return False
@@ -45,13 +62,13 @@ class EmployeeContainer():
         return False
 
     def getStartDate(self):
-        return datetime.min
+        return INVALID_DATETIME
 
     def setStartDate(self, val: datetime) -> Boolean:
         return False
 
     def getEndDate(self):
-        return datetime.min
+        return INVALID_DATETIME
 
     def setEndDate(self, val: datetime) -> Boolean:
         return False

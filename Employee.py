@@ -4,11 +4,16 @@ from datetime import datetime
 from passlib.context import CryptContext
 
 from Address import Address
+from typing import Final
+
+INVALID_STR: Final[str] = ""
+INVALID_ADDRESS: Final[Address] = Address()
+INVALID_DATETIME: Final[datetime] = datetime.min
 
 
 class Employee:
 
-    def __init__(self, name: str = "", address: Address = Address(), office_phone: str = "", Emp_ID: str = "", D_O_B: datetime = datetime.min, SS_num: int = -1, Start_Date: datetime = datetime.min, End_Date: datetime = datetime.min, Permission_level: int = 0, Title: str = "", Dept: str = "", Office_email: str = "", hashed_password: str = "", active: bool = False, permitted_lock_on: bool = True, home_email: str = "", home_phone: str = "", pay_type: str = "", bank_info: str = "", route: str = "", salary: str = "", hourly: str = "", commission: str = "") -> None:
+    def __init__(self, name: str = INVALID_STR, address: Address = INVALID_ADDRESS, office_phone: str = INVALID_STR, Emp_ID: str = INVALID_STR, D_O_B: datetime = INVALID_DATETIME, SS_num: int = -1, Start_Date: datetime = INVALID_DATETIME, End_Date: datetime = INVALID_DATETIME, Permission_level: int = 0, Title: str = INVALID_STR, Dept: str = INVALID_STR, Office_email: str = INVALID_STR, hashed_password: str = INVALID_STR, active: bool = False, permitted_lock_on: bool = True, home_email: str = INVALID_STR, home_phone: str = INVALID_STR, pay_type: str = INVALID_STR, bank_info: str = INVALID_STR, route: str = INVALID_STR, salary: str = INVALID_STR, hourly: str = INVALID_STR, commission: str = INVALID_STR, **garbage) -> None:
         """_summary_
 
         Args:

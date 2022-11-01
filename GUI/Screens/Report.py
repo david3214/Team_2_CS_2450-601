@@ -46,9 +46,9 @@ class Report (tk.Frame):
         
         ## Create the import and export buttons
         self.export_btn = tk.Button(self, text='Export Database Report', font=med_bold, foreground=text_color, 
-                                        background=btn_color)
+                                        background=btn_color, command=self.export_database)
         self.import_btn = tk.Button(self, text='Import Database File', font=med_bold, foreground=text_color, 
-                                        background=btn_color)
+                                        background=btn_color, command=self.import_database)
 
         ## Place the first row of items    
         self.archived_lbl.grid(row=0, column=0)
@@ -59,6 +59,18 @@ class Report (tk.Frame):
 
         ## Place the import button on the second row, centered at the top
         self.import_btn.grid(row=1, column=0, columnspan=5, sticky='N')
+
+    
+    def import_database(self):
+        # Call the import database function
+        pass
+
+
+    def export_database(self):
+        adminInfo = self.admin_enabled.IsEnabled
+        archivedInfo = self.archived_enabled.IsEnabled
+        
+        # call the export function, using these parameters
 
 
 

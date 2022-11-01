@@ -33,7 +33,7 @@ class Database:
         for emp in self.employeeList:
             # when user sessions are implemented, this needs to be replaced with a proper switch
             emp = EmployeeOther(emp)
-            if (Department == INVALID_STR or Department == emp.getDept()) and (fName == INVALID_STR or fName == emp.getFName()) and (lName == INVALID_STR or lName == emp.getLName()) and (Employee_ID == INVALID_STR or Employee_ID == emp.getEmpID()) and (Title == INVALID_STR or Title == emp.getTitle()) and (oPhone == INVALID_STR or oPhone == emp.getOfficePhone()) and (StartDate == INVALID_DATETIME or StartDate == emp.getStartDate()) and (EndDate == INVALID_DATETIME or EndDate == emp.getEndDate()):
+            if (Department == INVALID_STR or Department == emp.Dept) and (fName == INVALID_STR or fName == emp.getFName()) and (lName == INVALID_STR or lName == emp.getLName()) and (Employee_ID == INVALID_STR or Employee_ID == emp.EmpID) and (Title == INVALID_STR or Title == emp.Title) and (oPhone == INVALID_STR or oPhone == emp.OfficePhone) and (StartDate == INVALID_DATETIME or StartDate == emp.StartDate) and (EndDate == INVALID_DATETIME or EndDate == emp.EndDate):
                 foundList.append(emp)
         return foundList
 
@@ -61,3 +61,18 @@ class Database:
 
         elif importFPath != "":
             print("not a filepath\n")
+
+    def exportDB(self, exportPath: Path = Path("")) -> None:
+        with open(exportPath, 'w', newline='') as csvfile:
+            fieldnames = dir(EmployeeContainer)
+            badnames = ['permissionList', 'getFName', 'getLName']
+            fieldnames = list(
+                filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
+
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval='')
+            writer.writeheader()
+            for emp in self.employeeList:
+                # when user sessions are implemented, this needs to be replaced with a proper switch
+                emp = EmployeeOther(emp)
+                out = dict([(k, emp.__getattribute__(k)) for k in fieldnames])
+                writer.writerow(out)

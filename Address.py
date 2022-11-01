@@ -6,4 +6,6 @@ class Address:
         self.state = state
         self.country = country
         self.zip = zip
-        pass
+
+    def __str__(self) -> str:
+        return str(self.__dict__)

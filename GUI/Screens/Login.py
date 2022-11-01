@@ -49,9 +49,6 @@ class Login (tk.Frame):
         self.login_button.grid(column=1, row=19, sticky=tk.E)
         self.login_button['command'] = self.login
 
-        # Get user input
-        # Validate credentials
-        # Load user’s own profile
         self.pack(expand=True)
 
     def login(self):

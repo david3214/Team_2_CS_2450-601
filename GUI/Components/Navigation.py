@@ -5,7 +5,7 @@
 import tkinter as tk
 from turtle import back
 from typing import Type
-from styles import nav_color, med_bold, text_color
+from styles import nav_color, med_bold, text_color, med_bold_underline
 import GUI.Screens as Screens
 from PIL import Image, ImageTk
 
@@ -16,13 +16,10 @@ class Navigation(tk.Frame):
         self.grid(row=0, sticky="WENS")
         
         self.create_gui_elements()
+        self.draw_nav_bar()
 
 
-    def configure_columns_n_rows(self, master):
-        master.rowconfigure(0, weight=1)
-        master.rowconfigure(1, weight=30)
-        master.columnconfigure(0, weight=20)
-        
+    def configure_columns_n_rows(self, master):        
         ## this creates spacing like so
         ## img-profile -------------img-search -------------img-reports
         self.columnconfigure(0, weight=1)
@@ -72,6 +69,7 @@ class Navigation(tk.Frame):
         self.reports_img.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
         self.reports.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
 
+    def draw_nav_bar(self):
         # Layout
         self.profile_img.grid(row=0, column=0, sticky='E')
         self.profile.grid(row=0, column=1, sticky='W')
@@ -81,14 +79,37 @@ class Navigation(tk.Frame):
         self.reports.grid(row=0, column=5, sticky='W')
 
     def switch_frame(self, frame):
-        print(f'{frame}')
         match (frame):
             case 'Reports':
-                self.master.switchFrame(Screens.Report)
+                self.master.switchFrame(Screens.Report.Report)
+                self.reports.configure(font=med_bold_underline)
+                self.profile.configure(font=med_bold)
+                self.search.configure(font=med_bold)
             case 'Search':
-                self.master.switchFrame(Screens.Search)
+                self.master.switchFrame(Screens.Search.Search)
+                self.reports.configure(font=med_bold)
+                self.profile.configure(font=med_bold)
+                self.search.configure(font=med_bold_underline)
             case 'Profile':
-                self.master.switchFrame(Screens.Profile)
+                self.master.switchFrame(Screens.Profile.Profile)
+                self.reports.configure(font=med_bold)
+                self.profile.configure(font=med_bold_underline)
+                self.search.configure(font=med_bold)
+        self.draw_nav_bar()
         return
 
+    def highlight_section(self, section):
+        match (section):
+            case 'Report':
+                self.reports.configure(font=med_bold_underline)
+                self.profile.configure(font=med_bold)
+                self.search.configure(font=med_bold)
+            case 'Search':
+                self.reports.configure(font=med_bold)
+                self.profile.configure(font=med_bold)
+                self.search.configure(font=med_bold_underline)
+            case 'Profile':
+                self.reports.configure(font=med_bold)
+                self.profile.configure(font=med_bold_underline)
+                self.search.configure(font=med_bold)
         

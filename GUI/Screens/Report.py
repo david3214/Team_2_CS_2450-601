@@ -16,12 +16,11 @@ class Report (tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor, width=master.winfo_width())
         self.configure_columns_n_rows(master)
-        self.nav_bar = Navigation(master)
+        # self.nav_bar = Navigation(master)
         self.grid(row=1, sticky='WENS')
         
         self.create_gui_elements()
         
-
 
     def configure_columns_n_rows(self, master):
         self.rowconfigure(0, weight=1)
@@ -70,6 +69,10 @@ class Report (tk.Frame):
         archivedInfo = self.archived_enabled.IsEnabled
         
         # call the export function, using these parameters
+
+
+    def __str__():
+        return 'Report'
 
 
 # Create new window components

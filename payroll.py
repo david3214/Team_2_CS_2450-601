@@ -320,8 +320,9 @@ def create_heading(pdf, emp):
     pdf.cell(MARGIN)
     pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Department: Software", 0, 1, 'L')
 
+    # Just for spacing
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Department: Software", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"", 0, 1, 'L')
 
 def create_payment_info(pdf, emp):
     set_fonts(pdf, "")

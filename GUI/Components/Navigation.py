@@ -82,20 +82,10 @@ class Navigation(tk.Frame):
         match (frame):
             case 'Reports':
                 self.master.switchFrame(Screens.Report.Report)
-                self.reports.configure(font=med_bold_underline)
-                self.profile.configure(font=med_bold)
-                self.search.configure(font=med_bold)
             case 'Search':
                 self.master.switchFrame(Screens.Search.Search)
-                self.reports.configure(font=med_bold)
-                self.profile.configure(font=med_bold)
-                self.search.configure(font=med_bold_underline)
             case 'Profile':
                 self.master.switchFrame(Screens.Profile.Profile)
-                self.reports.configure(font=med_bold)
-                self.profile.configure(font=med_bold_underline)
-                self.search.configure(font=med_bold)
-        self.draw_nav_bar()
         return
 
     def highlight_section(self, section):

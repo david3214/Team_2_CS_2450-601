@@ -15,6 +15,9 @@ class Login (tk.Frame):
         super().__init__(master)
         self.pack()
 
+    def __str__() -> str:
+        return 'Login'
+
 # Create and place labels, inputs, buttons, etc.
 # Get user input
 # Validate credentials

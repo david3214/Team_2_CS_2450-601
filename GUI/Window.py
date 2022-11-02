@@ -5,6 +5,7 @@
 
 import tkinter as tk
 from typing import Type
+from styles import background_color
 
 class Window(tk.Tk):
 
@@ -15,6 +16,7 @@ class Window(tk.Tk):
         self.geometry('800x600')
         self.resizable(0, 0)
         self.frame = None
+        self.configure(bg=background_color)
 
 
     def switchFrame(self, _frame: Type[tk.Frame]) -> None:

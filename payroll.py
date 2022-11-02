@@ -6,6 +6,7 @@ import tkinter.filedialog
 import tkinter as tk
 from turtle import width
 from fpdf import FPDF
+from Employee import Employee
 
 employees = []
 
@@ -308,17 +309,17 @@ def create_heading(pdf, emp):
     
     set_fonts(pdf, "heading2")
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: David Westwood", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: {emp.name}", 0, 1, 'L')
 
     set_fonts(pdf, "heading3")
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Employee ID: 1234567", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Employee ID: {emp.EmpID}", 0, 1, 'L')
 
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Title: Software Developer", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Title: {emp.Title}", 0, 1, 'L')
 
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Department: Software", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Department: {emp.Dept}", 0, 1, 'L')
 
     # Just for spacing
     pdf.cell(MARGIN)
@@ -329,23 +330,23 @@ def create_payment_info(pdf, emp):
     cell_width = (WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2)) / 4
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Payment Type:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"Direct Deposit", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"{emp.PayType}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Salary Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"$100,000.00", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${emp.Salary:.2f}", 0, 1, 'L')
 
     # Bank Info: 433898-4976 Hourly Wage: $50.00
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Bank Info:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"433898-4976", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"{emp.BankInfo}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Hourly Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"$50.00", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${emp.Hourly:.2f}", 0, 1, 'L')
 
     # Route #: 48786143-K Commissions:	25
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Route #:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"48786143-K", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"{emp.Route}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Commissions:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"25", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"{emp.Commision}", 0, 1, 'L')
 
 def generate_pay_report(emp):
     
@@ -359,5 +360,3 @@ def generate_pay_report(emp):
     pdfPath = tk.filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
     if pdfPath:
         pdf.output(pdfPath, 'F')
-
-generate_pay_report(NULL)

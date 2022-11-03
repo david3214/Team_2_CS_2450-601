@@ -6,17 +6,13 @@
 '''
 
 
-import Profile
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
 
 
 class Permitted(Profile):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bgColor)
 
-    def __init__(self) -> None:
-        pass
-
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information
+        self.grid()

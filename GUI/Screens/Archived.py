@@ -5,24 +5,16 @@
     Uses GeneralInfo, PermittedInfo, AdminInfo
     Information cannot be edited
     Employee can be unarchived
-
 '''
 
 
-import User
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+import tkinter as tk
+from typing import Type
+from .User import User
 
 
 class Archived(User):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bgColor)
 
-    def __init__(self) -> None:
-        pass
-
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information
-#   Button to unarchive
-# Find employee in database and display all information accessible to admin permission leve
+        self.grid()

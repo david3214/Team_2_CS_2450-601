@@ -8,14 +8,24 @@
 '''
 
 
-import Admin
-import Components.Panels.GeneralInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
+from ..Components.Panels.AdminInfo import AdminInfo as AI
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 
 
-class AddEmployee(Admin):
+class AddEmployee(Profile):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bgColor=bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.img = None
+        self.imgL.destroy()
 
-# Create new empty Employee object.
-# Open Employee object in a copy of profile screen except with update button replaced with add button. On click: Employee object is added to database. Goto search screen.
+        self.adminInfo = AI(self, editable=True)
+        self.adminInfo.grid(column=1, row=0)
+
+        self.permittedInfo = PI(self, 'blue', True, False)
+        self.permittedInfo.grid(column=1, row=1)
+
+        self.grid()

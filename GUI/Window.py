@@ -6,14 +6,16 @@
 import tkinter as tk
 from typing import Type
 
-class Window(tk.Tk):
 
+class Window(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
 
         self.title('Pay Roll')
         self.geometry('800x600')
         self.resizable(0, 0)
+        self.grid_rowconfigure(1, weight=1) # Row 1 to save row 0 for navbar
+        self.grid_columnconfigure(0, weight=1)
         self.frame = None
 
 
@@ -24,5 +26,3 @@ class Window(tk.Tk):
             self.frame.destroy()
 
         self.frame = _frame(self)
-        #* frame.pack() should be called by the constructor
-

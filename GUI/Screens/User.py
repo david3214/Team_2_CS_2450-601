@@ -9,28 +9,13 @@
 '''
 
 
-import Profile
-import Components.Navigation
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
 
 
-class Admin(Profile):
+class User(Profile):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bgColor)
 
-    def __init__(self) -> None:
-        pass
-
-# Create new window components
-#   Navigation Bar
-#       Profile(underlined)
-#       Search
-#       Reports
-#   Image
-#   General employee information
-#   Permitted information
-#   Inputs to edit information
-#   Button to update 
-#       Validate changed fields
-#       Save information in database
-# Find employee in database and display information
+        self.grid()

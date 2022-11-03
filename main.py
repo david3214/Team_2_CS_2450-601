@@ -1,15 +1,20 @@
 '''
     Entry point for GUI development and testing
 '''
-#? TODO: Decide if we want to refactor p5.py into this new entry point
+
 
 from GUI.Window import Window
-from GUI.Screens.Profile import Profile as screen
+from GUI.Screens.AddEmployee import AddEmployee
+from GUI.Screens.Admin import Admin
+from GUI.Screens.Archived import Archived
+from GUI.Screens.Permitted import Permitted
+from GUI.Screens.Profile import Profile
+from GUI.Screens.User import User
 
 
 def main():
     window = Window()
-    window.switchFrame(screen)
+    window.switchFrame(Admin)
     window.mainloop()
 
 

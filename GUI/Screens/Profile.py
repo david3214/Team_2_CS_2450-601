@@ -8,19 +8,21 @@
 import tkinter as tk
 from typing import Type
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 
 
 class Profile (tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
         super().__init__(master, bg=bgColor)
         self.generalInfo = GI(self)
-        self.generalInfo.grid()
-        #self.img = tk.Label(master, image=)
-        #self.img.grid(column=1)
+        self.generalInfo.grid(column=0)
 
-        self.pack(expand=1, fill='both')
+        self.permittedInfo = PI(self)
+        self.permittedInfo.grid(column=1, row=1)
 
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information (locked)
+        self.img = tk.PhotoImage(file='Images/logo.png')
+        self.img = self.img.subsample(2, 2)
+        self.imgL = tk.Label(self, image=self.img)
+        self.imgL.grid(column=1,row=0)
+
+        self.grid(row=0, column=0, sticky='nsew')

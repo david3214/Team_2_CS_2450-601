@@ -10,26 +10,25 @@
 '''
 
 
-import Profile
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+import tkinter as tk
+from typing import Type
+from .AddEmployee import AddEmployee as AE
+from ..Components.Panels.AdminInfo import AdminInfo as AI
 
 
-class Admin(Profile):
+class Admin(AE):
+    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+        super().__init__(master, bgColor=bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.options = {'font': ('Arial', 12, 'bold'), 'bg': 'blue', 'fg': 'white'}
 
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information
-#   Inputs to edit all information
-#   Button to update 
-#       Validate updated fields
-#       Save new information in database
-#   Button to generate pay report
-#       Gen pay rep
-#       Button to archive
-# Find employee in database and display all information accessible to admin permission level
+        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options)
+        self.genPayReportBtn.grid(column=0, row=2)
+
+        self.archiveBtn = tk.Button(self, text='Archive', **self.options)
+        self.archiveBtn.grid(column=1, row=2)
+
+        self.updateBtn = tk.Button(self, text='Update', **self.options)
+        self.updateBtn.grid(column=2, row=2)
+
+        self.grid()

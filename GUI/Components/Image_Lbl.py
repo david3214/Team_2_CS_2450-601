@@ -1,0 +1,32 @@
+from asyncio.windows_events import NULL
+import tkinter as tk
+from PIL import ImageTk, Image
+from typing import Type
+
+TGL_ON = './images/on.png'
+TGL_OFF = './images/off.png'
+class Image_Lbl(tk.Label):
+    
+    def __init__(self, master: Type[tk.Frame], bgColor: str, width, height, command = NULL, 
+                  start_img = TGL_ON, off_image = TGL_OFF, **kwargs) -> None:
+        super().__init__(master, bg=bgColor, width=width, height=height, **kwargs)
+        self.IsEnabled = True
+        img = Image.open(start_img)
+        img = img.resize((width, height))
+        self.on_image = ImageTk.PhotoImage(image=img)
+        img = Image.open(off_image)
+        img = img.resize((width, height))
+        self.off_image = ImageTk.PhotoImage(image=img)
+        self.config(image = self.on_image)
+        if command is not NULL:
+          self.bind('<Button-1>', command)
+        else:
+          self.bind('<Button-1>', self.change_state)
+    
+    def change_state(self, *args):
+        if self.IsEnabled is True:
+            self.IsEnabled = False
+            self.config(image = self.off_image)
+        else:
+            self.IsEnabled = True
+            self.config(image = self.on_image)

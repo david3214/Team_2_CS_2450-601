@@ -11,6 +11,9 @@ class Profile:
     def __init__(self) -> None:
         pass
 
+    def __str__():
+        return 'Profile'
+
 # Create new window components to display information
 #   Image
 #   General employee information

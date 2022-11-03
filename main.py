@@ -9,7 +9,7 @@ from GUI.Screens.Report import Report
 
 def main():
     window = GUI.Window.Window()
-    window.switchFrame(Report)
+    window.switchFrame(Login)
     window.mainloop()
 
 

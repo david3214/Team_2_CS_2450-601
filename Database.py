@@ -58,8 +58,18 @@ class Database:
         """
         foundList = list()
         for emp in self.employeeList:
-            emp = __employeeContainment(emp, usrAcc)
-            if (Department == INVALID_STR or Department in emp.Dept) and (fName == INVALID_STR or fName in emp.getFName()) and (lName == INVALID_STR or lName in emp.getLName()) and (Employee_ID == INVALID_STR or Employee_ID == emp.EmpID) and (Title == INVALID_STR or Title in emp.Title) and (oPhone == INVALID_STR or oPhone == emp.OfficePhone) and (StartDate == INVALID_DATETIME or StartDate == emp.StartDate) and (EndDate == INVALID_DATETIME or EndDate == emp.EndDate):
+            emp = self.__employeeContainment(emp, usrAcc)
+            valid: bool = True
+            valid = valid and not Department == INVALID_STR or Department in emp.Dept
+            valid = valid and not fName == INVALID_STR or fName in emp.getFName()
+            valid = valid and not lName == INVALID_STR or lName in emp.getLName()
+            valid = valid and not Employee_ID == INVALID_STR or Employee_ID == emp.EmpID
+            valid = valid and not Title == INVALID_STR or Title in emp.Title
+            valid = valid and not oPhone == INVALID_STR or oPhone == emp.OfficePhone
+            valid = valid and not StartDate == INVALID_DATETIME or StartDate == emp.StartDate
+            valid = valid and not EndDate == INVALID_DATETIME or EndDate == emp.EndDate
+            # if any of the statements after "valid and not" are True then valid will be False
+            if valid:
                 foundList.append(emp)
         return foundList
 
@@ -111,7 +121,7 @@ class Database:
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:
-                    emp = __employeeContainment(emp, usrAcc)
+                    emp = self.__employeeContainment(emp, usrAcc)
                 else:
                     emp = EmployeeOther(emp)
 
@@ -120,20 +130,19 @@ class Database:
                 out = dict([(k, emp.__getattribute__(k)) for k in fieldnames])
                 writer.writerow(out)
 
+    def __employeeContainment(self, targetEmployee: Employee, selfEmployee: EmployeeSelf):
+        """takes employee and puts it in a container based on who the user is
 
-def __employeeContainment(targetEmployee: Employee, selfEmployee: EmployeeSelf):
-    """takes employee and puts it in a container based on who the user is
+        Args:
+            targetEmployee (Employee): _description_
+            selfEmployee (EmployeeSelf): _description_
 
-    Args:
-        targetEmployee (Employee): _description_
-        selfEmployee (EmployeeSelf): _description_
-
-    Returns:
-        _type_: _description_
-    """
-    if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
-        return EmployeeAdmin(targetEmployee)
-    elif targetEmployee is selfEmployee.__employee:
-        return EmployeeSelf(targetEmployee)
-    else:
-        return EmployeeOther(targetEmployee)
+        Returns:
+            _type_: _description_
+        """
+        if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
+            return EmployeeAdmin(targetEmployee)
+        elif targetEmployee is selfEmployee.__employee:
+            return EmployeeSelf(targetEmployee)
+        else:
+            return EmployeeOther(targetEmployee)

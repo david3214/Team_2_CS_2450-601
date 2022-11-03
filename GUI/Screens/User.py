@@ -15,7 +15,7 @@ from .Profile import Profile
 
 
 class User(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
-        super().__init__(master, bgColor)
+    def __init__(self, master: Type[tk.Tk]) -> None:
+        super().__init__(master)
 
         self.grid()

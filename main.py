@@ -14,7 +14,7 @@ from GUI.Screens.User import User
 
 def main():
     window = Window()
-    window.switchFrame(Admin)
+    window.switchFrame(Profile)
     window.mainloop()
 
 

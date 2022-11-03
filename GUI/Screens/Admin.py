@@ -17,10 +17,10 @@ from ..Components.Panels.AdminInfo import AdminInfo as AI
 
 
 class Admin(AE):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
-        super().__init__(master, bgColor=bgColor)
+    def __init__(self, master: Type[tk.Tk]) -> None:
+        super().__init__(master)
 
-        self.options = {'font': ('Arial', 12, 'bold'), 'bg': 'blue', 'fg': 'white'}
+        self.options = {'font': ('Arial', 12, 'bold')}
 
         self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options)
         self.genPayReportBtn.grid(column=0, row=2)

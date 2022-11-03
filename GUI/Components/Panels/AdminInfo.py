@@ -3,7 +3,7 @@
 '''
 
 
-import tkinter as tk
+import customtkinter as ctk
 from typing import Type
 from GUI.Components.Panels.Info import Info
 
@@ -13,15 +13,15 @@ char = str
 
 
 class AdminInfo(Info):
-    def __init__(self, master: Type[tk.Frame], bgColor: str='blue', editable: bool=False) -> None:
-        super().__init__(master, bgColor, editable)
+    def __init__(self, master: Type[ctk.CTkFrame], editable: bool=False) -> None:
+        super().__init__(master, editable)
 
-        self.fields  = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
+        self.fields = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
         self.generate({}, {}, {}, ((lambda i, l: i if i < l else i - l), (lambda i, l: 0 if i < l else 1), {}))
 
         # Make Pay type a OptionMenu
         self.entries[0].destroy()
-        self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
+        self.entries[0] = ctk.CTkOptionMenu(master=self, variable=self.variables[0][1], values=['1', '2', '3'])
         self.entries[0].grid(row=0, column=1)
 
         # Template for testing the validation of Entries

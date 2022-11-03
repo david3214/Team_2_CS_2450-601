@@ -14,7 +14,7 @@ from .User import User
 
 
 class Archived(User):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
-        super().__init__(master, bgColor)
+    def __init__(self, master: Type[tk.Tk]) -> None:
+        super().__init__(master)
 
         self.grid()

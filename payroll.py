@@ -1,7 +1,13 @@
+from asyncio.windows_events import NULL
 import os
 from abc import ABC, abstractmethod
 from functools import reduce
+import tkinter.filedialog
+import tkinter as tk
+from turtle import width
+from fpdf import FPDF
 
+employees = []
 
 class Employee(object):
     """Represents an individual employee"""
@@ -257,23 +263,101 @@ def process_receipts():
             emp.classification.receipts = receipts[1:]
 
 
-def run_payroll():
-    """Deletes old paylog file if it exists
-    Writes down every employee's payment to text file"""
+# def run_payroll():
+#     """Deletes old paylog file if it exists
+#     Writes down every employee's payment to text file"""
 
-    if os.path.exists(PAY_LOGFILE):
-        os.remove(PAY_LOGFILE)
-    for emp in employees:
-        emp.issue_payment()
-
-
-def find_employee_by_id(eid):
-    """Uses unique employee id to find Employee object"""
-
-    for emp in employees:
-        if emp.emp_id == eid:
-            return emp
+#     if os.path.exists(PAY_LOGFILE):
+#         os.remove(PAY_LOGFILE)
+#     for emp in employees:
+#         emp.issue_payment()
 
 
-employees = []
-PAY_LOGFILE = "paylog.txt"
+# def find_employee_by_id(eid):
+#     """Uses unique employee id to find Employee object"""
+
+#     for emp in employees:
+#         if emp.emp_id == eid:
+#             return emp
+
+WIDTH = 210
+HEIGHT = 297
+MARGIN = 15
+BORDER_MARGIN = 10
+
+def set_fonts(pdf, type="header"):
+    if type == "header":
+        pdf.set_font('Arial', 'B', 40)
+        pdf.set_text_color(11,99,116)
+    elif type == "heading2":
+        pdf.set_font('Arial', 'B', 22)
+        pdf.set_text_color(89,145,145)
+    elif type == "heading3":
+        pdf.set_text_color(11,99,116)
+        pdf.set_font('Arial', 'B', 12)
+    else:
+        pdf.set_text_color(0,0,0)
+        pdf.set_font('Arial', '', 13)
+
+def create_heading(pdf, emp):
+    pdf.image("./images/border.png", BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
+
+    pdf.ln(MARGIN)
+    set_fonts(pdf, "header")
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 20, "Pay Report", border = 0, ln = 1, align = 'C')
+    
+    set_fonts(pdf, "heading2")
+    pdf.cell(MARGIN)
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: David Westwood", 0, 1, 'L')
+
+    set_fonts(pdf, "heading3")
+    pdf.cell(MARGIN)
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Employee ID: 1234567", 0, 1, 'L')
+
+    pdf.cell(MARGIN)
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Title: Software Developer", 0, 1, 'L')
+
+    pdf.cell(MARGIN)
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"Department: Software", 0, 1, 'L')
+
+    # Just for spacing
+    pdf.cell(MARGIN)
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 6, f"", 0, 1, 'L')
+
+def create_payment_info(pdf, emp):
+    set_fonts(pdf, "")
+    cell_width = (WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2)) / 4
+    pdf.cell(MARGIN)
+    pdf.cell(cell_width, 8, f"Payment Type:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"Direct Deposit", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"Salary Wage:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"$100,000.00", 0, 1, 'L')
+
+    # Bank Info: 433898-4976 Hourly Wage: $50.00
+    pdf.cell(MARGIN)
+    pdf.cell(cell_width, 8, f"Bank Info:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"433898-4976", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"Hourly Wage:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"$50.00", 0, 1, 'L')
+
+    # Route #: 48786143-K Commissions:	25
+    pdf.cell(MARGIN)
+    pdf.cell(cell_width, 8, f"Route #:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"48786143-K", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"Commissions:", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"25", 0, 1, 'L')
+
+def generate_pay_report(emp):
+    
+    pdf = FPDF() # A4 (210 by 297 mm)
+    pdf.add_page()
+    create_heading(pdf, emp)
+    create_payment_info(pdf, emp)
+
+    pdf.image("./images/employee-image.png", 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
+    
+    pdfPath = tk.filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
+    if pdfPath:
+        pdf.output(pdfPath, 'F')
+
+generate_pay_report(NULL)

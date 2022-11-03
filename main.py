@@ -4,12 +4,12 @@
 #? TODO: Decide if we want to refactor p5.py into this new entry point
 
 import GUI.Window
-import GUI.Screens.Login
-
+from GUI.Screens.Login import Login
+from GUI.Screens.Report import Report
 
 def main():
     window = GUI.Window.Window()
-    window.switchFrame(GUI.Screens.Login.Login)
+    window.switchFrame(Login)
     window.mainloop()
 
 

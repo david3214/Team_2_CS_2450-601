@@ -14,7 +14,6 @@ import tkinter as tk
 class Login (tk.Frame):
     def __init__(self, master=None) -> None:
         super().__init__(master)
-
         header_font = ('Arial bold', 26)
         entry_label_font = ('Arial bold', 14)
         entry_font = ('Arial', 14)
@@ -57,3 +56,10 @@ class Login (tk.Frame):
 
         print(f'Checking that {given_username} and {given_password} are valid')
 
+    def __str__() -> str:
+        return 'Login'
+
+# Create and place labels, inputs, buttons, etc.
+# Get user input
+# Validate credentials
+# Load user’s own profile

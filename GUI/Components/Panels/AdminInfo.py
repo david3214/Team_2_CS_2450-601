@@ -16,18 +16,21 @@ class AdminInfo(Info):
     def __init__(self, master: Type[tk.Frame], bgColor: str='blue', editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
 
+        self.grid_columnconfigure((0, 1), weight=1)
+
         self.fields  = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
         self.generate({}, {}, {}, ((lambda i, l: i if i < l else i - l), (lambda i, l: 0 if i < l else 1), {}))
 
-        # Make Pay type a OptionMenu
-        self.entries[0].destroy()
-        self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
-        self.entries[0].grid(row=0, column=1)
+        if self.editable:
+            # Make Pay type a OptionMenu
+            self.entries[0].destroy()
+            self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
+            self.entries[0].grid(row=0, column=1)
 
-        # Template for testing the validation of Entries
-        self.testValidateWrapper = (self.master.register(self.testValidate), '%P')
-        self.entries[1].configure(validatecommand=self.testValidateWrapper)
-        self.variables[1][1].trace_add('write', self.testUpdate)
+            # Template for testing the validation of Entries
+            self.testValidateWrapper = (self.master.register(self.testValidate), '%P')
+            self.entries[1].configure(validatecommand=self.testValidateWrapper)
+            self.variables[1][1].trace_add('write', self.testUpdate)
 
 
     @staticmethod

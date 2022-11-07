@@ -1,5 +1,5 @@
 from fpdf import FPDF
-import tkinter as tk
+from tkinter import filedialog
 from Employee import Employee
 
 WIDTH = 210
@@ -78,6 +78,7 @@ def generate_pay_report(emp):
 
     pdf.image("./images/employee-image.png", 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
     
-    pdfPath = tk.filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
+    pdfPath = filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
     if pdfPath:
         pdf.output(pdfPath, 'F')
+

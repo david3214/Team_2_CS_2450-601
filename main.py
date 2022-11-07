@@ -10,7 +10,7 @@ from GUI.Screens.Search import Search
 
 def main():
     window = GUI.Window.Window()
-    window.switchFrame(Login)
+    window.switchFrame(Report)
     window.mainloop()
 
 

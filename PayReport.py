@@ -1,5 +1,4 @@
 from fpdf import FPDF
-import tkinter.filedialog
 import tkinter as tk
 from Employee import Employee
 

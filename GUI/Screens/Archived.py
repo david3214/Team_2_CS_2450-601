@@ -9,10 +9,10 @@
 '''
 
 
-import User
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+from GUI.Screens.User import User
+from Components.Panels.GeneralInfo import GeneralInfo
+from Components.Panels.PermittedInfo import PermittedInfo
+from Components.Panels.AdminInfo import AdminInfo
 
 
 class Archived(User):

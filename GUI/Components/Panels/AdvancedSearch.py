@@ -12,6 +12,7 @@ from typing import Type
 import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
+from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, text_color, btn_color, sm_text, sm_bold, med_text
 
 
@@ -25,7 +26,7 @@ class AdvancedSearch(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=10)
-        self.grid(row=0, column=0, sticky='NSEW')
+        self.grid(row=1, column=0, sticky='NSEW')
 
         # Creates/configures left-most frame for advanced search widgets
         self.advanced_search_tab = tk.Frame(self, bg=bg_color)
@@ -59,7 +60,7 @@ class AdvancedSearch(tk.Frame):
         # Creates entry fields for advanced search tab
         self.entries = {}
         for i, field in enumerate(self.fields[:8]):
-            entry_field = tk.Entry(self.advanced_search_tab, font=sm_text)
+            entry_field = UnderlineEntry(self.advanced_search_tab, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
             entry_field.grid(row=i+1, column=1, sticky='E')
             self.entries[field] = entry_field
         self.archive_toggle = Image_Lbl(self.advanced_search_tab, bgColor=bg_color, width=60, height=30)
@@ -113,7 +114,7 @@ class AdvancedSearch(tk.Frame):
                 employee_image.config(image=image)
                 employee_image.grid(row=0, column=0, padx=5)
 
-                tk.Label(employee_frame, text=f'Employee: {data[1]}', font=sm_text).grid(row=0, column=1, padx=10,
+                tk.Label(employee_frame, text=f'Employee: {data[1]}', font=sm_text).grid(row=0, column=1, padx=10, pady=(15, 0),
                                                                                          sticky='W')
                 tk.Label(employee_frame, text=f'Employee ID: {data[0]}', font=sm_text).grid(row=0, column=2,
                                                                                             sticky='W')

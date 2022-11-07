@@ -26,7 +26,7 @@ class Search(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=6)
         self.grid_columnconfigure(0, weight=1)
-        self.grid(row=0, column=0, sticky='NSEW')
+        self.grid(row=1, column=0, sticky='NSEW')
 
         # Creates search ribbon component
         GUI.Components.SearchRibbon.SearchRibbon(self, master).grid(row=0, column=0, sticky='NSEW')
@@ -54,6 +54,7 @@ class Search(tk.Frame):
                 employee_frame.grid_columnconfigure(1, weight=4)
                 employee_frame.grid_columnconfigure(2, weight=4)
                 employee_frame.grid_columnconfigure(3, weight=4)
+                employee_frame.grid_rowconfigure(0, weight=1)
                 employee_frame.grid(row=i, column=0, pady=1, sticky='NSEW')
 
                 data = line.split(',')
@@ -62,13 +63,13 @@ class Search(tk.Frame):
                 self.employee_image.config(image=self.employee_img)
                 self.employee_image.grid(row=0, column=0)
 
-                tk.Label(employee_frame, text=f'Employee: {data[1]}', font=sm_text).grid(row=0, column=1, padx=15,
+                tk.Label(employee_frame, text=f'Employee: {data[1]}', font=sm_text).grid(row=0, column=1, padx=15, pady=(15, 0),
                                                                                          sticky='W')
                 tk.Label(employee_frame, text=f'Employee ID: {data[0]}', font=sm_text).grid(row=0, column=2,
                                                                                             sticky='W')
                 tk.Label(employee_frame, text=f'Dept: TBA', font=sm_text).grid(row=0, column=3, padx=15, sticky='E')
 
-    def __str__(self):
+    def __str__():
         return 'Search'
 
 

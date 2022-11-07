@@ -6,9 +6,9 @@
 '''
 
 
-import Profile
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
+from GUI.Screens.Profile import Profile
+from Components.Panels.GeneralInfo import GeneralInfo0
+from Components.Panels.PermittedInfo import PermittedInfo
 
 
 class Permitted(Profile):

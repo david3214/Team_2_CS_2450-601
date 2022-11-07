@@ -4,12 +4,14 @@
 '''
 
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 from typing import Type
 
 import GUI.Components.Panels.AdvancedSearch
 import GUI.Screens.AddEmployee
-from styles import background_color, btn_color, sm_bold, med_text
+from GUI.Components.UnderlineEntry import UnderlineEntry
+from styles import background_color, btn_color, sm_bold, med_text, text_color
 
 
 class SearchRibbon(tk.Frame):
@@ -36,8 +38,9 @@ class SearchRibbon(tk.Frame):
         self.search_image.config(image=self.search_img)
         self.search_image.grid(row=0, column=1)
 
-        self.search_bar = tk.Entry(self, font=med_text, foreground='grey')
+        self.search_bar = UnderlineEntry(self, font=med_text, foreground=text_color, background=bg_color, insertbackground=text_color)
         self.search_bar.insert(-1, 'Search')
+        
         self.default_text = True
         self.search_bar.bind('<Button-1>', self.delete_text)
         self.search_bar.grid(row=0, column=2, sticky='EW')
@@ -58,4 +61,3 @@ class SearchRibbon(tk.Frame):
         if self.default_text:
             self.search_bar.delete(0, tk.END)
             self.default_text = False
-            self.search_bar['foreground'] = 'black'

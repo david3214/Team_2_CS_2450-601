@@ -10,10 +10,10 @@
 '''
 
 
-import Profile
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+from GUI.Screens.Profile import Profile
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
+from GUI.Components.Panels.PermittedInfo import PermittedInfo
+from GUI.Components.Panels.AdminInfo import AdminInfo
 
 
 class Admin(Profile):

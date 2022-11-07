@@ -6,6 +6,7 @@
 import GUI.Window
 from GUI.Screens.Login import Login
 from GUI.Screens.Report import Report
+from GUI.Screens.Search import Search
 
 def main():
     window = GUI.Window.Window()

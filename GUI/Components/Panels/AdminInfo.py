@@ -3,7 +3,7 @@
 '''
 
 
-class Admin:
+class AdminInfo:
 
     def __init__(self) -> None:
         pass

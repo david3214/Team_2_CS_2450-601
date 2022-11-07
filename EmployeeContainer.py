@@ -1,311 +1,345 @@
+from pickle import TRUE
 from xmlrpc.client import Boolean
-from Employee import Employee
+from Employee import INVALID_ADDRESS, INVALID_DATETIME, INVALID_STR, Employee
 from Address import Address
 from datetime import datetime
+from types import MappingProxyType
 
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:
-        self._employee = employee
+        self.__employee = employee
 
-    def getName(self):
-        return ""
+    # this is a read only dict, aand can be interacted with using any method that would work on a dict, except writing to it
+    # each key corresponds to an employee variable. the first bool of the value is whether it can be read, the second is if it can be set
+    # the permitted lock allows the variables it governs to be read regardless of permissionList
+    permissionList = MappingProxyType({'name': [False, False], 'address': [False, False], 'office_phone': [False, False], 'Emp_ID': [False, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [False, False], 'End_Date': [False, False], 'Permission_level': [False, False], 'Title': [False, False], 'Dept': [False, False], 'Office_email': [
+        False, False], 'hashed_password': [False, False], 'active': [False, False], 'permitted_lock_on': [False, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_type': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
-    def setName(self, val: str) -> Boolean:
-        return False
+    def getFName(self):
+        name = self.Name
+        if name == INVALID_STR:
+            return name
+        else:
+            return name.split()[0]
 
-    def getAddress(self):
-        return Address()
+    def getLName(self):
+        name = self.Name
+        if name == INVALID_STR:
+            return name
+        else:
+            if len(name.split()) >= 2:
+                return name.split()[1]
+            else:
+                return INVALID_STR
 
-    def setAddress(self, val: Address) -> Boolean:
-        return False
+    @property
+    def Name(self):
+        if self.permissionList['name'][0]:
+            return self.__employee.name
+        return INVALID_STR
 
-    def getOfficePhone(self):
-        return ""
+    @property
+    def OfficePhone(self):
+        if self.permissionList['office_phone'][0]:
+            return self.__employee.office_phone
+        return INVALID_STR
 
-    def setOfficePhone(self, val: str) -> Boolean:
-        return False
+    @property
+    def EmpID(self):
+        if self.permissionList['Emp_ID'][0]:
+            return self.__employee.Emp_ID
+        return INVALID_STR
 
-    def getEmpID(self):
-        return ""
+    @property
+    def PermittedLockOn(self):
+        if self.permissionList['permitted_lock_on'][0]:
+            return self.__employee.permitted_lock_on
+        return INVALID_STR
 
-    def setEmpID(self, val: str) -> Boolean:
-        return False
+    @property
+    def StartDate(self):
+        if self.permissionList['Start_Date'][0]:
+            return self.__employee.Start_Date
+        return INVALID_DATETIME
 
-    def getDOB(self):
-        return datetime.min
+    @property
+    def EndDate(self):
+        if self.permissionList['End_Date'][0]:
+            return self.__employee.End_Date
+        return INVALID_DATETIME
 
-    def setDOB(self, val: datetime) -> Boolean:
-        return False
+    @property
+    def Title(self):
+        if self.permissionList['Title'][0]:
+            return self.__employee.Title
+        return INVALID_STR
 
-    def getSSNum(self):
-        return -2
+    @property
+    def Dept(self):
+        if self.permissionList['Dept'][0]:
+            return self.__employee.Dept
+        return INVALID_STR
 
-    def setSSNum(self, val: int) -> Boolean:
-        return False
+    @property
+    def OfficeEmail(self):
+        if self.permissionList['Office_email'][0]:
+            return self.__employee.Office_email
+        return INVALID_STR
 
-    def getStartDate(self):
-        return datetime.min
+    @property
+    def Active(self):
+        if self.permissionList['active'][0]:
+            return self.__employee.active
+        raise Exception
 
-    def setStartDate(self, val: datetime) -> Boolean:
-        return False
+    @property
+    def Addr(self):
+        if self.PermittedLockOn:
+            if self.permissionList['address'][0]:
+                return self.__employee.address
+            else:
+                return INVALID_ADDRESS
+        return self.__employee.home_email
 
-    def getEndDate(self):
-        return datetime.min
+    @property
+    def HomeEmail(self):
+        if self.PermittedLockOn:
+            if self.permissionList['home_email'][0]:
+                return self.__employee.home_email
+            else:
+                return INVALID_STR
+        return self.__employee.home_email
 
-    def setEndDate(self, val: datetime) -> Boolean:
-        return False
+    @property
+    def HomePhone(self):
+        if self.PermittedLockOn:
+            if self.permissionList['home_phone'][0]:
+                return self.__employee.home_phone
+            else:
+                return INVALID_STR
+        return self.__employee.home_phone
 
-    def getPermissionLevel(self):
+    @property
+    def DOB(self):
+        if self.permissionList['D_O_B'][0]:
+            return self.__employee.D_O_B
+        return INVALID_DATETIME
+
+    @property
+    def SSNum(self):
+        if self.permissionList['SS_num'][0]:
+            return self.__employee.SS_num
         return -1
 
-    def setPermissionLevel(self, val: int) -> Boolean:
+    @property
+    def PermissionLevel(self):
+        if self.permissionList['Permission_level'][0]:
+            return self.__employee.Permission_level
+        return -1
+
+    @property
+    def PayType(self):
+        if self.permissionList['pay_type'][0]:
+            return self.__employee.pay_type
+        return INVALID_STR
+
+    @property
+    def BankInfo(self):
+        if self.permissionList['bank_info'][0]:
+            return self.__employee.bank_info
+        return INVALID_STR
+
+    @property
+    def Route(self):
+        if self.permissionList['route'][0]:
+            return self.__employee.route
+        return INVALID_STR
+
+    @property
+    def Salary(self):
+        if self.permissionList['salary'][0]:
+            return self.__employee.salary
+        return INVALID_STR
+
+    @property
+    def Hourly(self):
+        if self.permissionList['hourly'][0]:
+            return self.__employee.hourly
+        return INVALID_STR
+
+    @property
+    def Commission(self):
+        if self.permissionList['commission'][0]:
+            return self.__employee.commission
+        return INVALID_STR
+
+    @Name.setter
+    def Name(self, val: str):
+        if self.permissionList['name'][1]:
+            self.__employee.name = val
+            return True
         return False
 
-    def getTitle(self):
-        return ""
-
-    def setTitle(self, val: str) -> Boolean:
+    @Addr.setter
+    def Address(self, val: Address):
+        if self.permissionList['address'][1]:
+            self.__employee.address = val
+            return True
         return False
 
-    def getDept(self):
-        return ""
-
-    def setDept(self, val: str) -> Boolean:
+    @OfficePhone.setter
+    def OfficePhone(self, val: str):
+        if self.permissionList['office_phone'][1]:
+            self.__employee.office_phone = val
+            return True
         return False
 
-    def getOfficeEmail(self):
-        return ""
-
-    def setOfficeEmail(self, val: str) -> Boolean:
+    @PermittedLockOn.setter
+    def PermittedLockOn(self, val: Boolean):
+        if self.permissionList['permitted_lock_on'][1]:
+            self.__employee.permitted_lock_on = val
+            return True
         return False
 
-    def getActive(self):
-        return self._employee.active
-
-    def setActive(self, val: Boolean) -> Boolean:
+    @EmpID.setter
+    def EmpID(self, val: str):
+        if self.permissionList['Emp_ID'][1]:
+            self.__employee.Emp_ID = val
+            return True
         return False
 
-    def getPermittedLockOn(self):
-        return self._employee.permitted_lock_on
-
-    def setPermittedLockOn(self, val: Boolean) -> Boolean:
+    @DOB.setter
+    def DOB(self, val: datetime):
+        if self.permissionList['D_O_B'][1]:
+            self.__employee.D_O_B = val
+            return True
         return False
 
-    def getHomePhone(self):
-        return ""
-
-    def setHomePhone(self, val: str) -> Boolean:
+    @SSNum.setter
+    def SSNum(self, val: int):
+        if self.permissionList['SS_num'][1]:
+            self.__employee.SS_num = val
+            return True
         return False
 
-    def getHomeEmail(self):
-        return ""
-
-    def setHomeEmail(self, val: str) -> Boolean:
+    @StartDate.setter
+    def StartDate(self, val: datetime):
+        if self.permissionList['Start_Date'][1]:
+            self.__employee.Start_Date = val
+            return True
         return False
 
-    def getPayType(self):
-        return ""
-
-    def setPayType(self, val: str) -> Boolean:
+    @EndDate.setter
+    def EndDate(self, val: datetime):
+        if self.permissionList['End_Date'][1]:
+            self.__employee.End_Date = val
+            return True
         return False
 
-    def getBankInfo(self):
-        return ""
-
-    def setBankInfo(self, val: str) -> Boolean:
+    @PermissionLevel.setter
+    def PermissionLevel(self, val: int):
+        if self.permissionList['Permission_level'][1]:
+            self.__employee.Permission_level = val
+            return True
         return False
 
-    def getRoute(self):
-        return ""
-
-    def setRoute(self, val: str) -> Boolean:
+    @Title.setter
+    def Title(self, val: str):
+        if self.permissionList['Title'][1]:
+            self.__employee.Title = val
+            return True
         return False
 
-    def getSalary(self):
-        return ""
-
-    def setSalary(self, val: str) -> Boolean:
+    @Dept.setter
+    def Dept(self, val: str):
+        if self.permissionList['Dept'][1]:
+            self.__employee.Dept = val
+            return True
         return False
 
-    def getHourly(self):
-        return ""
-
-    def setHourly(self, val: str) -> Boolean:
+    @OfficeEmail.setter
+    def OfficeEmail(self, val: str):
+        if self.permissionList['Office_email'][1]:
+            self.__employee.Office_email = val
+            return True
         return False
 
-    def getCommission(self):
-        return ""
-
-    def setCommission(self, val: str) -> Boolean:
+    @Active.setter
+    def Active(self, val: Boolean):
+        if self.permissionList['active'][1]:
+            self.__employee.active = val
+            return True
         return False
+
+    @HomePhone.setter
+    def HomePhone(self, val: str):
+        if self.permissionList['home_phone'][1]:
+            self.__employee.home_phone = val
+            return True
+        return False
+
+    @HomeEmail.setter
+    def HomeEmail(self, val: str):
+        if self.permissionList['home_email'][1]:
+            self.__employee.home_email = val
+            return True
+        return False
+
+    @PayType.setter
+    def PayType(self, val: str):
+        if self.permissionList['pay_type'][1]:
+            self.__employee.pay_type = val
+            return True
+        return False
+
+    @BankInfo.setter
+    def BankInfo(self, val: str):
+        if self.permissionList['bank_info'][1]:
+            self.__employee.bank_info = val
+            return True
+        return False
+
+    @Route.setter
+    def Route(self, val: str):
+        if self.permissionList['route'][1]:
+            self.__employee.route = val
+            return True
+        return False
+
+    @Salary.setter
+    def Salary(self, val: str):
+        if self.permissionList['salary'][1]:
+            self.__employee.salary = val
+            return True
+        return False
+
+    @Hourly.setter
+    def Hourly(self, val: str):
+        if self.permissionList['hourly'][1]:
+            self.__employee.hourly = val
+            return True
+        return False
+
+    @Commission.setter
+    def Commission(self, val: str):
+        if self.permissionList['commission'][1]:
+            self.__employee.commission = val
+            return True
+        return False
+# add setPassword() here when method of sharing CryptContext is decided
 
 
 class EmployeeOther(EmployeeContainer):
-    def getName(self):
-        return super()._employee.name
-
-    def getOfficePhone(self):
-        return super()._employee.office_phone
-
-    def getEmpID(self):
-        return super()._employee.Emp_ID
-
-    def getStartDate(self):
-        return super()._employee.Start_Date
-
-    def getEndDate(self):
-        return super()._employee.End_Date
-
-    def getTitle(self):
-        return super()._employee.Title
-
-    def getOfficeEmail(self):
-        return super()._employee.Office_email
-
-    def getAddress(self):
-        if super().getPermittedLockOn:
-            return super().getAddress()
-        return super()._employee.address
-
-    def getHomeEmail(self):
-        if super().getPermittedLockOn:
-            return super().getHomeEmail()
-        return super()._employee.home_email
-
-    def getHomePhone(self):
-        if super().getPermittedLockOn:
-            return super().getHomePhone()
-        return super()._employee.home_phone
+    permissionList = MappingProxyType({'name': [True, False], 'address': [False, False], 'office_phone': [True, False], 'Emp_ID': [True, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [False, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [
+        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_type': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
 
-class EmployeeSelf(EmployeeOther):
-    def getAddress(self):
-        return super()._employee.address
-
-    def getHomeEmail(self):
-        return super()._employee.home_email
-
-    def getHomePhone(self):
-        return super()._employee.home_phone
-
-    def getEmpID(self):
-        return super()._employee.Emp_ID
-
-    def getDOB(self):
-        return super()._employee.D_O_B
-
-    def getSSNum(self):
-        return super()._employee.SS_num
-
-    def getPermissionLevel(self):
-        return super()._employee.Permission_level
-
-    def getPayType(self):
-        return super()._employee.pay_type
-
-    def getBankInfo(self):
-        return super()._employee.bank_info
-
-    def getRoute(self):
-        return super()._employee.route
-
-    def getSalary(self):
-        return super()._employee.salary
-
-    def getHourly(self):
-        return super()._employee.hourly
-
-    def getCommission(self):
-        return super()._employee.commission
-
-    def setName(self, val: str) -> Boolean:
-        super()._employee.name = val
-        return True
-
-    def setAddress(self, val: Address) -> Boolean:
-        super()._employee.address = val
-        return True
-
-    def setOfficePhone(self, val: str) -> Boolean:
-        super()._employee.office_phone = val
-        return True
-
-    def setPermittedLockOn(self, val: Boolean) -> Boolean:
-        super()._employee.permitted_lock_on = val
-        return True
+class EmployeeSelf(EmployeeContainer):
+    permissionList = MappingProxyType({'name': [True, True], 'address': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, False], 'D_O_B': [True, False], 'SS_num': [True, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [True, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [
+        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, True], 'home_email': [True, False], 'home_phone': [True, False], 'pay_type': [True, False], 'bank_info': [True, False], 'route': [True, False], 'salary': [True, False], 'hourly': [True, False], 'commission': [True, False]})
 
 
-class EmployeeAdmin(EmployeeSelf):
-
-    def setEmpID(self, val: str) -> Boolean:
-        super()._employee.Emp_ID = val
-        return True
-
-    def setDOB(self, val: datetime) -> Boolean:
-        super()._employee.D_O_B = val
-        return True
-
-    def setSSNum(self, val: int) -> Boolean:
-        super()._employee.SS_num = val
-        return True
-
-    def setStartDate(self, val: datetime) -> Boolean:
-        super()._employee.Start_Date = val
-        return True
-
-    def setEndDate(self, val: datetime) -> Boolean:
-        super()._employee.End_Date = val
-        return True
-
-    def setPermissionLevel(self, val: int) -> Boolean:
-        super()._employee.Permission_level = val
-        return True
-
-    def setTitle(self, val: str) -> Boolean:
-        super()._employee.Title = val
-        return True
-
-    def setDept(self, val: str) -> Boolean:
-        super()._employee.Dept = val
-        return True
-
-    def setOfficeEmail(self, val: str) -> Boolean:
-        super()._employee.Office_email = val
-        return True
-
-    def setActive(self, val: Boolean) -> Boolean:
-        super()._employee.active = val
-        return True
-
-    def setHomePhone(self, val: str) -> Boolean:
-        super()._employee.home_phone = val
-        return True
-
-    def setHomeEmail(self, val: str) -> Boolean:
-        super()._employee.home_email = val
-        return True
-
-    def setPayType(self, val: str) -> Boolean:
-        super()._employee.pay_type = val
-        return True
-
-    def setBankInfo(self, val: str) -> Boolean:
-        super()._employee.bank_info = val
-        return True
-
-    def setRoute(self, val: str) -> Boolean:
-        super()._employee.route = val
-        return True
-
-    def setSalary(self, val: str) -> Boolean:
-        super()._employee.salary = val
-        return True
-
-    def setHourly(self, val: str) -> Boolean:
-        super()._employee.hourly = val
-        return True
-
-    def setCommission(self, val: str) -> Boolean:
-        super()._employee.commission = val
-        return True
+class EmployeeAdmin(EmployeeContainer):
+    permissionList = MappingProxyType({'name': [True, True], 'address': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, True], 'D_O_B': [True, True], 'SS_num': [True, True], 'Start_Date': [True, True], 'End_Date': [True, True], 'Permission_level': [True, True], 'Title': [True, True], 'Dept': [True, True], 'Office_email': [
+        True, True], 'hashed_password': [True, True], 'active': [True, True], 'permitted_lock_on': [True, True], 'home_email': [True, True], 'home_phone': [True, True], 'pay_type': [True, True], 'bank_info': [True, True], 'route': [True, True], 'salary': [True, True], 'hourly': [True, True], 'commission': [True, True]})

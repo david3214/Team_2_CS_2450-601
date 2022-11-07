@@ -19,6 +19,10 @@ class Search:
     def __init__(self) -> None:
         pass
 
+
+    def __str__():
+        return 'Search'
+
 # Underline Search navigation component
 # Create new window components
 #   Search Bar

@@ -52,7 +52,7 @@ class Login (tk.Frame):
         self.login_button.grid(column=1, row=5, padx=(0, 85), sticky=tk.E)
         self.login_button['command'] = self.login
 
-        self.grid(row=0, column=0, sticky="NESW")
+        self.grid(row=0, column=0, rowspan=2, sticky="NESW")
 
     def login(self):
         given_username = self.username_entry.get()

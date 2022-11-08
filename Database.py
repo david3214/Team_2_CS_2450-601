@@ -115,7 +115,7 @@ class Database:
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
             badnames = ['permissionList', 'getFName', 'getLName']
-            badnames = badnames if adminInfo else adminFields
+            badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 

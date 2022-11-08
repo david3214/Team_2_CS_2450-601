@@ -17,6 +17,12 @@ class EmployeeContainer():
     permissionList = MappingProxyType({'name': [False, False], 'address': [False, False], 'office_phone': [False, False], 'Emp_ID': [False, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [False, False], 'End_Date': [False, False], 'Permission_level': [False, False], 'Title': [False, False], 'Dept': [False, False], 'Office_email': [
         False, False], 'hashed_password': [False, False], 'active': [False, False], 'permitted_lock_on': [False, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_method': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
+    def ChangeEmployee(self, employee: Employee) -> None:
+        self.__employee = employee
+
+    def isCorrectLogin(self, testPassword):
+        return self.__employee.isCorrectLogin(testPassword)
+
     def getFName(self):
         name = self.Name
         if name == INVALID_STR:

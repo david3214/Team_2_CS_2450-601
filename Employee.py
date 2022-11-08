@@ -12,6 +12,11 @@ INVALID_DATETIME: Final[datetime] = datetime.min
 
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
+pwd_context = CryptContext(
+        schemes=["pbkdf2_sha256"],
+        default="pbkdf2_sha256",
+        pbkdf2_sha256__default_rounds=200
+    )
 
 class Employee:
 
@@ -45,27 +50,29 @@ class Employee:
         """
         self.name = kwargs.get("Name", INVALID_STR)
         self.address = Address(**kwargs)
-        self.office_phone = kwargs.get("Office Phone", INVALID_STR)
-        self.Emp_ID = kwargs.get("ID", INVALID_STR)
+        self.office_phone = kwargs.get("OfficePhone", INVALID_STR)
+        self.Emp_ID = kwargs.get("EmpID") if kwargs.get("ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
         self.D_O_B = kwargs.get("DOB", INVALID_DATETIME)
         self.SS_num = kwargs.get("SSN", -1)
-        self.Start_Date = kwargs.get("Start Date", INVALID_DATETIME)
-        self.End_Date = kwargs.get("End Date", INVALID_DATETIME)
+        self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
+        self.End_Date = kwargs.get("EndDate", INVALID_DATETIME)
         self.Permission_level = kwargs.get("Permission Level", 0)
         self.Title = kwargs.get("Title", INVALID_STR)
         self.Dept = kwargs.get("Dept", INVALID_STR)
         self.Office_email = kwargs.get("Email", INVALID_STR)
-        self.hashed_password = kwargs.get("Hashed Password", INVALID_STR)
-        self.active = kwargs.get("Archived", INVALID_STR)
+        self.active = kwargs.get("Archived", True)
         self.permitted_lock_on = kwargs.get("Permitted", 0)
-        self.home_email = kwargs.get("Home Email", INVALID_STR)
-        self.home_phone = kwargs.get("Home Phone", INVALID_STR)
-        self.pay_type = kwargs.get("Pay Method", 1)
+        self.home_email = kwargs.get("HomeEmail", INVALID_STR)
+        self.home_phone = kwargs.get("HomePhone", INVALID_STR)
+        self.pay_method = kwargs.get("PayMethod", 1)
         self.bank_info = kwargs.get("Account", INVALID_STR)
         self.route = kwargs.get("Route", INVALID_STR)
         self.salary = kwargs.get("Salary", INVALID_STR)
         self.hourly = kwargs.get("Hourly", INVALID_STR)
-        self.commission = kwargs.get("Comission", INVALID_STR)
+        self.commission = kwargs.get("Commission", INVALID_STR)
+        self.hashed_password = kwargs.get("Hashed Password", INVALID_STR)
+        if self.hashed_password == INVALID_STR and self.Emp_ID != INVALID_STR:
+            self.hashed_password = pwd_context.hash(str(self.Emp_ID))
 
-    def isCorrectLogin(self, textPassword: str, context: CryptContext):
-        return context.verify(textPassword, self.hashed_password)
+    def isCorrectLogin(self, textPassword: str):
+        return pwd_context.verify(textPassword, self.hashed_password)

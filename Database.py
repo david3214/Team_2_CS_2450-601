@@ -6,7 +6,7 @@ from pathlib import Path
 import csv
 from tkinter import messagebox
 
-usrAcc = EmployeeSelf(Employee())
+usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 
 
 class Database:
@@ -17,6 +17,7 @@ class Database:
             initFPath (Path, optional): _description_. Defaults to Path("").
         """
         self.employeeList: list[Employee] = list()
+        self.initFPath = initFPath
         if initFPath == "":
             return
         elif initFPath.is_file():
@@ -99,7 +100,7 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-
+            self.exportDB(self.initFPath, adminInfo = True, showArchivedEmployees = True)
         elif importFPath != "":
             print("not a filepath\n")
 

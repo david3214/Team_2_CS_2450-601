@@ -1,7 +1,7 @@
 from datetime import datetime
 from xmlrpc.client import Boolean
 from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS
-from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
+from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf, adminFields
 from pathlib import Path
 import csv
 from tkinter import messagebox
@@ -115,6 +115,7 @@ class Database:
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
             badnames = ['permissionList', 'getFName', 'getLName']
+            badnames = badnames if adminInfo else adminFields
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 

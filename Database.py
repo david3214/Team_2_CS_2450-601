@@ -116,9 +116,9 @@ class Database:
         from config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
-
             # Switched to this because it was getting hard to keep track of all the functions on the employee container
             badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
+
             badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))

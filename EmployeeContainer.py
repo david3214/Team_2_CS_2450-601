@@ -5,7 +5,7 @@ from Address import Address
 from datetime import datetime
 from types import MappingProxyType
 
-adminFields = ['permissionList', 'getFName', 'getLName', 'Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
+adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:

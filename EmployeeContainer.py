@@ -67,7 +67,7 @@ class EmployeeContainer():
     @property
     def Password(self):
         if self.permissionList['hashed_password'][0]:
-            return self.__employee.hashed_password
+            return self._employee.hashed_password
         return INVALID_STR
 
     @property

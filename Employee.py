@@ -51,7 +51,7 @@ class Employee:
         self.name = kwargs.get("Name", INVALID_STR)
         self.address = Address(**kwargs)
         self.office_phone = kwargs.get("OfficePhone", INVALID_STR)
-        self.Emp_ID = kwargs.get("EmpID") if kwargs.get("ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
+        self.Emp_ID = kwargs.get("EmpID", INVALID_STR) if kwargs.get("ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
         self.D_O_B = kwargs.get("DOB", INVALID_DATETIME)
         self.SS_num = kwargs.get("SSN", -1)
         self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
@@ -70,7 +70,7 @@ class Employee:
         self.salary = kwargs.get("Salary", INVALID_STR)
         self.hourly = kwargs.get("Hourly", INVALID_STR)
         self.commission = kwargs.get("Commission", INVALID_STR)
-        self.hashed_password = kwargs.get("Hashed Password", INVALID_STR)
+        self.hashed_password =  kwargs.get("Password", INVALID_STR) if kwargs.get("Hashed Password", INVALID_STR) == INVALID_STR else kwargs.get("Hashed Password", INVALID_STR)
         if self.hashed_password == INVALID_STR and self.Emp_ID != INVALID_STR:
             self.hashed_password = pwd_context.hash(str(self.Emp_ID))
 

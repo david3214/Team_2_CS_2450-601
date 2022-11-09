@@ -74,7 +74,9 @@ class Report (tk.Frame):
 
         csvPath = filedialog.asksaveasfilename(defaultextension = "*.csv", filetypes = (("csv file (*.csv)", "*.csv"),))
 
-        DB.exportDB(csvPath, adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
+        # if the user cancels it will be blank
+        if csvPath != '':
+            DB.exportDB(csvPath, adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
         
         # call the export function, using these parameters
 

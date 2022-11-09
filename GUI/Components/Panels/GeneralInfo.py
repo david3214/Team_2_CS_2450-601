@@ -6,15 +6,16 @@
 import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
+from styles import background_color
 
 
 class GeneralInfo(Info):
-    def __init__(self, master: Type[tk.Frame], bgColor: str='grey', editable: bool=False) -> None:
+    def __init__(self, master: Type[tk.Frame], bgColor: str=background_color, editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
 
-        self.fields = ['First Name', 'Last Name', 'Office Phone', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Permission Level']
+        self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
 
-        self.img  = tk.PhotoImage(file='Images/profile1.png')
+        self.img  = tk.PhotoImage(file='images/userProfile.png')
         self.imgL = tk.Label(self, image=self.img)
         self.generate({}, {}, {}, ((lambda i, l: i if i <= l else i - l), (lambda i, l: 0 if i <= l else 1), {'sticky': 'w'}))
 

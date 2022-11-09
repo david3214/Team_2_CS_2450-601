@@ -1,10 +1,9 @@
 '''
     Shows all the fields of an employee (General, admin, and permitted information panels)
      for an admin to fill out and add the new employee
-    Screen inherits from admin screen class
+    Screen inherits from profile screen class
     Uses GeneralInfo
     Inherits the active Window which already has the Navigation Bar as an active component
-    Input fields will be validated for proper inputs
 '''
 
 
@@ -14,10 +13,11 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
+from styles import background_color, btn_color, text_color, med_bold
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
         super().__init__(master, bgColor=bgColor)
 
         self.img = None
@@ -31,10 +31,10 @@ class AddEmployee(Profile):
         self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, 'blue', True, False)
+        self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=('Arial', 12, 'bold'), bg='blue', fg='white')
+        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color)
         self.addEmployeeBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()

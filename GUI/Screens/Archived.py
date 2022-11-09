@@ -13,10 +13,11 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from styles import background_color, btn_color, text_color, med_bold
 
 
 class Archived(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
         super().__init__(master, bgColor)
 
         self.img = None
@@ -26,10 +27,10 @@ class Archived(Profile):
         self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, 'blue', locked=False)
+        self.permittedInfo = PI(self, btn_color, locked=False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=('Arial', 12, 'bold'), bg='blue', fg='white')
+        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color)
         self.unarchiveBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()

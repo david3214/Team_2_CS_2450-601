@@ -6,6 +6,7 @@
 import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
+from styles import btn_color
 
 
 # Alias for typing
@@ -13,7 +14,7 @@ char = str
 
 
 class AdminInfo(Info):
-    def __init__(self, master: Type[tk.Frame], bgColor: str='blue', editable: bool=False) -> None:
+    def __init__(self, master: Type[tk.Frame], bgColor: str=btn_color, editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
 
         self.grid_columnconfigure((0, 1), weight=1)

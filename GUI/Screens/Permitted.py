@@ -10,13 +10,14 @@ import tkinter as tk
 from typing import Type
 from .Profile import Profile
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from styles import background_color, btn_color
 
 class Permitted(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
         super().__init__(master, bgColor)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, 'blue', True, False)
+        self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=(0, 15), columnspan=3)
 
         self.grid()

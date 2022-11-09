@@ -15,16 +15,17 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
+from styles import background_color, text_color, btn_color, med_bold
 
 
 class User(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str='grey') -> None:
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
         super().__init__(master, bgColor)
 
         self.img  = None
         self.canvas.destroy()
 
-        self.options = {'font': ('Arial', 12, 'bold'), 'bg': 'blue', 'fg': 'white'}
+        self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
         self.generalInfo.variables = []
 
         for i in range(4):
@@ -37,7 +38,7 @@ class User(Profile):
         self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, 'blue', True, False)
+        self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
         self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options)

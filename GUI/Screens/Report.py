@@ -7,10 +7,13 @@
     Button to generate the report
 '''
 import tkinter as tk
+from tkinter import filedialog
 from GUI.Components.Navigation import Navigation
 from GUI.Components.Image_Lbl import Image_Lbl
 from styles import med_bold, background_color, text_color, btn_color
 from typing import Type
+from pathlib import Path
+from config import DB
 
 class Report (tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
@@ -61,12 +64,19 @@ class Report (tk.Frame):
     
     def import_database(self):
         # Call the import database function
-        pass
+        csvPath = filedialog.askopenfile(filetypes = (("csv file (*.csv)", "*.csv"),))
+        DB.importDB(Path(csvPath.name))
 
 
     def export_database(self):
         adminInfo = self.admin_enabled.IsEnabled
         archivedInfo = self.archived_enabled.IsEnabled
+
+        csvPath = filedialog.asksaveasfilename(defaultextension = "*.csv", filetypes = (("csv file (*.csv)", "*.csv"),))
+
+        # if the user cancels it will be blank
+        if csvPath != '':
+            DB.exportDB(csvPath, adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
         
         # call the export function, using these parameters
 

@@ -5,6 +5,7 @@ from Address import Address
 from datetime import datetime
 from types import MappingProxyType
 
+adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:
@@ -14,7 +15,7 @@ class EmployeeContainer():
     # each key corresponds to an employee variable. the first bool of the value is whether it can be read, the second is if it can be set
     # the permitted lock allows the variables it governs to be read regardless of permissionList
     permissionList = MappingProxyType({'name': [False, False], 'address': [False, False], 'office_phone': [False, False], 'Emp_ID': [False, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [False, False], 'End_Date': [False, False], 'Permission_level': [False, False], 'Title': [False, False], 'Dept': [False, False], 'Office_email': [
-        False, False], 'hashed_password': [False, False], 'active': [False, False], 'permitted_lock_on': [False, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_type': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
+        False, False], 'hashed_password': [False, False], 'active': [False, False], 'permitted_lock_on': [False, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_method': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
     def getFName(self):
         name = self.Name
@@ -49,6 +50,12 @@ class EmployeeContainer():
     def EmpID(self):
         if self.permissionList['Emp_ID'][0]:
             return self.__employee.Emp_ID
+        return INVALID_STR
+
+    @property
+    def Password(self):
+        if self.permissionList['hashed_password'][0]:
+            return self.__employee.hashed_password
         return INVALID_STR
 
     @property
@@ -139,9 +146,9 @@ class EmployeeContainer():
         return -1
 
     @property
-    def PayType(self):
-        if self.permissionList['pay_type'][0]:
-            return self.__employee.pay_type
+    def PayMethod(self):
+        if self.permissionList['pay_method'][0]:
+            return self.__employee.pay_method
         return INVALID_STR
 
     @property
@@ -286,10 +293,10 @@ class EmployeeContainer():
             return True
         return False
 
-    @PayType.setter
-    def PayType(self, val: str):
-        if self.permissionList['pay_type'][1]:
-            self.__employee.pay_type = val
+    @PayMethod.setter
+    def PayMethod(self, val: str):
+        if self.permissionList['pay_method'][1]:
+            self.__employee.pay_method = val
             return True
         return False
 
@@ -327,19 +334,17 @@ class EmployeeContainer():
             self.__employee.commission = val
             return True
         return False
-# add setPassword() here when method of sharing CryptContext is decided
-
 
 class EmployeeOther(EmployeeContainer):
     permissionList = MappingProxyType({'name': [True, False], 'address': [False, False], 'office_phone': [True, False], 'Emp_ID': [True, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [False, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [
-        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_type': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
+        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_method': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
 
 class EmployeeSelf(EmployeeContainer):
     permissionList = MappingProxyType({'name': [True, True], 'address': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, False], 'D_O_B': [True, False], 'SS_num': [True, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [True, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [
-        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, True], 'home_email': [True, False], 'home_phone': [True, False], 'pay_type': [True, False], 'bank_info': [True, False], 'route': [True, False], 'salary': [True, False], 'hourly': [True, False], 'commission': [True, False]})
+        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, True], 'home_email': [True, False], 'home_phone': [True, False], 'pay_method': [True, False], 'bank_info': [True, False], 'route': [True, False], 'salary': [True, False], 'hourly': [True, False], 'commission': [True, False]})
 
 
 class EmployeeAdmin(EmployeeContainer):
     permissionList = MappingProxyType({'name': [True, True], 'address': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, True], 'D_O_B': [True, True], 'SS_num': [True, True], 'Start_Date': [True, True], 'End_Date': [True, True], 'Permission_level': [True, True], 'Title': [True, True], 'Dept': [True, True], 'Office_email': [
-        True, True], 'hashed_password': [True, True], 'active': [True, True], 'permitted_lock_on': [True, True], 'home_email': [True, True], 'home_phone': [True, True], 'pay_type': [True, True], 'bank_info': [True, True], 'route': [True, True], 'salary': [True, True], 'hourly': [True, True], 'commission': [True, True]})
+        True, True], 'hashed_password': [True, True], 'active': [True, True], 'permitted_lock_on': [True, True], 'home_email': [True, True], 'home_phone': [True, True], 'pay_method': [True, True], 'bank_info': [True, True], 'route': [True, True], 'salary': [True, True], 'hourly': [True, True], 'commission': [True, True]})

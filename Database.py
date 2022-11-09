@@ -1,12 +1,12 @@
 from datetime import datetime
 from xmlrpc.client import Boolean
 from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS
-from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
+from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf, adminFields
 from pathlib import Path
 import csv
 from tkinter import messagebox
 
-usrAcc = EmployeeSelf(Employee())
+usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 
 
 class Database:
@@ -17,6 +17,7 @@ class Database:
             initFPath (Path, optional): _description_. Defaults to Path("").
         """
         self.employeeList: list[Employee] = list()
+        self.initFPath = initFPath
         if initFPath == "":
             return
         elif initFPath.is_file():
@@ -99,7 +100,7 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-
+            self.exportDB(self.initFPath, adminInfo = True, showArchivedEmployees = True)
         elif importFPath != "":
             print("not a filepath\n")
 
@@ -114,6 +115,7 @@ class Database:
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
             badnames = ['permissionList', 'getFName', 'getLName']
+            badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 

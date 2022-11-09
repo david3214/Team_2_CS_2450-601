@@ -12,10 +12,15 @@ INVALID_DATETIME: Final[datetime] = datetime.min
 
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
+pwd_context = CryptContext(
+        schemes=["pbkdf2_sha256"],
+        default="pbkdf2_sha256",
+        pbkdf2_sha256__default_rounds=200
+    )
 
 class Employee:
 
-    def __init__(self, name: str = INVALID_STR, address: Address = INVALID_ADDRESS, office_phone: str = INVALID_STR, Emp_ID: str = INVALID_STR, D_O_B: datetime = INVALID_DATETIME, SS_num: int = -1, Start_Date: datetime = INVALID_DATETIME, End_Date: datetime = INVALID_DATETIME, Permission_level: int = 0, Title: str = INVALID_STR, Dept: str = INVALID_STR, Office_email: str = INVALID_STR, hashed_password: str = INVALID_STR, active: bool = False, permitted_lock_on: bool = True, home_email: str = INVALID_STR, home_phone: str = INVALID_STR, pay_type: str = INVALID_STR, bank_info: str = INVALID_STR, route: str = INVALID_STR, salary: str = INVALID_STR, hourly: str = INVALID_STR, commission: str = INVALID_STR, **garbage) -> None:
+    def __init__(self, **kwargs) -> None:
         """_summary_
 
         Args:
@@ -43,29 +48,31 @@ class Employee:
             hourly (str, optional): _description_. Defaults to INVALID_STR.
             commission (str, optional): _description_. Defaults to INVALID_STR.
         """
-        self.name = name
-        self.address = address
-        self.office_phone = office_phone
-        self.Emp_ID = Emp_ID
-        self.D_O_B = D_O_B
-        self.SS_num = SS_num
-        self.Start_Date = Start_Date
-        self.End_Date = End_Date
-        self.Permission_level = Permission_level
-        self.Title = Title
-        self.Dept = Dept
-        self.Office_email = Office_email
-        self.hashed_password = hashed_password
-        self.active = active
-        self.permitted_lock_on = permitted_lock_on
-        self.home_email = home_email
-        self.home_phone = home_phone
-        self.pay_type = pay_type
-        self.bank_info = bank_info
-        self.route = route
-        self.salary = salary
-        self.hourly = hourly
-        self.commission = commission
+        self.name = kwargs.get("Name", INVALID_STR)
+        self.address = Address(**kwargs)
+        self.office_phone = kwargs.get("OfficePhone", INVALID_STR)
+        self.Emp_ID = kwargs.get("EmpID", INVALID_STR) if kwargs.get("ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
+        self.D_O_B = kwargs.get("DOB", INVALID_DATETIME)
+        self.SS_num = kwargs.get("SSN", -1)
+        self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
+        self.End_Date = kwargs.get("EndDate", INVALID_DATETIME)
+        self.Permission_level = kwargs.get("Permission Level", 0)
+        self.Title = kwargs.get("Title", INVALID_STR)
+        self.Dept = kwargs.get("Dept", INVALID_STR)
+        self.Office_email = kwargs.get("Email", INVALID_STR)
+        self.active = kwargs.get("Archived", True)
+        self.permitted_lock_on = kwargs.get("Permitted", 0)
+        self.home_email = kwargs.get("HomeEmail", INVALID_STR)
+        self.home_phone = kwargs.get("HomePhone", INVALID_STR)
+        self.pay_method = kwargs.get("PayMethod", 1)
+        self.bank_info = kwargs.get("Account", INVALID_STR)
+        self.route = kwargs.get("Route", INVALID_STR)
+        self.salary = kwargs.get("Salary", INVALID_STR)
+        self.hourly = kwargs.get("Hourly", INVALID_STR)
+        self.commission = kwargs.get("Commission", INVALID_STR)
+        self.hashed_password =  kwargs.get("Password", INVALID_STR) if kwargs.get("Hashed Password", INVALID_STR) == INVALID_STR else kwargs.get("Hashed Password", INVALID_STR)
+        if self.hashed_password == INVALID_STR and self.Emp_ID != INVALID_STR:
+            self.hashed_password = pwd_context.hash(str(self.Emp_ID))
 
-    def isCorrectLogin(self, textPassword: str, context: CryptContext):
-        return context.verify(textPassword, self.hashed_password)
+    def isCorrectLogin(self, textPassword: str):
+        return pwd_context.verify(textPassword, self.hashed_password)

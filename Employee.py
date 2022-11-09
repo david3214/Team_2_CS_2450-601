@@ -60,7 +60,7 @@ class Employee:
         self.Title = kwargs.get("Title", INVALID_STR)
         self.Dept = kwargs.get("Dept", INVALID_STR)
         self.Office_email = kwargs.get("Email", INVALID_STR)
-        self.active = kwargs.get("Archived", True)
+        self.active = kwargs.get("Active", 'True') == 'True'
         self.permitted_lock_on = kwargs.get("Permitted", 0)
         self.home_email = kwargs.get("HomeEmail", INVALID_STR)
         self.home_phone = kwargs.get("HomePhone", INVALID_STR)

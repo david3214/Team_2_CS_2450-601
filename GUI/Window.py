@@ -35,6 +35,6 @@ class Window(tk.Tk):
             self.navigation = NULL
         else:
             self.navigation = Navigation(self)
-            self.navigation.highlight_section(_frame.__str__())
+            self.navigation.highlight_section(str(_frame))
 
         self.frame = _frame(self)

@@ -8,7 +8,6 @@ from tkinter import messagebox
 
 usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 
-
 class Database:
     def __init__(self, initFPath: Path = Path("")) -> None:
         """_summary_
@@ -57,18 +56,19 @@ class Database:
         Returns:
             list: _description_
         """
+        from config import userSession
         foundList = list()
         for emp in self.employeeList:
-            emp = self.__employeeContainment(emp, usrAcc)
+            emp = self.__employeeContainment(emp, userSession)
             valid: bool = True
-            valid = valid and not Department == INVALID_STR or Department in emp.Dept
-            valid = valid and not fName == INVALID_STR or fName in emp.getFName()
-            valid = valid and not lName == INVALID_STR or lName in emp.getLName()
-            valid = valid and not Employee_ID == INVALID_STR or Employee_ID == emp.EmpID
-            valid = valid and not Title == INVALID_STR or Title in emp.Title
-            valid = valid and not oPhone == INVALID_STR or oPhone == emp.OfficePhone
-            valid = valid and not StartDate == INVALID_DATETIME or StartDate == emp.StartDate
-            valid = valid and not EndDate == INVALID_DATETIME or EndDate == emp.EndDate
+            valid = valid and (Department == INVALID_STR or Department in emp.Dept)
+            valid = valid and (fName == INVALID_STR or fName in emp.getFName())
+            valid = valid and (lName == INVALID_STR or lName in emp.getLName())
+            valid = valid and (Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
+            valid = valid and (Title == INVALID_STR or Title in emp.Title)
+            valid = valid and (oPhone == INVALID_STR or oPhone == emp.OfficePhone)
+            valid = valid and (StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
+            valid = valid and (EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
             # if any of the statements after "valid and not" are True then valid will be False
             if valid:
                 foundList.append(emp)
@@ -112,9 +112,11 @@ class Database:
             adminInfo (Boolean, optional): _description_. Defaults to False.
             showArchivedEmployees (Boolean, optional): _description_. Defaults to True.
         """
+        from config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
-            badnames = ['permissionList', 'getFName', 'getLName']
+            # Switched to this because it was getting hard to keep track of all the functions on the employee container
+            badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
             badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
@@ -123,7 +125,7 @@ class Database:
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:
-                    emp = self.__employeeContainment(emp, usrAcc)
+                    emp = self.__employeeContainment(emp, userSession)
                 else:
                     emp = EmployeeOther(emp)
 
@@ -144,7 +146,7 @@ class Database:
         """
         if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
             return EmployeeAdmin(targetEmployee)
-        elif targetEmployee is selfEmployee.__employee:
+        elif targetEmployee is selfEmployee._employee:
             return EmployeeSelf(targetEmployee)
         else:
             return EmployeeOther(targetEmployee)

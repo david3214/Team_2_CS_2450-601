@@ -35,25 +35,15 @@ class Search(tk.Frame):
         self.searchRibbon = SearchRibbon(self, master, searchFunc=self.search)
         self.searchRibbon.grid(row=0, column=0, sticky='NSEW')
 
+        # This will be the employee list
         self.scrollableSearch = ScrollableSearch(self, master)
         self.scrollableSearch.grid(row=1, column=0, sticky='NSEW')
-        # Creates/configures scroll frame component
-        # self.scroll_frame = ScrolledFrame(self, background='white')
-
-        # Allows the scroll wheel to scroll the employee list
-        # self.scroll_frame.bind_scroll_wheel(master)
-
-        # # Creates/configures frame to display employees
-        # self.inner_frame = self.scroll_frame.display_widget(tk.Frame, bg=bg_color, fit_width=True)
-        # self.inner_frame.grid_columnconfigure(0, weight=1)
-
-        # Loads in employees from the database
-        # self.employee_img = ImageTk.PhotoImage(image=Image.open('./images/ListEmp.png').resize((35,35)))
-
+        
+        # Search for all employees, and it will auto sort alphabetically
         self.search(name='')
 
     def search(self, *args, name = None):
-        self.scrollableSearch.clearSearchFrame()
+        # If we are given a specific name use that, otherwise use the search bar
         searchName = name
         if searchName == None:
             searchName = self.searchRibbon.search_bar.get()
@@ -61,19 +51,23 @@ class Search(tk.Frame):
         self.scrollableSearch.changeList(employees)
 
     def updateScrollableSearch(self, employees):
-        self.scrollableSearch.clearSearchFrame()
         self.scrollableSearch.changeList(employees)
 
 
     def advancedSearch(self):
+        # the grid configuration changes when we have the advanced sidebar open
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=0)
         self.grid_columnconfigure(0, weight=3)
         self.grid_columnconfigure(1, weight=7)
+
+        # get rid of the top search ribbon
         self.searchRibbon.destroy()
         self.scrollableSearch.advancedSearch = True
         self.scrollableSearch.grid(row=0, column=1, sticky='NSEW')  
         self.scrollableSearch.redraw()
+
+        # Add the advanced Search frame
         self.advanced_search = AdvancedSearch(self, self.master, bg_color=self.bg_color)
         self.advanced_search.grid(row=0, column=0, sticky='NSEW')
 

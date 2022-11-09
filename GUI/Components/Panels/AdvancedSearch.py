@@ -22,12 +22,6 @@ class AdvancedSearch(tk.Frame):
 
         super().__init__(master, bg=bg_color)
 
-        # Configures grid
-        # self.grid_rowconfigure(0, weight=1)
-        # self.grid_columnconfigure(0, weight=1)
-        # self.grid_columnconfigure(1, weight=10)
-        # self.grid(row=1, column=0, sticky='NSEW')
-
         self.root = root
         # Creates/configures left-most frame for advanced search widgets
         self.grid_rowconfigure(0, weight=3)
@@ -84,6 +78,7 @@ class AdvancedSearch(tk.Frame):
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
+        # We only want to search for fields that have actual values and not just default values
         nonEmpties = dict()
         for key, value in self.entries.items():
             if value.get() != '' and value.get() != key:
@@ -97,5 +92,3 @@ class AdvancedSearch(tk.Frame):
         if self.default_text:
             self.search_bar.delete(0, tk.END)
             self.default_text = False
-    # def filter_employees(self, entries):
-    #     pass

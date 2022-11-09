@@ -65,7 +65,8 @@ class Report (tk.Frame):
     def import_database(self):
         # Call the import database function
         csvPath = filedialog.askopenfile(filetypes = (("csv file (*.csv)", "*.csv"),))
-        DB.importDB(Path(csvPath.name))
+        if csvPath != '':
+            DB.importDB(Path(csvPath.name))
 
 
     def export_database(self):

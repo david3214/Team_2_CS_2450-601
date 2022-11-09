@@ -53,7 +53,7 @@ class Employee:
         self.office_phone = kwargs.get("OfficePhone", INVALID_STR)
         self.Emp_ID = kwargs.get("EmpID", INVALID_STR) if kwargs.get("ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
         self.D_O_B = kwargs.get("DOB", INVALID_DATETIME)
-        self.SS_num = kwargs.get("SSN", -1)
+        self.SS_num = kwargs.get("SSNum", -1) if kwargs.get("SSN", -1) == -1 else kwargs.get("SSN", -1)
         self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
         self.End_Date = kwargs.get("EndDate", INVALID_DATETIME)
         self.Permission_level = int(kwargs.get("PermissionLevel", 0))

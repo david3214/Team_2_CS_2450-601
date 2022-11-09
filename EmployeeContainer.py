@@ -9,7 +9,7 @@ adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:
-        self.__employee = employee
+        self._employee = employee
 
     # this is a read only dict, aand can be interacted with using any method that would work on a dict, except writing to it
     # each key corresponds to an employee variable. the first bool of the value is whether it can be read, the second is if it can be set
@@ -18,10 +18,10 @@ class EmployeeContainer():
         False, False], 'hashed_password': [False, False], 'active': [False, False], 'permitted_lock_on': [False, False], 'home_email': [False, False], 'home_phone': [False, False], 'pay_method': [False, False], 'bank_info': [False, False], 'route': [False, False], 'salary': [False, False], 'hourly': [False, False], 'commission': [False, False]})
 
     def ChangeEmployee(self, employee: Employee) -> None:
-        self.__employee = employee
+        self._employee = employee
 
     def isCorrectLogin(self, testPassword):
-        return self.__employee.isCorrectLogin(testPassword)
+        return self._employee.isCorrectLogin(testPassword)
 
     def getFName(self):
         name = self.Name
@@ -43,301 +43,301 @@ class EmployeeContainer():
     @property
     def Name(self):
         if self.permissionList['name'][0]:
-            return self.__employee.name
+            return self._employee.name
         return INVALID_STR
 
     @property
     def OfficePhone(self):
         if self.permissionList['office_phone'][0]:
-            return self.__employee.office_phone
+            return self._employee.office_phone
         return INVALID_STR
 
     @property
     def EmpID(self):
         if self.permissionList['Emp_ID'][0]:
-            return self.__employee.Emp_ID
+            return self._employee.Emp_ID
         return INVALID_STR
 
     @property
     def Password(self):
         if self.permissionList['hashed_password'][0]:
-            return self.__employee.hashed_password
+            return self._employee.hashed_password
         return INVALID_STR
 
     @property
     def PermittedLockOn(self):
         if self.permissionList['permitted_lock_on'][0]:
-            return self.__employee.permitted_lock_on
+            return self._employee.permitted_lock_on
         return INVALID_STR
 
     @property
     def StartDate(self):
         if self.permissionList['Start_Date'][0]:
-            return self.__employee.Start_Date
+            return self._employee.Start_Date
         return INVALID_DATETIME
 
     @property
     def EndDate(self):
         if self.permissionList['End_Date'][0]:
-            return self.__employee.End_Date
+            return self._employee.End_Date
         return INVALID_DATETIME
 
     @property
     def Title(self):
         if self.permissionList['Title'][0]:
-            return self.__employee.Title
+            return self._employee.Title
         return INVALID_STR
 
     @property
     def Dept(self):
         if self.permissionList['Dept'][0]:
-            return self.__employee.Dept
+            return self._employee.Dept
         return INVALID_STR
 
     @property
     def OfficeEmail(self):
         if self.permissionList['Office_email'][0]:
-            return self.__employee.Office_email
+            return self._employee.Office_email
         return INVALID_STR
 
     @property
     def Active(self):
         if self.permissionList['active'][0]:
-            return self.__employee.active
+            return self._employee.active
         raise Exception
 
     @property
     def Addr(self):
         if self.PermittedLockOn:
             if self.permissionList['address'][0]:
-                return self.__employee.address
+                return self._employee.address
             else:
                 return INVALID_ADDRESS
-        return self.__employee.home_email
+        return self._employee.home_email
 
     @property
     def HomeEmail(self):
         if self.PermittedLockOn:
             if self.permissionList['home_email'][0]:
-                return self.__employee.home_email
+                return self._employee.home_email
             else:
                 return INVALID_STR
-        return self.__employee.home_email
+        return self._employee.home_email
 
     @property
     def HomePhone(self):
         if self.PermittedLockOn:
             if self.permissionList['home_phone'][0]:
-                return self.__employee.home_phone
+                return self._employee.home_phone
             else:
                 return INVALID_STR
-        return self.__employee.home_phone
+        return self._employee.home_phone
 
     @property
     def DOB(self):
         if self.permissionList['D_O_B'][0]:
-            return self.__employee.D_O_B
+            return self._employee.D_O_B
         return INVALID_DATETIME
 
     @property
     def SSNum(self):
         if self.permissionList['SS_num'][0]:
-            return self.__employee.SS_num
+            return self._employee.SS_num
         return -1
 
     @property
     def PermissionLevel(self):
         if self.permissionList['Permission_level'][0]:
-            return self.__employee.Permission_level
+            return self._employee.Permission_level
         return -1
 
     @property
     def PayMethod(self):
         if self.permissionList['pay_method'][0]:
-            return self.__employee.pay_method
+            return self._employee.pay_method
         return INVALID_STR
 
     @property
     def BankInfo(self):
         if self.permissionList['bank_info'][0]:
-            return self.__employee.bank_info
+            return self._employee.bank_info
         return INVALID_STR
 
     @property
     def Route(self):
         if self.permissionList['route'][0]:
-            return self.__employee.route
+            return self._employee.route
         return INVALID_STR
 
     @property
     def Salary(self):
         if self.permissionList['salary'][0]:
-            return self.__employee.salary
+            return self._employee.salary
         return INVALID_STR
 
     @property
     def Hourly(self):
         if self.permissionList['hourly'][0]:
-            return self.__employee.hourly
+            return self._employee.hourly
         return INVALID_STR
 
     @property
     def Commission(self):
         if self.permissionList['commission'][0]:
-            return self.__employee.commission
+            return self._employee.commission
         return INVALID_STR
 
     @Name.setter
     def Name(self, val: str):
         if self.permissionList['name'][1]:
-            self.__employee.name = val
+            self._employee.name = val
             return True
         return False
 
     @Addr.setter
     def Address(self, val: Address):
         if self.permissionList['address'][1]:
-            self.__employee.address = val
+            self._employee.address = val
             return True
         return False
 
     @OfficePhone.setter
     def OfficePhone(self, val: str):
         if self.permissionList['office_phone'][1]:
-            self.__employee.office_phone = val
+            self._employee.office_phone = val
             return True
         return False
 
     @PermittedLockOn.setter
     def PermittedLockOn(self, val: Boolean):
         if self.permissionList['permitted_lock_on'][1]:
-            self.__employee.permitted_lock_on = val
+            self._employee.permitted_lock_on = val
             return True
         return False
 
     @EmpID.setter
     def EmpID(self, val: str):
         if self.permissionList['Emp_ID'][1]:
-            self.__employee.Emp_ID = val
+            self._employee.Emp_ID = val
             return True
         return False
 
     @DOB.setter
     def DOB(self, val: datetime):
         if self.permissionList['D_O_B'][1]:
-            self.__employee.D_O_B = val
+            self._employee.D_O_B = val
             return True
         return False
 
     @SSNum.setter
     def SSNum(self, val: int):
         if self.permissionList['SS_num'][1]:
-            self.__employee.SS_num = val
+            self._employee.SS_num = val
             return True
         return False
 
     @StartDate.setter
     def StartDate(self, val: datetime):
         if self.permissionList['Start_Date'][1]:
-            self.__employee.Start_Date = val
+            self._employee.Start_Date = val
             return True
         return False
 
     @EndDate.setter
     def EndDate(self, val: datetime):
         if self.permissionList['End_Date'][1]:
-            self.__employee.End_Date = val
+            self._employee.End_Date = val
             return True
         return False
 
     @PermissionLevel.setter
     def PermissionLevel(self, val: int):
         if self.permissionList['Permission_level'][1]:
-            self.__employee.Permission_level = val
+            self._employee.Permission_level = val
             return True
         return False
 
     @Title.setter
     def Title(self, val: str):
         if self.permissionList['Title'][1]:
-            self.__employee.Title = val
+            self._employee.Title = val
             return True
         return False
 
     @Dept.setter
     def Dept(self, val: str):
         if self.permissionList['Dept'][1]:
-            self.__employee.Dept = val
+            self._employee.Dept = val
             return True
         return False
 
     @OfficeEmail.setter
     def OfficeEmail(self, val: str):
         if self.permissionList['Office_email'][1]:
-            self.__employee.Office_email = val
+            self._employee.Office_email = val
             return True
         return False
 
     @Active.setter
     def Active(self, val: Boolean):
         if self.permissionList['active'][1]:
-            self.__employee.active = val
+            self._employee.active = val
             return True
         return False
 
     @HomePhone.setter
     def HomePhone(self, val: str):
         if self.permissionList['home_phone'][1]:
-            self.__employee.home_phone = val
+            self._employee.home_phone = val
             return True
         return False
 
     @HomeEmail.setter
     def HomeEmail(self, val: str):
         if self.permissionList['home_email'][1]:
-            self.__employee.home_email = val
+            self._employee.home_email = val
             return True
         return False
 
     @PayMethod.setter
     def PayMethod(self, val: str):
         if self.permissionList['pay_method'][1]:
-            self.__employee.pay_method = val
+            self._employee.pay_method = val
             return True
         return False
 
     @BankInfo.setter
     def BankInfo(self, val: str):
         if self.permissionList['bank_info'][1]:
-            self.__employee.bank_info = val
+            self._employee.bank_info = val
             return True
         return False
 
     @Route.setter
     def Route(self, val: str):
         if self.permissionList['route'][1]:
-            self.__employee.route = val
+            self._employee.route = val
             return True
         return False
 
     @Salary.setter
     def Salary(self, val: str):
         if self.permissionList['salary'][1]:
-            self.__employee.salary = val
+            self._employee.salary = val
             return True
         return False
 
     @Hourly.setter
     def Hourly(self, val: str):
         if self.permissionList['hourly'][1]:
-            self.__employee.hourly = val
+            self._employee.hourly = val
             return True
         return False
 
     @Commission.setter
     def Commission(self, val: str):
         if self.permissionList['commission'][1]:
-            self.__employee.commission = val
+            self._employee.commission = val
             return True
         return False
 

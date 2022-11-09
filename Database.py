@@ -110,9 +110,12 @@ class Database:
             adminInfo (Boolean, optional): _description_. Defaults to False.
             showArchivedEmployees (Boolean, optional): _description_. Defaults to True.
         """
+        from config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
-            badnames = ['permissionList', 'getFName', 'getLName']
+            
+            # Switched to this because it was getting hard to keep track of all the functions on the employee container
+            badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
             badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
@@ -121,7 +124,7 @@ class Database:
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:
-                    emp = self.__employeeContainment(emp, usrAcc)
+                    emp = self.__employeeContainment(emp, userSession)
                 else:
                     emp = EmployeeOther(emp)
 
@@ -142,7 +145,7 @@ class Database:
         """
         if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
             return EmployeeAdmin(targetEmployee)
-        elif targetEmployee is selfEmployee.__employee:
+        elif targetEmployee is selfEmployee._employee:
             return EmployeeSelf(targetEmployee)
         else:
             return EmployeeOther(targetEmployee)

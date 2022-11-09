@@ -9,6 +9,7 @@
 
 from PIL import Image, ImageTk
 import tkinter as tk
+from GUI.Screens.Search import Search
 from styles import background_color, text_color, lg_bold, med_bold, med_text, btn_color, sm_text
 from config import DB, userSession
 
@@ -68,8 +69,8 @@ class Login (tk.Frame):
         
         if len(user) == 1 and user[0].isCorrectLogin(str(given_password)): # Put actuall check here
             global userSession
-            userSession = userSession.ChangeEmployee(user[0])
-            self.master.switchFrame("Search")
+            userSession = userSession.ChangeEmployee(user[0]._employee)
+            self.master.switchFrame(Search)
         else:
             self.error_msg.grid(column=1, row=5, sticky="WN", padx=(12, 0))
 

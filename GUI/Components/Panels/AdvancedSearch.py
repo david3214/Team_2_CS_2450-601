@@ -61,6 +61,7 @@ class AdvancedSearch(tk.Frame):
         for i, field in enumerate(self.fields[:8]):
             entry_field = UnderlineEntry(self, name=field, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
             entry_field.grid(row=i+1, column=1, sticky='E')
+            entry_field.bind('<Return>', self.searchAdvanced)
             self.entries[field] = entry_field
         
         self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
@@ -78,7 +79,7 @@ class AdvancedSearch(tk.Frame):
     def addEmployee(self):
         self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root))
 
-    def searchAdvanced(self):
+    def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
         self.master.updateScrollableSearch(employees)
 

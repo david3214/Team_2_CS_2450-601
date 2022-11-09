@@ -56,7 +56,7 @@ class Employee:
         self.SS_num = kwargs.get("SSN", -1)
         self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
         self.End_Date = kwargs.get("EndDate", INVALID_DATETIME)
-        self.Permission_level = kwargs.get("Permission Level", 0)
+        self.Permission_level = int(kwargs.get("PermissionLevel", 0))
         self.Title = kwargs.get("Title", INVALID_STR)
         self.Dept = kwargs.get("Dept", INVALID_STR)
         self.Office_email = kwargs.get("Email", INVALID_STR)

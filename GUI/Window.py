@@ -3,8 +3,12 @@
 '''
 
 
+from asyncio.windows_events import NULL
 import tkinter as tk
 from typing import Type
+from GUI.Components.Navigation import Navigation
+from GUI.Screens.Login import Login
+from styles import background_color
 
 
 class Window(tk.Tk):
@@ -17,12 +21,22 @@ class Window(tk.Tk):
         self.grid_rowconfigure(1, weight=1) # Row 1 to save row 0 for navbar
         self.grid_columnconfigure(0, weight=1)
         self.frame = None
-
+        self.configure(bg=background_color)
+        self.navigation = NULL
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=30)
+        self.columnconfigure(0, weight=1)
 
     def switchFrame(self, _frame: Type[tk.Frame]) -> None:
         '''Destroys current frame and pack a new one'''
 
         if self.frame is not None:
             self.frame.destroy()
+
+        if _frame is Login:
+            self.navigation = NULL
+        else:
+            self.navigation = Navigation(self)
+            self.navigation.highlight_section(str(_frame))
 
         self.frame = _frame(self)

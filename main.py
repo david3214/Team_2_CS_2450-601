@@ -2,19 +2,15 @@
     Entry point for GUI development and testing
 '''
 
-
-from GUI.Window import Window
-from GUI.Screens.AddEmployee import AddEmployee
-from GUI.Screens.Admin import Admin
-from GUI.Screens.Archived import Archived
-from GUI.Screens.Permitted import Permitted
-from GUI.Screens.Profile import Profile
-from GUI.Screens.User import User
-
+import GUI.Window
+from GUI.Screens.Login import Login
+from GUI.Screens.Report import Report
+from GUI.Screens.Search import Search
+from config import DB
 
 def main():
-    window = Window()
-    window.switchFrame(Profile)
+    window = GUI.Window.Window()
+    window.switchFrame(Login)
     window.mainloop()
 
 

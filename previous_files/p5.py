@@ -2,7 +2,7 @@
     p5.py: Illustrates the payroll module.
 '''
 
-from payroll import *
+from previous_files.payroll import *
 import shutil
 
 def main():

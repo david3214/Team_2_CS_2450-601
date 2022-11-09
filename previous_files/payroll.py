@@ -1,7 +1,12 @@
+from asyncio.windows_events import NULL
 import os
 from abc import ABC, abstractmethod
 from functools import reduce
 
+from turtle import width
+from Employee import Employee
+
+employees = []
 
 class Employee(object):
     """Represents an individual employee"""
@@ -257,23 +262,19 @@ def process_receipts():
             emp.classification.receipts = receipts[1:]
 
 
-def run_payroll():
-    """Deletes old paylog file if it exists
-    Writes down every employee's payment to text file"""
+# def run_payroll():
+#     """Deletes old paylog file if it exists
+#     Writes down every employee's payment to text file"""
 
-    if os.path.exists(PAY_LOGFILE):
-        os.remove(PAY_LOGFILE)
-    for emp in employees:
-        emp.issue_payment()
-
-
-def find_employee_by_id(eid):
-    """Uses unique employee id to find Employee object"""
-
-    for emp in employees:
-        if emp.emp_id == eid:
-            return emp
+#     if os.path.exists(PAY_LOGFILE):
+#         os.remove(PAY_LOGFILE)
+#     for emp in employees:
+#         emp.issue_payment()
 
 
-employees = []
-PAY_LOGFILE = "paylog.txt"
+# def find_employee_by_id(eid):
+#     """Uses unique employee id to find Employee object"""
+
+#     for emp in employees:
+#         if emp.emp_id == eid:
+#             return emp

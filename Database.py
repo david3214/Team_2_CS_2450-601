@@ -6,7 +6,19 @@ from pathlib import Path
 import csv
 from tkinter import messagebox
 
-usrAcc = EmployeeSelf(Employee())
+usrAcc = EmployeeSelf(Employee(Permission_level=1))
+
+# this sets up importTranslator so that a file using the current export format can be translated to the format used by Employee
+# importTranslator[key] gives the corresponding key for
+fileFormat = dir(EmployeeContainer)
+bdnms = ['permissionList', 'getFName', 'getLName']
+fileFormat = list(
+    filter(lambda x: x[:1] != "_" and x not in bdnms, fileFormat))
+
+
+importTranslator = dict([(k, v)
+                        for k, v in zip(fileFormat, Employee().__dict__)])
+print(importTranslator)
 
 
 class Database:

@@ -69,8 +69,9 @@ class EmployeeContainer():
     @Password.setter
     def Password(self, val: str):
         if self.permissionList['hashed_password'][1]:
-            self._employee.hashed_password = val
-        return INVALID_STR
+            self._employee.setPwd(val)
+            return True
+        return False
 
     @property
     def PermittedLockOn(self):

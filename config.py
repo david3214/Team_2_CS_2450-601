@@ -6,3 +6,4 @@ import os
 
 DB = Database(Path(os.path.abspath("database.csv")))
 userSession = EmployeeSelf(Employee(**{'Permission Level': 1}))
+

@@ -6,6 +6,8 @@ from pathlib import Path
 import csv
 from tkinter import messagebox
 
+usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
+
 class Database:
     def __init__(self, initFPath: Path = Path("")) -> None:
         """_summary_
@@ -113,7 +115,6 @@ class Database:
         from config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
-            
             # Switched to this because it was getting hard to keep track of all the functions on the employee container
             badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
             badnames = badnames if adminInfo else adminFields + badnames

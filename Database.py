@@ -8,6 +8,7 @@ from tkinter import messagebox
 
 usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 
+
 class Database:
     def __init__(self, initFPath: Path = Path("")) -> None:
         """_summary_
@@ -37,7 +38,10 @@ class Database:
         """
         if len(self.search(Employee_ID=kwargs["Emp_ID"])) > 0:
             return False
-        self.employeeList.append(Employee(**kwargs))
+        emp = Employee(**kwargs)
+        if emp.hashed_password == INVALID_STR and emp.Emp_ID != INVALID_STR:
+            emp.setPwd(str(emp.Emp_ID))
+        self.employeeList.append(emp)
         return True
 
     def search(self, Department: str = INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME) -> list:
@@ -61,14 +65,19 @@ class Database:
         for emp in self.employeeList:
             emp = self.__employeeContainment(emp, userSession)
             valid: bool = True
-            valid = valid and (Department == INVALID_STR or Department in emp.Dept)
+            valid = valid and (
+                Department == INVALID_STR or Department in emp.Dept)
             valid = valid and (fName == INVALID_STR or fName in emp.getFName())
             valid = valid and (lName == INVALID_STR or lName in emp.getLName())
-            valid = valid and (Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
+            valid = valid and (
+                Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
             valid = valid and (Title == INVALID_STR or Title in emp.Title)
-            valid = valid and (oPhone == INVALID_STR or oPhone == emp.OfficePhone)
-            valid = valid and (StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
-            valid = valid and (EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
+            valid = valid and (
+                oPhone == INVALID_STR or oPhone == emp.OfficePhone)
+            valid = valid and (
+                StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
+            valid = valid and (
+                EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
             # if any of the statements after "valid and not" are True then valid will be False
             if valid:
                 foundList.append(emp)
@@ -100,7 +109,8 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-            self.exportDB(self.initFPath, adminInfo = True, showArchivedEmployees = True)
+            self.exportDB(self.initFPath, adminInfo=True,
+                          showArchivedEmployees=True)
         elif importFPath != "":
             print("not a filepath\n")
 
@@ -116,7 +126,8 @@ class Database:
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
             # Switched to this because it was getting hard to keep track of all the functions on the employee container
-            badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
+            badnames = [method for method in fieldnames if callable(
+                getattr(EmployeeContainer, method))] + ['permissionList']
             badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
@@ -150,3 +161,6 @@ class Database:
             return EmployeeSelf(targetEmployee)
         else:
             return EmployeeOther(targetEmployee)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

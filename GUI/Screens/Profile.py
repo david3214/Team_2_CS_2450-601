@@ -9,14 +9,17 @@ import tkinter as tk
 from typing import Type
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from EmployeeContainer import EmployeeContainer
 from styles import background_color
 
 
 class Profile (tk.Frame):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor)
 
         self.grid_columnconfigure(1, weight=1)
+
+        self.emp = emp
 
         self.generalInfo = GI(self)
         self.generalInfo.grid(column=0, row=0, rowspan=3, sticky='n')

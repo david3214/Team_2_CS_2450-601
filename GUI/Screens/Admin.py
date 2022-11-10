@@ -24,13 +24,24 @@ class Admin(AE):
 
         self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
 
-        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options)
+        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options, command=None)
         self.genPayReportBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
-        self.archiveBtn = tk.Button(self, text='Archive', **self.options)
+        self.archiveBtn = tk.Button(self, text='Archive', **self.options, command=lambda: master.emp.Active(False))
         self.archiveBtn.grid(column=2, row=2, padx=(0, 15))
 
-        self.updateBtn = tk.Button(self, text='Update', **self.options)
+        self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
         self.updateBtn.grid(column=3, row=2, padx=(0, 15))
 
         self.grid()
+
+
+    def update(self) -> None:
+        for i, setter in enumerate(self.adminInfo.values):
+            setter(self.adminInfo.variables[i][1].get())
+
+        for i, setter in enumerate(self.permittedInfo.values):
+            setter(self.adminInfo.variables[i][1].get())
+            
+        for i, setter in enumerate(self.generalInfo.values):
+            setter(self.adminInfo.variables[i][1].get())

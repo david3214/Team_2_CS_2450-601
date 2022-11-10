@@ -30,7 +30,7 @@ class Archived(Profile):
         self.permittedInfo = PI(self, btn_color, locked=False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color)
+        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=lambda: master.emp.Active(True))
         self.unarchiveBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()

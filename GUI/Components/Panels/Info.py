@@ -29,6 +29,6 @@ class Info(tk.Frame):
             self.variables = [(field, tk.StringVar()) for field in self.fields]
             self.entries = [tk.Entry(self, **entryOptions) for variable in self.variables] if entryOptions else [tk.Entry(self, textvariable=variable[1], validate='key') for variable in self.variables]
         else:
-            self.valueLabels = [tk.Label(self, **valueLOptions) for _ in self.labels] if valueLOptions else [tk.Label(self, text='temp', font=med_text, bg=self.bgColor, fg=text_color) for _ in self.labels]
+            self.valueLabels = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
 
         [self.children[child].grid(row=layoutOptions[0](i, len(self.fields)), column=layoutOptions[1](i, len(self.fields)), **layoutOptions[2]) for i, child in enumerate(self.children)]

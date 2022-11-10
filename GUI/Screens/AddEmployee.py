@@ -13,6 +13,7 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
+from config import DB
 from styles import background_color, btn_color, text_color, med_bold
 
 
@@ -34,7 +35,8 @@ class AddEmployee(Profile):
         self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color)
+        # TODO: Map field names to names that addEmployee expects
+        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=lambda: DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals())))
         self.addEmployeeBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()

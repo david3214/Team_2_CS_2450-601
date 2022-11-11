@@ -85,4 +85,5 @@ class Employee:
         return self.__dict__ == other.__dict__
 
 
-EMP_FIELDS: Final[list[str]] = list(Employee().__dict__.keys())
+EMP_FIELDS: Final[dict[str, type]] = dict(
+    [(k, type(Employee().__dict__[k])) for k in Employee().__dict__.keys()])

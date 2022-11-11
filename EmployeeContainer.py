@@ -11,7 +11,7 @@ adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum',
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:
-        self._employee = employee
+        self._employee:Employee = employee
 
     # this is a read only dict, aand can be interacted with using any method that would work on a dict, except writing to it
     # each key corresponds to an employee variable. the first bool of the value is whether it can be read, the second is if it can be set

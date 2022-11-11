@@ -1,15 +1,15 @@
-from datetime import datetime
+
 from __future__ import annotations
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
-
+from datetime import datetime
 from Address import Address
 from typing import Final
-
+from pathlib import Path
 INVALID_STR: Final[str] = ""
 INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
-
+INVALID_PATH: Final[Path] = Path(" ")
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
 pwd_context = CryptContext(
@@ -83,3 +83,6 @@ class Employee:
 
     def __eq__(self, other: Employee):
         return self.__dict__ == other.__dict__
+
+
+EMP_FIELDS: Final[list[str]] = list(Employee().__dict__.keys())

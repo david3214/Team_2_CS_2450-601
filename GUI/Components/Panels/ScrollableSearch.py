@@ -86,7 +86,7 @@ class ScrollableSearch(ScrolledFrame):
 
     def selectEmployee(self, event):
       emp_container = event.widget.emp
-      if emp_container.EmpId == userSession.EmpId:
+      if emp_container.EmpID == userSession.EmpID:
         emp_container = userSession
       self.root.switchFrame(self.selectFrame(emp_container), emp_container)
 
@@ -98,9 +98,9 @@ class ScrollableSearch(ScrolledFrame):
           return Admin
         elif emp_container is EmployeeOther:
           if emp_container.PermittedLockOn:
-            return Permitted
-          else:
             return Profile
+          else:
+            return Permitted
       else:
         return Archived
       

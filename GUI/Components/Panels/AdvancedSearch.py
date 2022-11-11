@@ -12,7 +12,7 @@ import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
 from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
-from config import DB
+from config import DB, userSession
 
 class AdvancedSearch(tk.Frame):
 
@@ -47,6 +47,8 @@ class AdvancedSearch(tk.Frame):
         tk.Label(self, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
             .grid(row=0, column=0, columnspan=2, sticky='EW')
         for i, field in enumerate(self.fields):
+            if field is 'View Archived' and userSession.PermissionLevel != 1:
+                continue
             tk.Label(self, text=field, font=med_text, bg=bg_color,
                      foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
@@ -58,16 +60,18 @@ class AdvancedSearch(tk.Frame):
             entry_field.bind('<Return>', self.searchAdvanced)
             self.entries[field] = entry_field
         
-        self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
-        self.archive_toggle.grid(row=9, column=1, sticky='E')
+        if userSession.PermissionLevel == 1:
+            self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
+            self.archive_toggle.grid(row=9, column=1, sticky='E')
 
         # Creates buttons for searching for/adding employees
         self.search_btn = tk.Button(self, text='Search', font=med_bold, bg=btn_color,
                                     foreground=text_color, command=self.searchAdvanced)
         self.search_btn.grid(row=10, column=0, columnspan=2, sticky='EW', padx=20)
-        self.add_btn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color,
-                                 foreground=text_color, command=self.addEmployee)
-        self.add_btn.grid(row=11, column=0, columnspan=2, sticky='SEW', padx=20)
+        if userSession.PermissionLevel == 1:
+            self.add_btn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color,
+                                    foreground=text_color, command=self.addEmployee)
+            self.add_btn.grid(row=11, column=0, columnspan=2, sticky='SEW', padx=20)
 
     # Switches windows when button is pressed
     def addEmployee(self):
@@ -83,7 +87,8 @@ class AdvancedSearch(tk.Frame):
         for key, value in self.entries.items():
             if value.get() != '' and value.get() != key:
                 nonEmpties[self.fieldsToDB[key]] = value.get()
-        nonEmpties['Archived'] = self.archive_toggle.IsEnabled
+        # if the user is not an admin they can't search for archived
+        nonEmpties['Archived'] = self.archive_toggle.IsEnabled and userSession.PermissionLevel == 1
         return nonEmpties
 
     # Removes default text in search bar when selected

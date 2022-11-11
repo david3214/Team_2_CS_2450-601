@@ -12,7 +12,7 @@ import GUI.Components.Panels.AdvancedSearch
 import GUI.Screens.AddEmployee
 from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, btn_color, sm_bold, med_text, text_color
-
+from config import userSession
 
 class SearchRibbon(tk.Frame):
 
@@ -46,7 +46,8 @@ class SearchRibbon(tk.Frame):
         self.search_bar.grid(row=0, column=2, sticky='EW')
         self.search_bar.bind('<Return>', searchFunc)
 
-        tk.Button(self, text='Add Employee', font=sm_bold, bg=btn_color, foreground=text_color,
+        if userSession.PermissionLevel == 1:
+            tk.Button(self, text='Add Employee', font=sm_bold, bg=btn_color, foreground=text_color,
                   command=lambda: self.switch_frame('add_employee')).grid(row=0, column=3, padx=25, sticky='EW')
 
     # Switches to frame depending on which button is pushed

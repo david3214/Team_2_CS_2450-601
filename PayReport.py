@@ -30,7 +30,7 @@ def create_heading(pdf, emp):
     
     set_fonts(pdf, "heading2")
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: {emp.name}", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: {emp.Name}", 0, 1, 'L')
 
     set_fonts(pdf, "heading3")
     pdf.cell(MARGIN)
@@ -51,7 +51,7 @@ def create_payment_info(pdf, emp):
     cell_width = (WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2)) / 4
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Payment Type:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"{emp.PayType}", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"{emp.PayMethod}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Salary Wage:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"${emp.Salary:.2f}", 0, 1, 'L')
 

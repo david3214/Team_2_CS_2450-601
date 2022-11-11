@@ -1,6 +1,6 @@
 from datetime import datetime
 from xmlrpc.client import Boolean
-from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS
+from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS, INVALID_PATH
 from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf, adminFields
 from pathlib import Path
 import csv
@@ -10,15 +10,15 @@ usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 
 
 class Database:
-    def __init__(self, initFPath: Path = Path("")) -> None:
+    def __init__(self, initFPath: Path = INVALID_PATH) -> None:
         """_summary_
 
         Args:
-            initFPath (Path, optional): _description_. Defaults to Path("").
+            initFPath (Path, optional): _description_. Defaults to INVALID_PATH.
         """
         self.employeeList: list[Employee] = list()
         self.initFPath = initFPath
-        if initFPath == "":
+        if str(initFPath) == str(INVALID_PATH):
             return
         elif initFPath.is_file():
             with initFPath.open() as csvfile:
@@ -26,7 +26,7 @@ class Database:
                 for row in csvReader:
                     # if there are different fields from Employee class they are treated as the param **garbage
                     self.employeeList.append(Employee(**row))
-        elif initFPath != "":
+        elif str(initFPath) != str(INVALID_PATH):
             print("not a filepath\n")
 
     # do we need to do any validity checks before adding?
@@ -83,11 +83,11 @@ class Database:
                 foundList.append(emp)
         return foundList
 
-    def importDB(self, importFPath: Path = Path("")) -> None:
+    def importDB(self, importFPath: Path = INVALID_PATH) -> None:
         """_summary_
 
         Args:
-            importFPath (Path, optional): _description_. Defaults to Path("").
+            importFPath (Path, optional): _description_. Defaults to INVALID_PATH.
         """
         if importFPath.is_file():
             impList: list[Employee] = list()
@@ -111,14 +111,14 @@ class Database:
                         self.employeeList.append(emp)
             self.exportDB(self.initFPath, adminInfo=True,
                           showArchivedEmployees=True)
-        elif importFPath != "":
+        elif importFPath != str(INVALID_PATH):
             print("not a filepath\n")
 
-    def exportDB(self, exportPath: Path = Path(""), adminInfo: Boolean = False, showArchivedEmployees: Boolean = True) -> None:
+    def exportDB(self, exportPath: Path = INVALID_PATH, adminInfo: Boolean = False, showArchivedEmployees: Boolean = True) -> None:
         """_summary_
 
         Args:
-            exportPath (Path, optional): _description_. Defaults to Path("").
+            exportPath (Path, optional): _description_. Defaults to INVALID_PATH.
             adminInfo (Boolean, optional): _description_. Defaults to False.
             showArchivedEmployees (Boolean, optional): _description_. Defaults to True.
         """

@@ -2,8 +2,14 @@ from tkscrolledframe import ScrolledFrame
 import tkinter as tk
 from PIL import Image, ImageTk
 from GUI.Screens.Profile import Profile
+from GUI.Screens.Admin import Admin
+from GUI.Screens.Permitted import Permitted
+from GUI.Screens.User import User
+from GUI.Screens.Archived import Archived
+from EmployeeContainer import EmployeeSelf, EmployeeAdmin, EmployeeOther
 from typing import Type
 from styles import background_color, sm_text
+from config import userSession
 
 class ScrollableSearch(ScrolledFrame):
 
@@ -79,8 +85,26 @@ class ScrollableSearch(ScrolledFrame):
         child.destroy()
 
     def selectEmployee(self, event):
-      print(f'{event.widget.emp}')
-      self.root.switchFrame(Profile, event.widget.emp)
+      emp_container = event.widget.emp
+      if emp_container.EmpId == userSession.EmpId:
+        emp_container = userSession
+      self.root.switchFrame(self.selectFrame(emp_container), emp_container)
+
+    def selectFrame(self, emp_container):
+      if emp_container.Active:
+        if emp_container is EmployeeSelf:
+          return User
+        elif emp_container is EmployeeAdmin:
+          return Admin
+        elif emp_container is EmployeeOther:
+          if emp_container.PermittedLockOn:
+            return Permitted
+          else:
+            return Profile
+      else:
+        return Archived
+      
+      
 
     def onHoverEmployee(self, event):
       event.widget['bg'] = 'grey'

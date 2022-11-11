@@ -1,6 +1,7 @@
 from tkscrolledframe import ScrolledFrame
 import tkinter as tk
 from PIL import Image, ImageTk
+from GUI.Screens.Profile import Profile
 from typing import Type
 from styles import background_color, sm_text
 
@@ -20,28 +21,34 @@ class ScrollableSearch(ScrolledFrame):
         self.inner_frame.grid_columnconfigure(0, weight=1)
         self.advancedSearch = False
         self.employees = list()
+        self.employeeFrames = list()
 
 
     def changeList(self, employees):
-      self.employees = employees
       self.clearSearchFrame()
+      self.employees = employees
       # if there are no employees we want a blank view
-      if len(employees) == 0:
+      if len(self.employees) == 0:
         emptyFrame = tk.Frame(self.inner_frame, background='white')
         emptyFrame.grid(row=0, column=0, pady=1, sticky='NSEW')
       else:
         for i, emp in enumerate(employees):
           # Create the row in the search bar
-          employee_frame = tk.Frame(self.inner_frame, background='white')
-          employee_frame.grid_columnconfigure(0, weight=2)
-          employee_frame.grid_columnconfigure(1, weight=5)
-          employee_frame.grid_columnconfigure(2, weight=4)
-          employee_frame.grid_columnconfigure(3, weight=3)
-          employee_frame.grid_rowconfigure(0, weight=1)
-          employee_frame.grid(row=i, column=0, pady=1, sticky='ENSW')
+          self.employeeFrames.append(tk.Frame(self.inner_frame, background='white', cursor='hand2'))
+          self.employeeFrames[i].grid_columnconfigure(0, weight=2)
+          self.employeeFrames[i].grid_columnconfigure(1, weight=5)
+          self.employeeFrames[i].grid_columnconfigure(2, weight=4)
+          self.employeeFrames[i].grid_columnconfigure(3, weight=3)
+          self.employeeFrames[i].grid_rowconfigure(0, weight=1)
+          self.employeeFrames[i].grid(row=i, column=0, pady=1, sticky='ENSW')
+          self.employeeFrames[i].emp = emp
 
+          self.employeeFrames[i].bind('<Button-1>', self.selectEmployee)
+          self.employeeFrames[i].bind('<Leave>', self.offHoverEmployee)
+          self.employeeFrames[i].bind('<Enter>', self.onHoverEmployee)
+          
           # Create the image
-          self.employee_image = tk.Label(employee_frame, background='white')
+          self.employee_image = tk.Label(self.employeeFrames[i], background='white')
           self.employee_image.config(image=self.employee_img)
           self.employee_image.grid(row=0, column=0, pady=6, padx=(6, 0), sticky='W')
 
@@ -53,11 +60,11 @@ class ScrollableSearch(ScrolledFrame):
             id_text = 'ID: '
 
           # Create the labels for the row
-          tk.Label(employee_frame, text=employee_text + emp.Name, font=sm_text, background='white')\
+          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white')\
                   .grid(row=0, column=1, sticky='WNS')
-          tk.Label(employee_frame, text=id_text + emp.EmpID, font=sm_text, background='white')\
+          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white')\
                     .grid(row=0, column=2, sticky='WNS')
-          tk.Label(employee_frame, text=f'Dept: {emp.Dept}', font=sm_text, background='white')\
+          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white')\
                   .grid(row=0, column=3, padx=(0, 15), sticky='ENS')
 
     def redraw(self):
@@ -65,6 +72,23 @@ class ScrollableSearch(ScrolledFrame):
       self.changeList(self.employees)
     
     def clearSearchFrame(self):
+      self.employees = list()
+      self.employeeFrames = list()
       # When we are getting a new list we need to remove the old rows
       for child in self.inner_frame.winfo_children():
         child.destroy()
+
+    def selectEmployee(self, event):
+      print(f'{event.widget.emp}')
+      self.root.switchFrame(Profile, event.widget.emp)
+
+    def onHoverEmployee(self, event):
+      event.widget['bg'] = 'grey'
+
+      for child in event.widget.winfo_children():
+        child['bg'] = 'grey'
+
+    def offHoverEmployee(self, event):
+      event.widget['bg'] = 'white'
+      for child in event.widget.winfo_children():
+        child['bg'] = 'white'

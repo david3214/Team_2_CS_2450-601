@@ -13,12 +13,13 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from EmployeeContainer import EmployeeContainer
 from styles import background_color, btn_color, text_color, med_bold
 
 
 class Archived(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
-        super().__init__(master, bgColor)
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+        super().__init__(master, emp, bgColor)
 
         self.img = None
         self.canvas.destroy()

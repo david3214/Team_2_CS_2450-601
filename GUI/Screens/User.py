@@ -14,7 +14,6 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from ..Components.Panels.GeneralInfo import GeneralInfo as GI
 from config import userSession
 from styles import background_color, text_color, btn_color, med_bold
 
@@ -43,11 +42,8 @@ class User(Profile):
         self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options, command=None)
-        self.genPayReportBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
-
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
-        self.updateBtn.grid(column=2, row=2, padx=(0, 15))
+        self.updateBtn.grid(column=1, row=2, padx=(0, 15))
 
         self.grid()
 

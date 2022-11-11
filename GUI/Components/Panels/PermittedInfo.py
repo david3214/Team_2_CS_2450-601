@@ -6,6 +6,7 @@
 import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
+from Address import Address
 from styles import btn_color, med_bold_underline, text_color
 
 
@@ -24,4 +25,7 @@ class PermittedInfo(Info):
             self.configure(height=100)
 
     def vals(self) -> dict:
-        return {self.fields[i]: self.variables[i][1].get() for i in range(len(self.fields))}
+        remap = {key: self.variables[i + 4][1].get() for i, key in enumerate(['home_phone', 'home_email'])}
+        remap['address'] = Address(self.variables[0], '', self.variables[1], self.variables[2], '', self.variables[3])
+
+        return remap

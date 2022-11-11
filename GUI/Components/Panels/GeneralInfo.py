@@ -24,4 +24,7 @@ class GeneralInfo(Info):
 
 
     def vals(self) -> dict:
-        return {self.fields[i]: self.variables[i][1].get() for i in range(len(self.fields))}
+        remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['office_phone', 'Office_email', 'Emp_ID', 'Title', 'Dept', 'Start_Date', 'End_Date', 'Permission_level'])}
+        remap['name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
+
+        return remap

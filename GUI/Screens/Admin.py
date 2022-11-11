@@ -12,19 +12,21 @@
 
 import tkinter as tk
 from typing import Type
+from PayReport import generate_pay_report
+from EmployeeContainer import EmployeeContainer
 from .AddEmployee import AddEmployee as AE
 from styles import background_color,  med_bold, btn_color, text_color
 
 
 class Admin(AE):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
-        super().__init__(master, bgColor=bgColor)
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+        super().__init__(master, emp, bgColor=bgColor)
 
         self.addEmployeeBtn.destroy()
 
         self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
 
-        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options, command=None)
+        self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options, command=lambda: generate_pay_report(master.emp))
         self.genPayReportBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.archiveBtn = tk.Button(self, text='Archive', **self.options, command=lambda: master.emp.Active(False))

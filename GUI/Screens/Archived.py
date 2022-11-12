@@ -14,7 +14,7 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
-from config import DB, userSession
+from config import DB, userSession, fetch_resource
 from styles import background_color, btn_color, text_color, med_bold
 
 
@@ -41,7 +41,7 @@ class Archived(Profile):
     def unarchive(self):
         from .Admin import Admin
         self.emp.Active = True
-        DB.exportDB('database.csv', True)
+        DB.exportDB(fetch_resource('database/database.csv'), True)
         
         #Switch to admin, since only admins can view or create archived
         self.master.switchFrame(Admin, self.emp)

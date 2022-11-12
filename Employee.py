@@ -2,16 +2,17 @@ from __future__ import annotations
 from datetime import datetime
 from dataclasses import dataclass
 
+from __future__ import annotations
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
 
 #from Address import Address
 from typing import Final
-
+from pathlib import Path
 INVALID_STR: Final[str] = ""
 #INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
-
+INVALID_PATH: Final[Path] = Path(" ")
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
 pwd_context = CryptContext(
@@ -55,9 +56,3 @@ class Employee:
 
     def isCorrectLogin(self, textPassword: str, context: CryptContext):
         return context.verify(textPassword, self.hashed_password)
-
-    def setPwd(self, textPassword: str):
-        self.hashed_password = pwd_context.hash(textPassword)
-
-    def __eq__(self, other: Employee):
-        return self.__dict__ == other.__dict__

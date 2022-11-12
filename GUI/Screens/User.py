@@ -9,11 +9,11 @@
 '''
 
 
-import Profile
-import Components.Navigation
-import Components.Panels.GeneralInfo
-import Components.Panels.PermittedInfo
-import Components.Panels.AdminInfo
+from GUI.Screens.Profile import Profile
+from Components.Navigation import Navigation
+from Components.Panels.GeneralInfo import GeneralInfo
+from Components.Panels.PermittedInfo import PermittedInfo
+from Components.Panels.AdminInfo import AdminInfo
 
 
 class Admin(Profile):

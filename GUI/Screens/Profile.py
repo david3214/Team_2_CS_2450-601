@@ -4,7 +4,7 @@
     Uses GeneralInfo
 '''
 
-import Components.Panels.GeneralInfo
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
 
 class Profile:
 

@@ -1,14 +1,15 @@
 from datetime import datetime
 from xmlrpc.client import Boolean
-from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS
-from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
+from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS, INVALID_PATH
+from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf, adminFields
 from pathlib import Path
 import csv
 from tkinter import messagebox
 import configparser
 import dataclasses
-usrAcc = EmployeeSelf(Employee(Permission_level=1))
 
+
+usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
 empToContainer = {'active': 'Active', 'address': 'Address', 'apartment': 'Apartment', 'bank_info': 'BankInfo', 'city': 'City', 'commission': 'Commission', 'country': 'Country', 'D_O_B': 'DOB', 'Dept': 'Dept', 'Emp_ID': 'EmpID', 'End_Date': 'EndDate', 'home_email': 'HomeEmail', 'home_phone': 'HomePhone', 'hourly': 'Hourly',
                   'name': 'Name', 'Office_email': 'OfficeEmail', 'office_phone': 'OfficePhone', 'hashed_password': 'Password', 'pay_type': 'PayType', 'Permission_level': 'PermissionLevel', 'permitted_lock_on': 'PermittedLockOn', 'route': 'Route', 'SS_num': 'SSNum', 'salary': 'Salary', 'Start_Date': 'StartDate', 'state': 'State', 'Title': 'Title', 'zip': 'Zip'}
 contToEmp = dict((empToContainer[k], k)for k in empToContainer)
@@ -29,14 +30,15 @@ empToOut = dict([(importTranslator[k], k)for k in importTranslator])
 
 
 class Database:
-    def __init__(self, initFPath: Path = Path("")) -> None:
+    def __init__(self, initFPath: Path = INVALID_PATH) -> None:
         """_summary_
 
         Args:
-            initFPath (Path, optional): _description_. Defaults to Path("").
+            initFPath (Path, optional): _description_. Defaults to INVALID_PATH.
         """
         self.employeeList: list[Employee] = list()
-        if initFPath == "":
+        self.initFPath = initFPath
+        if str(initFPath) == str(INVALID_PATH):
             return
         elif initFPath.is_file():
             with initFPath.open() as csvfile:
@@ -46,7 +48,7 @@ class Database:
                                   for k in row if k in importTranslator])
                     # if there are different fields from Employee class they are treated as the param **garbage
                     self.employeeList.append(Employee(**params))
-        elif initFPath != "":
+        elif str(initFPath) != str(INVALID_PATH):
             print("not a filepath\n")
 
     # do we need to do any validity checks before adding?
@@ -58,7 +60,10 @@ class Database:
         """
         if len(self.search(Employee_ID=kwargs["Emp_ID"])) > 0:
             return False
-        self.employeeList.append(Employee(**kwargs))
+        emp = Employee(**kwargs)
+        if emp.hashed_password == INVALID_STR and emp.Emp_ID != INVALID_STR:
+            emp.setPwd(str(emp.Emp_ID))
+        self.employeeList.append(emp)
         return True
 
     def search(self, Department: str = INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME) -> list:
@@ -77,28 +82,34 @@ class Database:
         Returns:
             list: _description_
         """
+        from config import userSession
         foundList = list()
         for emp in self.employeeList:
-            emp = self.__employeeContainment(emp, usrAcc)
+            emp = self.__employeeContainment(emp, userSession)
             valid: bool = True
-            valid = valid and not Department == INVALID_STR or Department in emp.Dept
-            valid = valid and not fName == INVALID_STR or fName in emp.getFName()
-            valid = valid and not lName == INVALID_STR or lName in emp.getLName()
-            valid = valid and not Employee_ID == INVALID_STR or Employee_ID == emp.EmpID
-            valid = valid and not Title == INVALID_STR or Title in emp.Title
-            valid = valid and not oPhone == INVALID_STR or oPhone == emp.OfficePhone
-            valid = valid and not StartDate == INVALID_DATETIME or StartDate == emp.StartDate
-            valid = valid and not EndDate == INVALID_DATETIME or EndDate == emp.EndDate
+            valid = valid and (
+                Department == INVALID_STR or Department in emp.Dept)
+            valid = valid and (fName == INVALID_STR or fName in emp.getFName())
+            valid = valid and (lName == INVALID_STR or lName in emp.getLName())
+            valid = valid and (
+                Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
+            valid = valid and (Title == INVALID_STR or Title in emp.Title)
+            valid = valid and (
+                oPhone == INVALID_STR or oPhone == emp.OfficePhone)
+            valid = valid and (
+                StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
+            valid = valid and (
+                EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
             # if any of the statements after "valid and not" are True then valid will be False
             if valid:
                 foundList.append(emp)
         return foundList
 
-    def importDB(self, importFPath: Path = Path("")) -> None:
+    def importDB(self, importFPath: Path = INVALID_PATH) -> None:
         """_summary_
 
         Args:
-            importFPath (Path, optional): _description_. Defaults to Path("").
+            importFPath (Path, optional): _description_. Defaults to INVALID_PATH.
         """
         if importFPath.is_file():
             impList: list[Employee] = list()
@@ -122,21 +133,26 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-
-        elif importFPath != "":
+            self.exportDB(self.initFPath, adminInfo=True,
+                          showArchivedEmployees=True)
+        elif importFPath != str(INVALID_PATH):
             print("not a filepath\n")
 
-    def exportDB(self, exportPath: Path = Path(""), adminInfo: Boolean = False, showArchivedEmployees: Boolean = True) -> None:
+    def exportDB(self, exportPath: Path = INVALID_PATH, adminInfo: Boolean = False, showArchivedEmployees: Boolean = True) -> None:
         """_summary_
 
         Args:
-            exportPath (Path, optional): _description_. Defaults to Path("").
+            exportPath (Path, optional): _description_. Defaults to INVALID_PATH.
             adminInfo (Boolean, optional): _description_. Defaults to False.
             showArchivedEmployees (Boolean, optional): _description_. Defaults to True.
         """
+        from config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
-            badnames = ['permissionList', 'getFName', 'getLName']
+            # Switched to this because it was getting hard to keep track of all the functions on the employee container
+            badnames = [method for method in fieldnames if callable(
+                getattr(EmployeeContainer, method))] + ['permissionList']
+            badnames = badnames if adminInfo else adminFields + badnames
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 
@@ -145,7 +161,7 @@ class Database:
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:
-                    emp = self.__employeeContainment(emp, usrAcc)
+                    emp = self.__employeeContainment(emp, userSession)
                 else:
                     emp = EmployeeOther(emp)
 
@@ -167,7 +183,13 @@ class Database:
         """
         if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
             return EmployeeAdmin(targetEmployee)
-        elif targetEmployee is selfEmployee.__employee:
+        elif targetEmployee is selfEmployee._employee:
             return EmployeeSelf(targetEmployee)
         else:
             return EmployeeOther(targetEmployee)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def empCount(self):
+        return len(self.employeeList)

@@ -1,11 +1,13 @@
 class Address:
-    def __init__(self, address: str = "", apartment: str = "", city: str = "", state: str = "", country: str = "", zip: str = "") -> None:
-        self.address = address
-        self.apartment = apartment
-        self.city = city
-        self.state = state
-        self.country = country
-        self.zip = zip
+    def __init__(self, address: str = "", apartment: str = "", city: str = "", state: str = "", country: str = "", zip: str = "", **kwargs) -> None:
+        self.address = kwargs.get("Address", "")
+        self.city = kwargs.get("City", "")
+        self.state = kwargs.get("State", "")
+        self.country = kwargs.get("Country", "")
+        self.zip = kwargs.get("Zip", "")
 
     def __str__(self) -> str:
         return str(self.__dict__)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

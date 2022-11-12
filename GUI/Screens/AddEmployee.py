@@ -8,8 +8,8 @@
 '''
 
 
-import Admin
-import Components.Panels.GeneralInfo
+from GUI.Screens.Admin import Admin
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
 
 
 class AddEmployee(Admin):

@@ -1,3 +1,7 @@
+'''
+    A toggleable button.
+'''
+
 from asyncio.windows_events import NULL
 import tkinter as tk
 from PIL import ImageTk, Image

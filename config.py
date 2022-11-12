@@ -1,3 +1,7 @@
+'''
+Sets up database and user session.
+'''
+
 from Database import Database
 from pathlib import Path
 from Employee import Employee

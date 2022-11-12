@@ -1,3 +1,7 @@
+'''
+    Generates pay reports.
+'''
+
 from fpdf import FPDF
 from tkinter import filedialog
 from Employee import Employee

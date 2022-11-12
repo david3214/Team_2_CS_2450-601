@@ -1,3 +1,7 @@
+'''
+    Used to make entry fields.
+'''
+
 import tkinter as tk
 from tkinter import ttk
 

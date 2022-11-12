@@ -5,20 +5,27 @@ from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, E
 from pathlib import Path
 import csv
 from tkinter import messagebox
-
+import configparser
+import dataclasses
 usrAcc = EmployeeSelf(Employee(Permission_level=1))
 
-# this sets up importTranslator so that a file using the current export format can be translated to the format used by Employee
-# importTranslator[key] gives the corresponding key for
-fileFormat = dir(EmployeeContainer)
-bdnms = ['permissionList', 'getFName', 'getLName']
-fileFormat = list(
-    filter(lambda x: x[:1] != "_" and x not in bdnms, fileFormat))
-
-
-importTranslator = dict([(k, v)
-                        for k, v in zip(fileFormat, Employee().__dict__)])
-print(importTranslator)
+empToContainer = {'active': 'Active', 'address': 'Address', 'apartment': 'Apartment', 'bank_info': 'BankInfo', 'city': 'City', 'commission': 'Commission', 'country': 'Country', 'D_O_B': 'DOB', 'Dept': 'Dept', 'Emp_ID': 'EmpID', 'End_Date': 'EndDate', 'home_email': 'HomeEmail', 'home_phone': 'HomePhone', 'hourly': 'Hourly',
+                  'name': 'Name', 'Office_email': 'OfficeEmail', 'office_phone': 'OfficePhone', 'hashed_password': 'Password', 'pay_type': 'PayType', 'Permission_level': 'PermissionLevel', 'permitted_lock_on': 'PermittedLockOn', 'route': 'Route', 'SS_num': 'SSNum', 'salary': 'Salary', 'Start_Date': 'StartDate', 'state': 'State', 'Title': 'Title', 'zip': 'Zip'}
+contToEmp = dict((empToContainer[k], k)for k in empToContainer)
+readcfg = configparser.ConfigParser()
+readcfg.optionxform = lambda optionstr: optionstr
+try:
+    with open('example.ini', 'r') as configfile:
+        readcfg.read_file(configfile)
+except (configparser.ParsingError, FileNotFoundError):
+    readcfg['TRANSLATION'] = empToContainer
+finally:
+    with open('example.ini', 'w') as configfile:
+        readcfg.write(configfile)
+# importTranslator[keyFromFile]=corresponding attribute of Employee
+importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name)
+                        for k in dataclasses.fields(Employee)])
+empToOut = dict([(importTranslator[k], k)for k in importTranslator])
 
 
 class Database:
@@ -35,8 +42,10 @@ class Database:
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
+                    params = dict([(importTranslator[k], row[k])
+                                  for k in row if k in importTranslator])
                     # if there are different fields from Employee class they are treated as the param **garbage
-                    self.employeeList.append(Employee(**row))
+                    self.employeeList.append(Employee(**params))
         elif initFPath != "":
             print("not a filepath\n")
 
@@ -96,8 +105,10 @@ class Database:
             with importFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
+                    params = dict([(importTranslator[k], row[k])
+                                  for k in row if k in importTranslator])
                     # if there are different fields from Employee class they are treated as the param **garbage
-                    impList.append(Employee(**row))
+                    impList.append(Employee(**params))
             for emp in impList:
                 dupeList: list[Employee] = list()
                 for employee in self.employeeList:
@@ -129,7 +140,8 @@ class Database:
             fieldnames = list(
                 filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval='')
+            writer = csv.DictWriter(
+                csvfile, fieldnames=importTranslator, restval='')
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:
@@ -139,7 +151,8 @@ class Database:
 
                 if not showArchivedEmployees and not emp.Active:
                     continue
-                out = dict([(k, emp.__getattribute__(k)) for k in fieldnames])
+                out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k))
+                           for k in fieldnames])
                 writer.writerow(out)
 
     def __employeeContainment(self, targetEmployee: Employee, selfEmployee: EmployeeSelf):

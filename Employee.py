@@ -66,12 +66,12 @@ class Employee:
         self.permitted_lock_on: bool = kwargs.get("Permitted", True)
         self.home_email: str = kwargs.get("HomeEmail", INVALID_STR)
         self.home_phone: str = kwargs.get("HomePhone", INVALID_STR)
-        self.pay_method: str = kwargs.get("PayMethod", 1)
+        self.pay_method: int = kwargs.get("PayMethod", 1)
         self.bank_info: str = kwargs.get("Account", INVALID_STR)
         self.route: str = kwargs.get("Route", INVALID_STR)
-        self.salary: str = kwargs.get("Salary", INVALID_STR)
-        self.hourly: str = kwargs.get("Hourly", INVALID_STR)
-        self.commission: str = kwargs.get("Commission", INVALID_STR)
+        self.salary: float = kwargs.get("Salary", INVALID_STR)
+        self.hourly: float = kwargs.get("Hourly", INVALID_STR)
+        self.commission: int = kwargs.get("Commission", INVALID_STR)
         self.hashed_password: str = kwargs.get("Password", INVALID_STR) if kwargs.get(
             "Hashed Password", INVALID_STR) == INVALID_STR else kwargs.get("Hashed Password", INVALID_STR)
 

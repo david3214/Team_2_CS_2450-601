@@ -6,7 +6,6 @@ from __future__ import annotations
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
 
-#from Address import Address
 from typing import Final
 from pathlib import Path
 INVALID_STR: Final[str] = ""
@@ -43,7 +42,7 @@ class Employee:
     name: str = INVALID_STR
     Office_email: str = INVALID_STR
     office_phone: str = INVALID_STR
-    pay_type: str = INVALID_STR
+    pay_method: str = INVALID_STR
     Permission_level: int = 0
     permitted_lock_on: bool = True
     route: str = INVALID_STR
@@ -54,5 +53,15 @@ class Employee:
     Title: str = INVALID_STR
     zip: str = INVALID_STR
 
-    def isCorrectLogin(self, textPassword: str, context: CryptContext):
-        return context.verify(textPassword, self.hashed_password)
+    def isCorrectLogin(self, textPassword: str):
+        return pwd_context.verify(textPassword, self.hashed_password)
+
+    def setPwd(self, textPassword: str):
+        self.hashed_password = pwd_context.hash(textPassword)
+
+    def __eq__(self, other: Employee):
+        return self.__dict__ == other.__dict__
+
+
+EMP_FIELDS: Final[dict[str, type]] = dict(
+    [(k, type(Employee().__dict__[k])) for k in Employee().__dict__.keys()])

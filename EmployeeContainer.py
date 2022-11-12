@@ -43,19 +43,6 @@ class EmployeeContainer():
                 return INVALID_STR
 
     @property
-    def Password(self):
-        if self.permissionList['hashed_password'][0]:
-            return self._employee.hashed_password
-        return INVALID_STR
-
-    @Password.setter
-    def Password(self, val: str):
-        if self.permissionList['hashed_password'][1]:
-            self._employee.setPwd(val)
-            return True
-        return False
-
-    @property
     def Name(self):
         if self.permissionList['name'][0]:
             return self._employee.name

@@ -53,6 +53,9 @@ class Search(tk.Frame):
     def updateScrollableSearch(self, employees):
         self.scrollableSearch.changeList(employees)
 
+        # Loads in employees from the database
+        with open('employees.csv', 'r') as file:
+            self.employee_img = ImageTk.PhotoImage(image=Image.open('./images/profile.png'))
 
     def advancedSearch(self):
         # the grid configuration changes when we have the advanced sidebar open

@@ -1,21 +1,47 @@
 '''
     Shows all the fields of an employee (General, admin, and permitted information panels)
      for an admin to fill out and add the new employee
-    Screen inherits from admin screen class
+    Screen inherits from profile screen class
     Uses GeneralInfo
     Inherits the active Window which already has the Navigation Bar as an active component
-    Input fields will be validated for proper inputs
 '''
 
 
-from GUI.Screens.Admin import Admin
-from GUI.Components.Panels.GeneralInfo import GeneralInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
+from ..Components.Panels.AdminInfo import AdminInfo as AI
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from ..Components.Panels.GeneralInfo import GeneralInfo as GI
+from EmployeeContainer import EmployeeContainer
+from config import DB
+from styles import background_color, btn_color, text_color, med_bold
 
 
-class AddEmployee(Admin):
+class AddEmployee(Profile):
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
+        super().__init__(master, emp, bgColor=bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.img = None
+        self.canvas.destroy()
 
-# Create new empty Employee object.
-# Open Employee object in a copy of profile screen except with update button replaced with add button. On click: Employee object is added to database. Goto search screen.
+        self.generalInfo.destroy()
+        self.generalInfo = GI(self, editable=True)
+        self.generalInfo.grid(column=0, row=0, rowspan=3, sticky='n')
+
+        self.adminInfo = AI(self, editable=True)
+        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+
+        self.permittedInfo.destroy()
+        self.permittedInfo = PI(self, btn_color, True, False)
+        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+
+        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=self.addEmp)
+        self.addEmployeeBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+
+        self.grid()
+
+
+    def addEmp(self) -> None:
+        DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()))
+        DB.exportDB('database.csv', True)

@@ -5,24 +5,40 @@
     Uses GeneralInfo, PermittedInfo, AdminInfo
     Information cannot be edited
     Employee can be unarchived
-
 '''
 
 
-from GUI.Screens.User import User
-from GUI.Components.Panels.GeneralInfo import GeneralInfo
-from GUI.Components.Panels.PermittedInfo import PermittedInfo
-from GUI.Components.Panels.AdminInfo import AdminInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
+from ..Components.Panels.AdminInfo import AdminInfo as AI
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from EmployeeContainer import EmployeeContainer
+from config import DB
+from styles import background_color, btn_color, text_color, med_bold
 
 
-class Archived(User):
+class Archived(Profile):
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+        super().__init__(master, emp, bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.img = None
+        self.canvas.destroy()
 
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information
-#   Button to unarchive
-# Find employee in database and display all information accessible to admin permission leve
+        self.adminInfo = AI(self)
+        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+
+        self.permittedInfo.destroy()
+        self.permittedInfo = PI(self, btn_color, locked=False)
+        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+
+        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=self.unarchive)
+        self.unarchiveBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+
+        self.grid()
+
+
+    def unarchive(self):
+        self.emp.Active = True
+        DB.exportDB('database.csv', True)
+        # TODO: Should print success msg or switchFrames

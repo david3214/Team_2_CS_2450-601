@@ -116,13 +116,13 @@ class EmployeeContainer():
         raise Exception
 
     @property
-    def Addr(self):
+    def Address(self):
         if self.PermittedLockOn:
             if self.permissionList['address'][0]:
                 return self._employee.address
             else:
                 return INVALID_ADDRESS
-        return self._employee.home_email
+        return self._employee.address
 
     @property
     def HomeEmail(self):
@@ -203,7 +203,7 @@ class EmployeeContainer():
             return True
         return False
 
-    @Addr.setter
+    @Address.setter
     def Address(self, val: Address):
         if self.permissionList['address'][1]:
             self._employee.address = val

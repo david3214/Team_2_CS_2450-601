@@ -33,7 +33,7 @@ class Database:
         Returns:
             Boolean: true if add success
         """
-        if len(self.search(Employee_ID=kwargs["Emp_ID"])) > 0:
+        if len(self.search(Employee_ID=kwargs["EmpID"])) > 0:
             return False
         self.employeeList.append(Employee(**kwargs))
         return True

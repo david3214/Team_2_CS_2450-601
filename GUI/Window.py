@@ -8,10 +8,11 @@ import tkinter as tk
 from typing import Type
 from GUI.Components.Navigation import Navigation
 from GUI.Screens.Login import Login
+from EmployeeContainer import EmployeeContainer
 from styles import background_color
 
-class Window(tk.Tk):
 
+class Window(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
 
@@ -25,8 +26,8 @@ class Window(tk.Tk):
         self.rowconfigure(1, weight=30)
         self.columnconfigure(0, weight=1)
 
-    def switchFrame(self, _frame: Type[tk.Frame]) -> None:
-        '''Destroys current frame and pack a new one'''
+    def switchFrame(self, _frame: Type[tk.Frame], emp: Type[EmployeeContainer]='') -> None:
+        '''Destroys current frame and packs a new one'''
 
         if self.frame is not None:
             self.frame.destroy()
@@ -37,4 +38,4 @@ class Window(tk.Tk):
             self.navigation = Navigation(self)
             self.navigation.highlight_section(str(_frame))
 
-        self.frame = _frame(self)
+        self.frame = _frame(self) if emp == '' else _frame(self, emp)

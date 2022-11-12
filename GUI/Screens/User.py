@@ -9,28 +9,55 @@
 '''
 
 
-from GUI.Screens.Profile import Profile
-from GUI.Components.Navigation import Navigation
-from GUI.Components.Panels.GeneralInfo import GeneralInfo
-from GUI.Components.Panels.PermittedInfo import PermittedInfo
-from GUI.Components.Panels.AdminInfo import AdminInfo
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
+from ..Components.Panels.AdminInfo import AdminInfo as AI
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from config import userSession, DB
+from styles import background_color, text_color, btn_color, med_bold
 
 
 class User(Profile):
+    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+        super().__init__(master, userSession, bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.img  = None
+        self.canvas.destroy()
 
-# Create new window components
-#   Navigation Bar
-#       Profile(underlined)
-#       Search
-#       Reports
-#   Image
-#   General employee information
-#   Permitted information
-#   Inputs to edit information
-#   Button to update 
-#       Validate changed fields
-#       Save information in database
-# Find employee in database and display information
+        self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
+        self.generalInfo.variables = []
+
+        for i in range(4):
+            self.generalInfo.valueLabels[i].destroy()
+            self.generalInfo.variables.append((self.generalInfo.fields[i], tk.StringVar()))
+            self.generalInfo.valueLabels[i] = tk.Entry(self.generalInfo, textvariable=self.generalInfo.variables[i][1], validate='key')
+            self.generalInfo.valueLabels[i].insert(0, self.generalInfo.values[i])
+            self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
+
+        self.adminInfo = AI(self)
+        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+
+        self.permittedInfo.destroy()
+        self.permittedInfo = PI(self, btn_color, True, False)
+        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+
+        self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
+        self.updateBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+
+        self.grid()
+
+    def update(self) -> None:
+        # Can certainly be improved
+        self.emp.Address.address = self.permittedInfo.variables[0][1].get()
+        self.emp.Address.city = self.permittedInfo.variables[1][1].get()
+        self.emp.Address.state = self.permittedInfo.variables[2][1].get()
+        self.emp.Address.zip = self.permittedInfo.variables[3][1].get()
+        self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
+        self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
+   
+        self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
+        self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
+        self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
+
+        DB.exportDB('database.csv', True)

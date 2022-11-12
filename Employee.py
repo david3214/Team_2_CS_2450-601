@@ -2,7 +2,6 @@ from __future__ import annotations
 from datetime import datetime
 from dataclasses import dataclass
 
-from __future__ import annotations
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
 

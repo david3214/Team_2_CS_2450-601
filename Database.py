@@ -1,3 +1,4 @@
+from __future__ import annotations
 from datetime import datetime
 from xmlrpc.client import Boolean
 from Employee import INVALID_DATETIME, INVALID_STR, Employee, PERMISSION_LEVELS, INVALID_PATH
@@ -9,7 +10,7 @@ import configparser
 import dataclasses
 
 
-usrAcc = EmployeeSelf(Employee(**{"ID": 101, "Permission Level": 1}))
+usrAcc = EmployeeSelf(Employee(Emp_ID="101", Permission_level=1))
 empToContainer = {'active': 'Active', 'address': 'Address', 'apartment': 'Apartment', 'bank_info': 'BankInfo', 'city': 'City', 'commission': 'Commission', 'country': 'Country', 'D_O_B': 'DOB', 'Dept': 'Dept', 'Emp_ID': 'EmpID', 'End_Date': 'EndDate', 'home_email': 'HomeEmail', 'home_phone': 'HomePhone', 'hourly': 'Hourly',
                   'name': 'Name', 'Office_email': 'OfficeEmail', 'office_phone': 'OfficePhone', 'hashed_password': 'Password', 'pay_method': 'PayMethod', 'Permission_level': 'PermissionLevel', 'permitted_lock_on': 'PermittedLockOn', 'route': 'Route', 'SS_num': 'SSNum', 'salary': 'Salary', 'Start_Date': 'StartDate', 'state': 'State', 'Title': 'Title', 'zip': 'Zip'}
 contToEmp = dict((empToContainer[k], k)for k in empToContainer)

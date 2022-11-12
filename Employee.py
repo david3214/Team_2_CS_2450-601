@@ -1,7 +1,6 @@
 from __future__ import annotations
 from datetime import datetime
-from dataclasses import dataclass
-
+import dataclasses
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
 
@@ -20,7 +19,7 @@ pwd_context = CryptContext(
 )
 
 
-@dataclass
+@dataclasses.dataclass
 class Employee:
 
     active: bool = False
@@ -51,6 +50,22 @@ class Employee:
     state: str = INVALID_STR
     Title: str = INVALID_STR
     zip: str = INVALID_STR
+
+    def __post_init__(self):
+        for field in dataclasses.fields(Employee):
+            if type(self.__getattribute__(field.name)) == type(field.default):
+                continue
+            else:
+                t = type(field.default)
+                if t == bool:
+                    val = self.__getattribute__(field.name) == 'True'
+                elif t == datetime:
+                    val = datetime.fromisoformat(
+                        self.__getattribute__(field.name))
+                else:
+                    val = t(self.__getattribute__(field.name))
+
+                setattr(self, field.name, val)
 
     def isCorrectLogin(self, textPassword: str):
         return pwd_context.verify(textPassword, self.hashed_password)

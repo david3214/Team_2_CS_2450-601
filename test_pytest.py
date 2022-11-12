@@ -546,8 +546,6 @@ def genericVal(paramType: type):
         return "bviojnvdfu jhvdfbnkj"
     elif paramType == datetime:
         return datetime.now()
-    elif paramType == Address:
-        return Address("576 dfvahjj st", "f74g95ty", "Hell", "Texas", "US", "69666")
     elif paramType == bool:
         return False
     else:
@@ -566,7 +564,7 @@ def empFullParamNorm():
 
 
 def test_name_set():
-    emp = Employee.Employee(Name="bob")
+    emp = Employee.Employee(name="bob")
     assert emp.name == "bob"
     empC = EmployeeContainer.EmployeeAdmin(emp)
     assert empC.Name == "bob"
@@ -616,4 +614,4 @@ def test_database_import_export_full_weird(empFullParamWeird: dict, tmp_path, mo
 
 
 def test_genericValFunc():
-    assert genericVal(type(int)).__class__ is int
+    assert genericVal(type(69)).__class__ is int

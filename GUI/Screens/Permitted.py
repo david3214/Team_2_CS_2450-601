@@ -7,8 +7,8 @@
 
 
 from GUI.Screens.Profile import Profile
-from Components.Panels.GeneralInfo import GeneralInfo0
-from Components.Panels.PermittedInfo import PermittedInfo
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
+from GUI.Components.Panels.PermittedInfo import PermittedInfo
 
 
 class Permitted(Profile):

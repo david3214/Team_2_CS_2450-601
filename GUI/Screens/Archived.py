@@ -10,9 +10,9 @@
 
 
 from GUI.Screens.User import User
-from Components.Panels.GeneralInfo import GeneralInfo
-from Components.Panels.PermittedInfo import PermittedInfo
-from Components.Panels.AdminInfo import AdminInfo
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
+from GUI.Components.Panels.PermittedInfo import PermittedInfo
+from GUI.Components.Panels.AdminInfo import AdminInfo
 
 
 class Archived(User):

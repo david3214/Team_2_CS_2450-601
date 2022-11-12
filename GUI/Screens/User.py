@@ -10,13 +10,13 @@
 
 
 from GUI.Screens.Profile import Profile
-from Components.Navigation import Navigation
-from Components.Panels.GeneralInfo import GeneralInfo
-from Components.Panels.PermittedInfo import PermittedInfo
-from Components.Panels.AdminInfo import AdminInfo
+from GUI.Components.Navigation import Navigation
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
+from GUI.Components.Panels.PermittedInfo import PermittedInfo
+from GUI.Components.Panels.AdminInfo import AdminInfo
 
 
-class Admin(Profile):
+class User(Profile):
 
     def __init__(self) -> None:
         pass

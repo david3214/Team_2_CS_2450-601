@@ -5,7 +5,9 @@ from Address import Address
 from datetime import datetime
 from types import MappingProxyType
 
-adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
+adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum',
+               'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
+
 
 class EmployeeContainer():
     def __init__(self, employee: Employee) -> None:
@@ -64,11 +66,12 @@ class EmployeeContainer():
             return self._employee.hashed_password
         return INVALID_STR
 
-    @property
-    def Password(self):
-        if self.permissionList['hashed_password'][0]:
-            return self._employee.hashed_password
-        return INVALID_STR
+    @Password.setter
+    def Password(self, val: str):
+        if self.permissionList['hashed_password'][1]:
+            self._employee.setPwd(val)
+            return True
+        return False
 
     @property
     def PermittedLockOn(self):
@@ -346,6 +349,7 @@ class EmployeeContainer():
             self._employee.commission = val
             return True
         return False
+
 
 class EmployeeOther(EmployeeContainer):
     permissionList = MappingProxyType({'name': [True, False], 'address': [False, False], 'office_phone': [True, False], 'Emp_ID': [True, False], 'D_O_B': [False, False], 'SS_num': [False, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [False, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [

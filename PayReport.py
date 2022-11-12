@@ -57,21 +57,21 @@ def create_payment_info(pdf, emp):
     pdf.cell(cell_width, 8, f"Payment Type:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"{emp.PayMethod}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Salary Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"${emp.Salary:.2f}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${'{:.2f}'.format(float(emp.Salary))}", 0, 1, 'L')
 
     # Bank Info: 433898-4976 Hourly Wage: $50.00
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Bank Info:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"{emp.BankInfo}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Hourly Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"${emp.Hourly:.2f}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${'{:.2f}'.format(float(emp.Hourly))}", 0, 1, 'L')
 
     # Route #: 48786143-K Commissions:	25
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Route #:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"{emp.Route}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Commissions:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"{emp.Commision}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"{emp.Commission}", 0, 1, 'L')
 
 def generate_pay_report(emp):
     

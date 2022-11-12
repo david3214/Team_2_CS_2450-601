@@ -14,6 +14,7 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from EmployeeContainer import EmployeeContainer
+from config import DB
 from styles import background_color, btn_color, text_color, med_bold
 
 
@@ -31,7 +32,13 @@ class Archived(Profile):
         self.permittedInfo = PI(self, btn_color, locked=False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=lambda: master.emp.Active(True))
+        self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=self.unarchive)
         self.unarchiveBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()
+
+
+    def unarchive(self):
+        self.emp.Active = True
+        DB.exportDB('database.csv', True)
+        # TODO: Should print success msg or switchFrames

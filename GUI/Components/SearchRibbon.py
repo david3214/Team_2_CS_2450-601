@@ -9,7 +9,7 @@ from PIL import Image, ImageTk
 from typing import Type
 
 import GUI.Components.Panels.AdvancedSearch
-import GUI.Screens.AddEmployee
+from GUI.Screens.AddEmployee import AddEmployee
 from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, btn_color, sm_bold, med_text, text_color
 from config import userSession
@@ -56,7 +56,7 @@ class SearchRibbon(tk.Frame):
             case 'advanced_search':
                 self.master.advancedSearch()
             case 'add_employee':
-                self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root))
+                self.root.switchFrame(AddEmployee)
 
     # Removes default text in search bar when selected
     # def delete_text(self, event):

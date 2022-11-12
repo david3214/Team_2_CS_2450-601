@@ -85,26 +85,24 @@ class ScrollableSearch(ScrolledFrame):
         child.destroy()
 
     def selectEmployee(self, event):
-      emp_container = event.widget.emp
-      if emp_container.EmpID == userSession.EmpID:
-        emp_container = userSession
-      self.root.switchFrame(self.selectFrame(emp_container), emp_container)
+        emp_container = event.widget.emp
+        if emp_container.EmpID == userSession.EmpID:
+            emp_container = userSession
+        frame = self.selectFrame(emp_container)
+        if frame:
+            self.root.switchFrame(frame, emp_container)
 
     def selectFrame(self, emp_container):
-      if emp_container.Active:
-        if emp_container is EmployeeSelf:
-          return User
-        elif emp_container is EmployeeAdmin:
-          return Admin
-        elif emp_container is EmployeeOther:
-          if emp_container.PermittedLockOn:
-            return Profile
-          else:
-            return Permitted
-      else:
+        if emp_container.Active:
+            if isinstance(emp_container, EmployeeSelf):
+                self.root.switchFrame(User)
+                return None
+            elif isinstance(emp_container, EmployeeAdmin):
+                return Admin
+            elif isinstance(emp_container, EmployeeOther):
+                return Permitted if emp_container.PermittedLockOn else Permitted
+
         return Archived
-      
-      
 
     def onHoverEmployee(self, event):
       event.widget['bg'] = 'grey'

@@ -145,7 +145,7 @@ class Database:
         Returns:
             _type_: _description_
         """
-        if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
+        if PERMISSION_LEVELS[int(selfEmployee.PermissionLevel)] == 'admin':
             return EmployeeAdmin(targetEmployee)
         elif targetEmployee is selfEmployee._employee:
             return EmployeeSelf(targetEmployee)

@@ -10,7 +10,7 @@ INVALID_STR: Final[str] = ""
 INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
 
-PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
+PERMISSION_LEVELS: Final[dict] = dict({1: 'admin', 0: 'user'})
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],

@@ -47,7 +47,7 @@ class AdvancedSearch(tk.Frame):
         tk.Label(self, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
             .grid(row=0, column=0, columnspan=2, sticky='EW')
         for i, field in enumerate(self.fields):
-            if field is 'View Archived' and userSession.PermissionLevel != 1:
+            if field == 'View Archived' and userSession.PermissionLevel != 1:
                 continue
             tk.Label(self, text=field, font=med_text, bg=bg_color,
                      foreground=text_color).grid(row=i + 1, column=0, sticky='W')
@@ -63,6 +63,8 @@ class AdvancedSearch(tk.Frame):
         if userSession.PermissionLevel == 1:
             self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
             self.archive_toggle.grid(row=9, column=1, sticky='E')
+        else:
+            self.archive_toggle = None
 
         # Creates buttons for searching for/adding employees
         self.search_btn = tk.Button(self, text='Search', font=med_bold, bg=btn_color,
@@ -87,8 +89,10 @@ class AdvancedSearch(tk.Frame):
         for key, value in self.entries.items():
             if value.get() != '' and value.get() != key:
                 nonEmpties[self.fieldsToDB[key]] = value.get()
-        # if the user is not an admin they can't search for archived
-        nonEmpties['Archived'] = self.archive_toggle.IsEnabled and userSession.PermissionLevel == 1
+        if self.archive_toggle == None:
+            nonEmpties['Archived'] = False
+        else:
+            nonEmpties['Archived'] = self.archive_toggle.IsEnabled
         return nonEmpties
 
     # Removes default text in search bar when selected

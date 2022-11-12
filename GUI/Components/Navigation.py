@@ -9,6 +9,8 @@ from styles import nav_color, med_bold, text_color, med_bold_underline
 import GUI.Screens as Screens
 from PIL import Image, ImageTk
 from GUI.Screens.User import User
+from GUI.Screens.Admin import Admin
+from EmployeeContainer import EmployeeAdmin
 from config import userSession
 
 class Navigation(tk.Frame):
@@ -93,7 +95,10 @@ class Navigation(tk.Frame):
             case 'Search':
                 self.master.switchFrame(Screens.Search.Search)
             case 'Profile':
-                self.master.switchFrame(User)
+                if userSession.PermissionLevel == 1:
+                    self.master.switchFrame(Admin, EmployeeAdmin(userSession._employee))
+                else:
+                    self.master.switchFrame(User)
         return
 
     def highlight_section(self, section):

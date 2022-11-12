@@ -7,4 +7,4 @@ class Address:
         self.zip = kwargs.get("Zip", "")
 
     def __str__(self) -> str:
-        return str(self.__dict__)
+        return str(self.address + self.city + self.state + self.country + self.zip)

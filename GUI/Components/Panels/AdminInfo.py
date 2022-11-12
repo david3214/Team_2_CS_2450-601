@@ -30,22 +30,22 @@ class AdminInfo(Info):
             self.entries[0].grid(row=0, column=1)
 
             # Template for testing the validation of Entries
-            self.testValidateWrapper = (self.master.register(self.testValidate), '%P')
-            self.entries[1].configure(validatecommand=self.testValidateWrapper)
-            self.variables[1][1].trace_add('write', self.testUpdate)
+            # self.testValidateWrapper = (self.master.register(self.testValidate), '%P')
+            # self.entries[1].configure(validatecommand=self.testValidateWrapper)
+            # self.variables[1][1].trace_add('write', self.testUpdate)
 
 
-    @staticmethod
-    def testUpdate(*args: tuple) -> None:
-        for arg in args:
-            print(arg)
+    # @staticmethod
+    # def testUpdate(*args: tuple) -> None:
+    #     for arg in args:
+    #         print(arg)
 
 
-    @staticmethod
-    def testValidate(input: char) -> bool:
-        print(input)
-        return False
+    # @staticmethod
+    # def testValidate(input: char) -> bool:
+    #     print(input)
+    #     return False
 
 
     def vals(self) -> dict:
-        return {key: self.variables[i][1].get() for i, key in enumerate(['pay_type', 'bank_info', 'route', 'salary', 'hourly', 'commission', 'D_O_B', 'SS_num'])}
+        return {key: self.variables[i][1].get() for i, key in enumerate(['PayMethod', 'Account', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN'])}

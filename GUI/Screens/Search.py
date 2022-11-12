@@ -45,7 +45,7 @@ class Search(tk.Frame):
         self.inner_frame.grid_columnconfigure(0, weight=1)
 
         # Loads in employees from the database
-        with open('employees.txt', 'r') as file:
+        with open('employees.csv', 'r') as file:
             self.employee_img = ImageTk.PhotoImage(image=Image.open('./images/profile.png'))
 
             for i, line in enumerate(file):

@@ -96,7 +96,7 @@ class AdvancedSearch(tk.Frame):
 
     # Loads the employee list, with or without filtering
     def load_employees(self, container, image, entries=None):
-        with open('employees.txt', 'r') as file:
+        with open('employees.csv', 'r') as file:
             # if entries:
             #     filtered_employees = self.filter_employees(entries)
 

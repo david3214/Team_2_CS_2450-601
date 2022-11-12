@@ -28,6 +28,7 @@ class Info(tk.Frame):
         if self.editable:
             self.variables = [(field, tk.StringVar()) for field in self.fields]
             self.entries = [tk.Entry(self, **entryOptions) for variable in self.variables] if entryOptions else [tk.Entry(self, textvariable=variable[1], validate='key') for variable in self.variables]
+            [entry.insert(0, self.values[i]) for i, entry in enumerate(self.entries)]
         else:
             self.valueLabels = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
 

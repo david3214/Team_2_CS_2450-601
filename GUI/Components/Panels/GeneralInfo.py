@@ -14,7 +14,7 @@ class GeneralInfo(Info):
         super().__init__(master, bgColor, editable)
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
-        self.values = [master.emp.getFName(), master.emp.getLName, master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
+        self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
 
         self.img  = tk.PhotoImage(file='images/userProfile.png')
         self.imgL = tk.Label(self, image=self.img)
@@ -24,7 +24,7 @@ class GeneralInfo(Info):
 
 
     def vals(self) -> dict:
-        remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['office_phone', 'Office_email', 'Emp_ID', 'Title', 'Dept', 'Start_Date', 'End_Date', 'Permission_level'])}
-        remap['name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
+        remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['OfficePhone', 'Email', 'EmpID', 'Title', 'Dept', 'StartDate', 'EndDate', 'Permission Level'])}
+        remap['Name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
 
         return remap

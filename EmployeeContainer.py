@@ -65,12 +65,6 @@ class EmployeeContainer():
         return INVALID_STR
 
     @property
-    def Password(self):
-        if self.permissionList['hashed_password'][0]:
-            return self._employee.hashed_password
-        return INVALID_STR
-
-    @property
     def PermittedLockOn(self):
         if self.permissionList['permitted_lock_on'][0]:
             return self._employee.permitted_lock_on
@@ -113,13 +107,13 @@ class EmployeeContainer():
         raise Exception
 
     @property
-    def Addr(self):
+    def Address(self):
         if self.PermittedLockOn:
             if self.permissionList['address'][0]:
                 return self._employee.address
             else:
                 return INVALID_ADDRESS
-        return self._employee.home_email
+        return self._employee.address
 
     @property
     def HomeEmail(self):
@@ -200,7 +194,7 @@ class EmployeeContainer():
             return True
         return False
 
-    @Addr.setter
+    @Address.setter
     def Address(self, val: Address):
         if self.permissionList['address'][1]:
             self._employee.address = val

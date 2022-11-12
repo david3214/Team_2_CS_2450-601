@@ -36,7 +36,12 @@ class AddEmployee(Profile):
         self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
-        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=lambda: DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals())))
+        self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=self.addEmp)
         self.addEmployeeBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()
+
+
+    def addEmp(self) -> None:
+        DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()))
+        DB.exportDB('database.csv', True)

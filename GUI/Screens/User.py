@@ -14,7 +14,7 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from config import userSession
+from config import userSession, DB
 from styles import background_color, text_color, btn_color, med_bold
 
 
@@ -43,13 +43,21 @@ class User(Profile):
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
-        self.updateBtn.grid(column=1, row=2, padx=(0, 15))
+        self.updateBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
         self.grid()
 
     def update(self) -> None:
-        for i, setter in enumerate(self.permittedInfo.values):
-            setter(self.adminInfo.variables[i][1].get())
-            
-        for i, setter in enumerate(self.generalInfo.values):
-            setter(self.adminInfo.variables[i][1].get())
+        # Can certainly be improved
+        self.emp.Address.address = self.permittedInfo.variables[0][1].get()
+        self.emp.Address.city = self.permittedInfo.variables[1][1].get()
+        self.emp.Address.state = self.permittedInfo.variables[2][1].get()
+        self.emp.Address.zip = self.permittedInfo.variables[3][1].get()
+        self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
+        self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
+   
+        self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
+        self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
+        self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
+
+        DB.exportDB('database.csv', True)

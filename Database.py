@@ -189,8 +189,8 @@ class Database:
         else:
             return EmployeeOther(targetEmployee)
 
-    def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+    def __eq__(self, other: Database):
+        return self.employeeList == other.employeeList
 
     def empCount(self):
         return len(self.employeeList)

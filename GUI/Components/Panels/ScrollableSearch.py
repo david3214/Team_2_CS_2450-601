@@ -9,13 +9,13 @@ from GUI.Screens.Archived import Archived
 from EmployeeContainer import EmployeeSelf, EmployeeAdmin, EmployeeOther
 from typing import Type
 from styles import background_color, sm_text
-from config import userSession
+from config import userSession, fetch_resource
 
 class ScrollableSearch(ScrolledFrame):
 
     def __init__(self, master: Type[tk.Tk], root: Type[tk.Tk], bg_color: str = background_color) -> None:
         super().__init__(master, bg=bg_color)
-        self.employee_img = ImageTk.PhotoImage(image=Image.open('./images/ListEmp.png').resize((35,35)))
+        self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./images/ListEmp.png')).resize((35,35)))
 
         self.root = root
         self.grid_rowconfigure(0, weight=1)

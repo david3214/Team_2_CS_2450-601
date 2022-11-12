@@ -1,3 +1,7 @@
+'''
+Sets up database and user session.
+'''
+
 from Database import Database
 from pathlib import Path
 from Employee import Employee
@@ -6,4 +10,3 @@ import os
 
 DB = Database(Path(os.path.abspath("database.csv")))
 userSession = EmployeeSelf(Employee(**{'Permission Level': 1}))
-

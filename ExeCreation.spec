@@ -28,6 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
+    icon=['images\\employee-image.png'],
     name='main',
     debug=False,
     strip=False,

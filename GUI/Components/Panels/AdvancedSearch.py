@@ -5,120 +5,99 @@
 '''
 
 import tkinter as tk
-from tkscrolledframe import ScrolledFrame
-from PIL import Image, ImageTk
 from typing import Type
 
 import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
 from GUI.Components.UnderlineEntry import UnderlineEntry
-from styles import background_color, text_color, btn_color, sm_text, sm_bold, med_text
-
+from styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
+from config import DB, userSession
 
 class AdvancedSearch(tk.Frame):
 
-    def __init__(self, master: Type[tk.Tk], bg_color: str = background_color) -> None:
+    fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
+                  'Phone #': 'oPhone', 'Start Date': 'StartDate', 'End Date': 'EndDate'}
+    def __init__(self, master: Type[tk.Tk], root: Type[tk.Tk], bg_color: str = background_color) -> None:
 
         super().__init__(master, bg=bg_color)
 
-        # Configures grid
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=10)
-        self.grid(row=1, column=0, sticky='NSEW')
-
+        self.root = root
         # Creates/configures left-most frame for advanced search widgets
-        self.advanced_search_tab = tk.Frame(self, bg=bg_color)
-        self.advanced_search_tab.grid_rowconfigure(0, weight=3)
-        self.advanced_search_tab.grid_rowconfigure(1, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(2, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(3, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(4, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(5, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(6, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(7, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(8, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(9, weight=1)
-        self.advanced_search_tab.grid_rowconfigure(10, weight=2)
-        self.advanced_search_tab.grid_rowconfigure(11, weight=5)
-        self.advanced_search_tab.grid_columnconfigure(0, weight=1)
-        self.advanced_search_tab.grid_columnconfigure(1, weight=2)
-        self.advanced_search_tab.grid(row=0, column=0, padx=15, pady=15, sticky='NSEW')
+        self.grid_rowconfigure(0, weight=3)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+        self.grid_rowconfigure(6, weight=1)
+        self.grid_rowconfigure(7, weight=1)
+        self.grid_rowconfigure(8, weight=1)
+        self.grid_rowconfigure(9, weight=1)
+        self.grid_rowconfigure(10, weight=2)
+        self.grid_rowconfigure(11, weight=5)
+        self.grid_columnconfigure(0, weight=1)
+        self.grid_columnconfigure(1, weight=2)
 
         # Defines the advanced search categories
         self.fields = ['Department', 'First Name', 'Last Name', 'Employee ID', 'Title', 'Phone #', 'Start Date',
                        'End Date', 'View Archived']
 
         # Creates labels for advanced search tab
-        tk.Label(self.advanced_search_tab, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
+        tk.Label(self, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
             .grid(row=0, column=0, columnspan=2, sticky='EW')
         for i, field in enumerate(self.fields):
-            tk.Label(self.advanced_search_tab, text=field, font=med_text, bg=bg_color,
+            if field == 'View Archived' and userSession.PermissionLevel != 1:
+                continue
+            tk.Label(self, text=field, font=med_text, bg=bg_color,
                      foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
         # Creates entry fields for advanced search tab
         self.entries = {}
         for i, field in enumerate(self.fields[:8]):
-            entry_field = UnderlineEntry(self.advanced_search_tab, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
+            entry_field = UnderlineEntry(self, name=field, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
             entry_field.grid(row=i+1, column=1, sticky='E')
+            entry_field.bind('<Return>', self.searchAdvanced)
             self.entries[field] = entry_field
-        self.archive_toggle = Image_Lbl(self.advanced_search_tab, bgColor=bg_color, width=60, height=30)
-        self.archive_toggle.grid(row=9, column=1, sticky='E')
+        
+        if userSession.PermissionLevel == 1:
+            self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
+            self.archive_toggle.grid(row=9, column=1, sticky='E')
+        else:
+            self.archive_toggle = None
 
         # Creates buttons for searching for/adding employees
-        tk.Button(self.advanced_search_tab, text='Search', font=sm_bold, bg=btn_color).grid(row=10, column=0,
-                                                                                            columnspan=2,
-                                                                                            sticky='EW')
-        tk.Button(self.advanced_search_tab, text='Add Employee', font=sm_bold, bg=btn_color,
-                  command=self.switch_frame).grid(row=11, column=0, columnspan=2, sticky='SEW')
-
-        # Creates/configures scroll frame component
-        self.scroll_frame = ScrolledFrame(self)
-        self.scroll_frame.grid_rowconfigure(0, weight=1)
-        self.scroll_frame.grid_columnconfigure(0, weight=1)
-        self.scroll_frame.grid(row=0, column=1, sticky='NSEW')
-
-        # Allows the scroll wheel to scroll the employee list
-        self.scroll_frame.bind_scroll_wheel(master)
-
-        # Creates/configures frame to display employees
-        self.inner_frame = self.scroll_frame.display_widget(tk.Frame, bg=bg_color, fit_width=True)
-        self.inner_frame.grid_columnconfigure(0, weight=1)
-
-        # Loads in employees from the database
-        self.employee_image = ImageTk.PhotoImage(Image.open('Images/profile.png'))
-        self.load_employees(self.inner_frame, self.employee_image)
+        self.search_btn = tk.Button(self, text='Search', font=med_bold, bg=btn_color,
+                                    foreground=text_color, command=self.searchAdvanced)
+        self.search_btn.grid(row=10, column=0, columnspan=2, sticky='EW', padx=20)
+        if userSession.PermissionLevel == 1:
+            self.add_btn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color,
+                                    foreground=text_color, command=self.addEmployee)
+            self.add_btn.grid(row=11, column=0, columnspan=2, sticky='SEW', padx=20)
 
     # Switches windows when button is pressed
-    def switch_frame(self):
-        self.master.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.master))
+    def addEmployee(self):
+        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root))
 
-    # Loads the employee list, with or without filtering
-    def load_employees(self, container, image, entries=None):
-        with open('employees.txt', 'r') as file:
-            # if entries:
-            #     filtered_employees = self.filter_employees(entries)
+    def searchAdvanced(self, *args):
+        employees = DB.search(**self.getAllNonEmptyEntries())
+        self.master.updateScrollableSearch(employees)
 
-            for i, line in enumerate(file):
-                employee_frame = tk.Frame(container)
-                employee_frame.grid_columnconfigure(0, weight=1)
-                employee_frame.grid_columnconfigure(1, weight=4)
-                employee_frame.grid_columnconfigure(2, weight=4)
-                employee_frame.grid_columnconfigure(3, weight=4)
-                employee_frame.grid(row=i, column=0, pady=1, sticky='NSEW')
+    def getAllNonEmptyEntries(self):
+        # We only want to search for fields that have actual values and not just default values
+        nonEmpties = dict()
+        for key, value in self.entries.items():
+            if value.get() != '' and value.get() != key:
+                nonEmpties[self.fieldsToDB[key]] = value.get()
+        if self.archive_toggle == None:
+            nonEmpties['Archived'] = False
+        else:
+            nonEmpties['Archived'] = self.archive_toggle.IsEnabled
+        return nonEmpties
 
-                data = line.split(',')
-
-                employee_image = tk.Label(employee_frame)
-                employee_image.config(image=image)
-                employee_image.grid(row=0, column=0, padx=5)
-
-                tk.Label(employee_frame, text=f'Employee: {data[1]}', font=sm_text).grid(row=0, column=1, padx=10, pady=(15, 0),
-                                                                                         sticky='W')
-                tk.Label(employee_frame, text=f'Employee ID: {data[0]}', font=sm_text).grid(row=0, column=2,
-                                                                                            sticky='W')
-                tk.Label(employee_frame, text=f'Dept: TBA', font=sm_text).grid(row=0, column=3, padx=5, sticky='E')
-
-    # def filter_employees(self, entries):
-    #     pass
+    # Removes default text in search bar when selected
+    def delete_text(self, event):
+        print(event)
+        if self.default_text:
+            self.search_bar.delete(0, tk.END)
+            self.default_text = False

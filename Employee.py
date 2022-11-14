@@ -12,6 +12,7 @@ INVALID_DATETIME: Final[datetime] = datetime.min
 INVALID_PATH: Final[Path] = Path(" ")
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
+
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],
     default="pbkdf2_sha256",

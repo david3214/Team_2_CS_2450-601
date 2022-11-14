@@ -6,17 +6,19 @@
 '''
 
 
-from GUI.Screens.Profile import Profile
-from Components.Panels.GeneralInfo import GeneralInfo0
-from Components.Panels.PermittedInfo import PermittedInfo
-
+import tkinter as tk
+from typing import Type
+from .Profile import Profile
+from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from EmployeeContainer import EmployeeContainer
+from styles import background_color, btn_color
 
 class Permitted(Profile):
+    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+        super().__init__(master, emp, bgColor)
 
-    def __init__(self) -> None:
-        pass
+        self.permittedInfo.destroy()
+        self.permittedInfo = PI(self, btn_color, locked=False)
+        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=(0, 15), columnspan=3)
 
-# Create new window components to display information
-#   Image
-#   General employee information
-#   Permitted information
+        self.grid()

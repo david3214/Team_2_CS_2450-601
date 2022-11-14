@@ -59,7 +59,7 @@ class Database:
         Returns:
             Boolean: true if add success
         """
-        if len(self.search(Employee_ID=kwargs["Emp_ID"])) > 0:
+        if len(self.search(Employee_ID=kwargs["EmpID"])) > 0:
             return False
         emp = Employee(**kwargs)
         if emp.hashed_password == INVALID_STR and emp.Emp_ID != INVALID_STR:
@@ -67,7 +67,7 @@ class Database:
         self.employeeList.append(emp)
         return True
 
-    def search(self, Department: str = INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME) -> list:
+    def search(self, Department: str = INVALID_STR, name: str=INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME, Archived: bool = True) -> list:
         """_summary_
 
         Args:
@@ -88,22 +88,20 @@ class Database:
         for emp in self.employeeList:
             emp = self.__employeeContainment(emp, userSession)
             valid: bool = True
-            valid = valid and (
-                Department == INVALID_STR or Department in emp.Dept)
-            valid = valid and (fName == INVALID_STR or fName in emp.getFName())
-            valid = valid and (lName == INVALID_STR or lName in emp.getLName())
-            valid = valid and (
-                Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
-            valid = valid and (Title == INVALID_STR or Title in emp.Title)
-            valid = valid and (
-                oPhone == INVALID_STR or oPhone == emp.OfficePhone)
-            valid = valid and (
-                StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
-            valid = valid and (
-                EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
+            valid = valid and (Department == INVALID_STR or Department.lower() in emp.Dept.lower())
+            valid = valid and (name == INVALID_STR or name.lower() in emp.Name.lower())
+            valid = valid and (fName == INVALID_STR or fName.lower() in emp.getFName().lower())
+            valid = valid and (lName == INVALID_STR or lName.lower() in emp.getLName().lower())
+            valid = valid and (Employee_ID == INVALID_STR or Employee_ID == emp.EmpID)
+            valid = valid and (Title == INVALID_STR or Title.lower() in emp.Title.lower())
+            valid = valid and (oPhone == INVALID_STR or oPhone == emp.OfficePhone)
+            valid = valid and (StartDate == INVALID_DATETIME or StartDate == emp.StartDate)
+            valid = valid and (EndDate == INVALID_DATETIME or EndDate == emp.EndDate)
+            valid = valid and (Archived or (not Archived and emp.Active))
             # if any of the statements after "valid and not" are True then valid will be False
             if valid:
                 foundList.append(emp)
+        foundList.sort(key = lambda x: x.Name)
         return foundList
 
     def importDB(self, importFPath: Path = INVALID_PATH) -> None:
@@ -182,7 +180,7 @@ class Database:
         Returns:
             _type_: _description_
         """
-        if PERMISSION_LEVELS[selfEmployee.PermissionLevel] == 'admin':
+        if PERMISSION_LEVELS[int(selfEmployee.PermissionLevel)] == 'admin':
             return EmployeeAdmin(targetEmployee)
         elif targetEmployee is selfEmployee._employee:
             return EmployeeSelf(targetEmployee)

@@ -9,6 +9,7 @@ from pathlib import Path
 INVALID_STR: Final[str] = ""
 #INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
+
 INVALID_PATH: Final[Path] = Path(" ")
 PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
@@ -64,7 +65,6 @@ class Employee:
                         self.__getattribute__(field.name))
                 else:
                     val = t(self.__getattribute__(field.name))
-
                 setattr(self, field.name, val)
 
     def isCorrectLogin(self, textPassword: str):

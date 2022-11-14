@@ -1,3 +1,7 @@
+'''
+    Class for a complete address made up of a street, city, state, country, and zip code.
+'''
+
 class Address:
     def __init__(self, address: str = "", apartment: str = "", city: str = "", state: str = "", country: str = "", zip: str = "", **kwargs) -> None:
         self.address = kwargs.get("Address", "")

@@ -1,6 +1,11 @@
+'''
+    Generates pay reports.
+'''
+
 from fpdf import FPDF
 from tkinter import filedialog
 from Employee import Employee
+from config import fetch_resource
 
 WIDTH = 210
 HEIGHT = 297
@@ -22,7 +27,7 @@ def set_fonts(pdf, type="header"):
         pdf.set_font('Arial', '', 13)
 
 def create_heading(pdf, emp):
-    pdf.image("./images/border.png", BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
+    pdf.image(str(fetch_resource("./images/border.png").absolute()), BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
 
     pdf.ln(MARGIN)
     set_fonts(pdf, "header")
@@ -30,7 +35,7 @@ def create_heading(pdf, emp):
     
     set_fonts(pdf, "heading2")
     pdf.cell(MARGIN)
-    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: {emp.name}", 0, 1, 'L')
+    pdf.cell(WIDTH - (BORDER_MARGIN * 2), 10, f"Employee: {emp.Name}", 0, 1, 'L')
 
     set_fonts(pdf, "heading3")
     pdf.cell(MARGIN)
@@ -51,23 +56,23 @@ def create_payment_info(pdf, emp):
     cell_width = (WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2)) / 4
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Payment Type:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"{emp.PayType}", 0, 0, 'L')
+    pdf.cell(cell_width, 8, f"{emp.PayMethod}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Salary Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"${emp.Salary:.2f}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${'{:.2f}'.format(float(emp.Salary))}", 0, 1, 'L')
 
     # Bank Info: 433898-4976 Hourly Wage: $50.00
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Bank Info:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"{emp.BankInfo}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Hourly Wage:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"${emp.Hourly:.2f}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"${'{:.2f}'.format(float(emp.Hourly))}", 0, 1, 'L')
 
     # Route #: 48786143-K Commissions:	25
     pdf.cell(MARGIN)
     pdf.cell(cell_width, 8, f"Route #:", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"{emp.Route}", 0, 0, 'L')
     pdf.cell(cell_width, 8, f"Commissions:", 0, 0, 'L')
-    pdf.cell(cell_width, 8, f"{emp.Commision}", 0, 1, 'L')
+    pdf.cell(cell_width, 8, f"{emp.Commission}", 0, 1, 'L')
 
 def generate_pay_report(emp):
     
@@ -75,10 +80,8 @@ def generate_pay_report(emp):
     pdf.add_page()
     create_heading(pdf, emp)
     create_payment_info(pdf, emp)
-
-    pdf.image("./images/employee-image.png", 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
+    pdf.image(str(fetch_resource("./images/employee-image.png").absolute()), 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
     
     pdfPath = filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
     if pdfPath:
         pdf.output(pdfPath, 'F')
-

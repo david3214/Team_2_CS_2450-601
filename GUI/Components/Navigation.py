@@ -8,6 +8,10 @@ from typing import Type
 from styles import nav_color, med_bold, text_color, med_bold_underline
 import GUI.Screens as Screens
 from PIL import Image, ImageTk
+from GUI.Screens.User import User
+from GUI.Screens.Admin import Admin
+from EmployeeContainer import EmployeeAdmin
+from config import userSession, fetch_resource
 
 class Navigation(tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str=nav_color) -> None:
@@ -33,7 +37,7 @@ class Navigation(tk.Frame):
     def create_gui_elements(self):
 
         # Profile Button
-        img = Image.open('./images/profile.png')
+        img = Image.open(fetch_resource('./images/profile.png'))
         img = img.resize((25, 40))
         self.profile_image = ImageTk.PhotoImage(image=img)
         self.profile_img = tk.Label(self, bg=nav_color)
@@ -46,7 +50,7 @@ class Navigation(tk.Frame):
 
 
         # Search Button
-        img = Image.open('./images/Search.png')
+        img = Image.open(fetch_resource('./images/Search.png'))
         img = img.resize((35, 40))
         self.search_image = ImageTk.PhotoImage(image=img)
         self.search_img = tk.Label(self, bg=nav_color)
@@ -57,17 +61,22 @@ class Navigation(tk.Frame):
         self.search_img.bind('<Button-1>', lambda x: self.switch_frame('Search'))    
         self.search.bind('<Button-1>', lambda x: self.switch_frame('Search'))    
         
-        # Reports Button
-        img = Image.open('./images/Reports.png')
-        img = img.resize((35, 40))
-        self.reports_image = ImageTk.PhotoImage(image=img)
-        self.reports_img = tk.Label(self, bg=nav_color)
-        self.reports_img.config(image=self.reports_image)
+        if userSession.PermissionLevel == 1:
+            # Reports Button
+            img = Image.open(fetch_resource('./images/Reports.png'))
+            img = img.resize((35, 40))
+            self.reports_image = ImageTk.PhotoImage(image=img)
+            self.reports_img = tk.Label(self, bg=nav_color)
+            self.reports_img.config(image=self.reports_image)
 
-        self.reports = tk.Label(self, text='Reports', font=med_bold, 
-                                bg=nav_color, foreground=text_color)
-        self.reports_img.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
-        self.reports.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
+            self.reports = tk.Label(self, text='Reports', font=med_bold, 
+                                    bg=nav_color, foreground=text_color)
+            self.reports_img.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
+            self.reports.bind('<Button-1>', lambda x: self.switch_frame('Reports'))
+        else:
+            self.reports_image = None
+            self.reports_img = None
+            self.reports = None
 
     def draw_nav_bar(self):
         # Layout
@@ -75,8 +84,9 @@ class Navigation(tk.Frame):
         self.profile.grid(row=0, column=1, sticky='W')
         self.search_img.grid(row=0, column=2, sticky='E')
         self.search.grid(row=0, column=3, sticky='W')
-        self.reports_img.grid(row=0, column=4, sticky='E')
-        self.reports.grid(row=0, column=5, sticky='W')
+        if self.reports != None:
+            self.reports_img.grid(row=0, column=4, sticky='E')
+            self.reports.grid(row=0, column=5, sticky='W')
 
     def switch_frame(self, frame):
         match (frame):
@@ -85,7 +95,10 @@ class Navigation(tk.Frame):
             case 'Search':
                 self.master.switchFrame(Screens.Search.Search)
             case 'Profile':
-                self.master.switchFrame(Screens.Profile.Profile)
+                if userSession.PermissionLevel == 1:
+                    self.master.switchFrame(Admin, EmployeeAdmin(userSession._employee))
+                else:
+                    self.master.switchFrame(User)
         return
 
     def highlight_section(self, section):

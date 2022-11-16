@@ -1,16 +1,17 @@
+from __future__ import annotations
 from datetime import datetime
-
+import dataclasses
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
 
-from Address import Address
 from typing import Final
-
+from pathlib import Path
 INVALID_STR: Final[str] = ""
-INVALID_ADDRESS: Final[Address] = Address()
+#INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
 
-PERMISSION_LEVELS: Final[dict] = dict({1: 'admin', 0: 'user'})
+INVALID_PATH: Final[Path] = Path(" ")
+PERMISSION_LEVELS: Final[dict] = dict([(1, 'admin'), (0, 'user')])
 
 pwd_context = CryptContext(
     schemes=["pbkdf2_sha256"],
@@ -19,66 +20,62 @@ pwd_context = CryptContext(
 )
 
 
+@dataclasses.dataclass
 class Employee:
 
-    def __init__(self, **kwargs) -> None:
-        """_summary_
+    active: bool = False
+    address: str = INVALID_STR
+    apartment: str = INVALID_STR
+    bank_info: str = INVALID_STR
+    city: str = INVALID_STR
+    commission: str = INVALID_STR
+    country: str = INVALID_STR
+    D_O_B: datetime = INVALID_DATETIME
+    Dept: str = INVALID_STR
+    Emp_ID: str = INVALID_STR
+    End_Date: datetime = INVALID_DATETIME
+    hashed_password: str = INVALID_STR
+    home_email: str = INVALID_STR
+    home_phone: str = INVALID_STR
+    hourly: str = INVALID_STR
+    name: str = INVALID_STR
+    Office_email: str = INVALID_STR
+    office_phone: str = INVALID_STR
+    pay_method: str = INVALID_STR
+    Permission_level: int = 0
+    permitted_lock_on: bool = True
+    route: str = INVALID_STR
+    salary: str = INVALID_STR
+    SS_num: int = -1
+    Start_Date: datetime = INVALID_DATETIME
+    state: str = INVALID_STR
+    Title: str = INVALID_STR
+    zip: str = INVALID_STR
 
-        Args:
-            name (str, optional): _description_. Defaults to INVALID_STR.
-            address (Address, optional): _description_. Defaults to INVALID_ADDRESS.
-            office_phone (str, optional): _description_. Defaults to INVALID_STR.
-            Emp_ID (str, optional): _description_. Defaults to INVALID_STR.
-            D_O_B (datetime, optional): _description_. Defaults to INVALID_DATETIME.
-            SS_num (int, optional): _description_. Defaults to -1.
-            Start_Date (datetime, optional): _description_. Defaults to INVALID_DATETIME.
-            End_Date (datetime, optional): _description_. Defaults to INVALID_DATETIME.
-            Permission_level (int, optional): _description_. Defaults to 0.
-            Title (str, optional): _description_. Defaults to INVALID_STR.
-            Dept (str, optional): _description_. Defaults to INVALID_STR.
-            Office_email (str, optional): _description_. Defaults to INVALID_STR.
-            hashed_password (str, optional): _description_. Defaults to INVALID_STR.
-            active (bool, optional): _description_. Defaults to False.
-            permitted_lock_on (bool, optional): _description_. Defaults to True.
-            home_email (str, optional): _description_. Defaults to INVALID_STR.
-            home_phone (str, optional): _description_. Defaults to INVALID_STR.
-            pay_type (str, optional): _description_. Defaults to INVALID_STR.
-            bank_info (str, optional): _description_. Defaults to INVALID_STR.
-            route (str, optional): _description_. Defaults to INVALID_STR.
-            salary (str, optional): _description_. Defaults to INVALID_STR.
-            hourly (str, optional): _description_. Defaults to INVALID_STR.
-            commission (str, optional): _description_. Defaults to INVALID_STR.
-        """
-        self.name = kwargs.get("Name", INVALID_STR)
-        self.address = Address(**kwargs)
-        self.office_phone = kwargs.get("OfficePhone", INVALID_STR)
-        self.Emp_ID = kwargs.get("EmpID", INVALID_STR) if kwargs.get(
-            "ID", INVALID_STR) == INVALID_STR else kwargs.get("ID", INVALID_STR)
-        self.D_O_B = kwargs.get("DOB", INVALID_DATETIME)
-        self.SS_num = kwargs.get("SSNum", -1) if kwargs.get("SSN", -1) == -1 else kwargs.get("SSN", -1)
-        self.Start_Date = kwargs.get("StartDate", INVALID_DATETIME)
-        self.End_Date = kwargs.get("EndDate", INVALID_DATETIME)
-        self.Permission_level = int(kwargs.get("PermissionLevel", 0))
-        self.Title = kwargs.get("Title", INVALID_STR)
-        self.Dept = kwargs.get("Dept", INVALID_STR)
-        self.Office_email = kwargs.get("Email", INVALID_STR)
-        self.active = kwargs.get("Active", 'True') == 'True'
-        self.permitted_lock_on = kwargs.get("Permitted", 0)
-        self.home_email = kwargs.get("HomeEmail", INVALID_STR)
-        self.home_phone = kwargs.get("HomePhone", INVALID_STR)
-        self.pay_method = kwargs.get("PayMethod", 1)
-        self.bank_info = kwargs.get("Account", INVALID_STR)
-        self.route = kwargs.get("Route", INVALID_STR)
-        self.salary = kwargs.get("Salary", INVALID_STR)
-        self.hourly = kwargs.get("Hourly", INVALID_STR)
-        self.commission = kwargs.get("Commission", INVALID_STR)
-        self.hashed_password = kwargs.get("Password", INVALID_STR) if kwargs.get(
-            "Hashed Password", INVALID_STR) == INVALID_STR else kwargs.get("Hashed Password", INVALID_STR)
-        if self.hashed_password == INVALID_STR and self.Emp_ID != INVALID_STR:
-            self.hashed_password = pwd_context.hash(str(self.Emp_ID))
+    def __post_init__(self):
+        for field in dataclasses.fields(Employee):
+            if type(self.__getattribute__(field.name)) == type(field.default):
+                continue
+            else:
+                t = type(field.default)
+                if t == bool:
+                    val = self.__getattribute__(field.name) == 'True'
+                elif t == datetime:
+                    val = datetime.fromisoformat(
+                        self.__getattribute__(field.name))
+                else:
+                    val = t(self.__getattribute__(field.name))
+                setattr(self, field.name, val)
 
     def isCorrectLogin(self, textPassword: str):
         return pwd_context.verify(textPassword, self.hashed_password)
 
     def setPwd(self, textPassword: str):
         self.hashed_password = pwd_context.hash(textPassword)
+
+    def __eq__(self, other: Employee):
+        return self.__dict__ == other.__dict__
+
+
+EMP_FIELDS: Final[dict[str, type]] = dict(
+    [(k, type(Employee().__dict__[k])) for k in Employee().__dict__.keys()])

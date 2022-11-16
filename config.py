@@ -10,6 +10,7 @@ import os
 import sys
 from pathlib import Path
 
+
 def fetch_resource(rsrc_path):
   """Loads resources from the temp dir used by pyinstaller executables"""
   try:
@@ -21,6 +22,4 @@ def fetch_resource(rsrc_path):
 
 # DB = Database(Path(os.path.abspath("database.csv")))
 DB = Database(fetch_resource(r"database/database.csv"))
-userSession = EmployeeSelf(Employee(**{'Permission Level': 1}))
-
-
+userSession = EmployeeSelf(Employee(Permission_level=1))

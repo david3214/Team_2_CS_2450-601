@@ -11,4 +11,7 @@ class Address:
         self.zip = kwargs.get("Zip", "")
 
     def __str__(self) -> str:
-        return str(self.address + self.city + self.state + self.country + self.zip)
+        return str(self.__dict__)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__

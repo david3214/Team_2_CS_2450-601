@@ -4,7 +4,7 @@ from Employee import INVALID_STR, INVALID_DATETIME, INVALID_STR, Employee
 #from Address import Address
 from datetime import datetime
 from types import MappingProxyType
-
+import typing
 adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum',
                'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
 
@@ -244,190 +244,189 @@ class EmployeeContainer():
     @Name.setter
     def Name(self, val: str):
         if self.permissionList['name'][1]:
-            self._employee.name = val
+            self._employee.set('name',val)
             return True
         return False
 
     @Address.setter
     def Address(self, val: str):
-
         if self.permissionList['address'][1]:
-            self._employee.address = val
+            self._employee.set('address',val)
             return True
         return False
 
     @Apartment.setter
     def Apartment(self, val: str):
         if self.permissionList['apartment'][1]:
-            self._employee.apartment = val
+            self._employee.set('apartment',val)
             return True
         return False
 
     @City.setter
     def City(self, val: str):
         if self.permissionList['city'][1]:
-            self._employee.city = val
+            self._employee.set('city',val)
             return True
         return False
 
     @State.setter
     def State(self, val: str):
         if self.permissionList['state'][1]:
-            self._employee.state = val
+            self._employee.set('state',val)
             return True
         return False
 
     @Country.setter
     def Country(self, val: str):
         if self.permissionList['country'][1]:
-            self._employee.country = val
+            self._employee.set('country',val)
             return True
         return False
 
     @Zip.setter
     def Zip(self, val: str):
         if self.permissionList['zip'][1]:
-            self._employee.zip = val
+            self._employee.set('zip',val)
             return True
         return False
 
     @OfficePhone.setter
     def OfficePhone(self, val: str):
         if self.permissionList['office_phone'][1]:
-            self._employee.office_phone = val
+            self._employee.set('office_phone',val)
             return True
         return False
 
     @PermittedLockOn.setter
-    def PermittedLockOn(self, val: Boolean):
+    def PermittedLockOn(self, val: Boolean|str):
         if self.permissionList['permitted_lock_on'][1]:
-            self._employee.permitted_lock_on = val
+            self._employee.set('permitted_lock_on',val)
             return True
         return False
 
     @EmpID.setter
     def EmpID(self, val: str):
         if self.permissionList['Emp_ID'][1]:
-            self._employee.Emp_ID = val
+            self._employee.set('Emp_ID',val)
             return True
         return False
 
     @DOB.setter
-    def DOB(self, val: datetime):
+    def DOB(self, val: datetime|str):
         if self.permissionList['D_O_B'][1]:
-            self._employee.D_O_B = val
+            self._employee.set('D_O_B',val)
             return True
         return False
 
     @SSNum.setter
-    def SSNum(self, val: int):
+    def SSNum(self, val: int|str):
         if self.permissionList['SS_num'][1]:
-            self._employee.SS_num = val
+            self._employee.set('SS_num',val)
             return True
         return False
 
     @StartDate.setter
-    def StartDate(self, val: datetime):
+    def StartDate(self, val: datetime|str):
         if self.permissionList['Start_Date'][1]:
-            self._employee.Start_Date = val
+            self._employee.set('Start_Date',val)
             return True
         return False
 
     @EndDate.setter
-    def EndDate(self, val: datetime):
+    def EndDate(self, val: datetime|str):
         if self.permissionList['End_Date'][1]:
-            self._employee.End_Date = val
+            self._employee.set('End_Date',val)
             return True
         return False
 
     @PermissionLevel.setter
-    def PermissionLevel(self, val: int):
+    def PermissionLevel(self, val: int|str):
         if self.permissionList['Permission_level'][1]:
-            self._employee.Permission_level = val
+            self._employee.set('Permission_level',val)
             return True
         return False
 
     @Title.setter
     def Title(self, val: str):
         if self.permissionList['Title'][1]:
-            self._employee.Title = val
+            self._employee.set('Title',val)
             return True
         return False
 
     @Dept.setter
     def Dept(self, val: str):
         if self.permissionList['Dept'][1]:
-            self._employee.Dept = val
+            self._employee.set('Dept',val)
             return True
         return False
 
     @OfficeEmail.setter
     def OfficeEmail(self, val: str):
         if self.permissionList['Office_email'][1]:
-            self._employee.Office_email = val
+            self._employee.set('Office_email',val)
             return True
         return False
 
     @Active.setter
-    def Active(self, val: Boolean):
+    def Active(self, val: Boolean|str):
         if self.permissionList['active'][1]:
-            self._employee.active = val
+            self._employee.set('active',val)
             return True
         return False
 
     @HomePhone.setter
     def HomePhone(self, val: str):
         if self.permissionList['home_phone'][1]:
-            self._employee.home_phone = val
+            self._employee.set('home_phone',val)
             return True
         return False
 
     @HomeEmail.setter
     def HomeEmail(self, val: str):
         if self.permissionList['home_email'][1]:
-            self._employee.home_email = val
+            self._employee.set('home_email',val)
             return True
         return False
 
     @PayMethod.setter
     def PayMethod(self, val: str):
         if self.permissionList['pay_method'][1]:
-            self._employee.pay_method = val
+            self._employee.set('pay_method',val)
             return True
         return False
 
     @BankInfo.setter
     def BankInfo(self, val: str):
         if self.permissionList['bank_info'][1]:
-            self._employee.bank_info = val
+            self._employee.set('bank_info',val)
             return True
         return False
 
     @Route.setter
     def Route(self, val: str):
         if self.permissionList['route'][1]:
-            self._employee.route = val
+            self._employee.set('route',val)
             return True
         return False
 
     @Salary.setter
     def Salary(self, val: str):
         if self.permissionList['salary'][1]:
-            self._employee.salary = val
+            self._employee.set('salary',val)
             return True
         return False
 
     @Hourly.setter
     def Hourly(self, val: str):
         if self.permissionList['hourly'][1]:
-            self._employee.hourly = val
+            self._employee.set('hourly',val)
             return True
         return False
 
     @Commission.setter
     def Commission(self, val: str):
         if self.permissionList['commission'][1]:
-            self._employee.commission = val
+            self._employee.set('commission',val)
             return True
         return False
 

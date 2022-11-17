@@ -10,19 +10,18 @@ import configparser
 import dataclasses
 
 
-usrAcc = EmployeeSelf(Employee(Emp_ID="101", Permission_level=1))
 empToContainer = {'active': 'Active', 'address': 'Address', 'apartment': 'Apartment', 'bank_info': 'BankInfo', 'city': 'City', 'commission': 'Commission', 'country': 'Country', 'D_O_B': 'DOB', 'Dept': 'Dept', 'Emp_ID': 'EmpID', 'End_Date': 'EndDate', 'home_email': 'HomeEmail', 'home_phone': 'HomePhone', 'hourly': 'Hourly',
                   'name': 'Name', 'Office_email': 'OfficeEmail', 'office_phone': 'OfficePhone', 'hashed_password': 'Password', 'pay_method': 'PayMethod', 'Permission_level': 'PermissionLevel', 'permitted_lock_on': 'PermittedLockOn', 'route': 'Route', 'SS_num': 'SSNum', 'salary': 'Salary', 'Start_Date': 'StartDate', 'state': 'State', 'Title': 'Title', 'zip': 'Zip'}
 contToEmp = dict((empToContainer[k], k)for k in empToContainer)
 readcfg = configparser.ConfigParser()
 readcfg.optionxform = lambda optionstr: optionstr
 try:
-    with open('example.ini', 'r') as configfile:
+    with open('config.ini', 'r') as configfile:
         readcfg.read_file(configfile)
 except (configparser.ParsingError, FileNotFoundError):
     readcfg['TRANSLATION'] = empToContainer
 finally:
-    with open('example.ini', 'w') as configfile:
+    with open('config.ini', 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
 importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name)
@@ -67,7 +66,7 @@ class Database:
         self.employeeList.append(emp)
         return True
 
-    def search(self, Department: str = INVALID_STR, name: str=INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME, Archived: bool = True) -> list:
+    def search(self, Department: str = INVALID_STR, name: str = INVALID_STR, fName: str = INVALID_STR, lName: str = INVALID_STR, Employee_ID: str = INVALID_STR, Title: str = INVALID_STR, oPhone: str = INVALID_STR, StartDate: datetime = INVALID_DATETIME, EndDate: datetime = INVALID_DATETIME, Archived: bool = True) -> list[EmployeeContainer]:
         """_summary_
 
         Args:
@@ -101,7 +100,7 @@ class Database:
             # if any of the statements after "valid and not" are True then valid will be False
             if valid:
                 foundList.append(emp)
-        foundList.sort(key = lambda x: x.Name)
+        foundList.sort(key=lambda x: x.Name)
         return foundList
 
     def importDB(self, importFPath: Path = INVALID_PATH) -> None:
@@ -149,14 +148,11 @@ class Database:
         with open(exportPath, 'w', newline='') as csvfile:
             fieldnames = dir(EmployeeContainer)
             # Switched to this because it was getting hard to keep track of all the functions on the employee container
-            badnames = [method for method in fieldnames if callable(
-                getattr(EmployeeContainer, method))] + ['permissionList']
+            badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
             badnames = badnames if adminInfo else adminFields + badnames
-            fieldnames = list(
-                filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
+            fieldnames = list(filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 
-            writer = csv.DictWriter(
-                csvfile, fieldnames=importTranslator, restval='')
+            writer = csv.DictWriter(csvfile, fieldnames=importTranslator, restval='')
             writer.writeheader()
             for emp in self.employeeList:
                 if adminInfo:

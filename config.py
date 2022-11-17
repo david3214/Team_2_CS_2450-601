@@ -21,8 +21,8 @@ def fetch_resource(rsrc_path):
         return Path(rsrc_path)
 
 
-if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-    DB = Database(fetch_resource(r"database/database.csv"))
-else:
-    DB = Database(Path(os.path.abspath("database.csv")))
+#if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+DB = Database(fetch_resource(r"database/database.csv"))
+#else:
+#DB = Database(Path(os.path.abspath("database.csv")))
 userSession = EmployeeSelf(Employee(Permission_level=1))

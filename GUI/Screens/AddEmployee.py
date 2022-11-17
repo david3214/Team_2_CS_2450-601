@@ -8,7 +8,7 @@
 
 
 import tkinter as tk
-from typing import Type
+import typing
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
@@ -19,7 +19,7 @@ from styles import background_color, btn_color, text_color, med_bold
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
 
         self.img = None

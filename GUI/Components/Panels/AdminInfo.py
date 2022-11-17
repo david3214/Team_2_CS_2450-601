@@ -4,19 +4,21 @@
 
 
 import tkinter as tk
-from typing import Type
+import typing
 from GUI.Components.Panels.Info import Info
 from styles import btn_color
-
+import typing
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Profile import Profile
 
 # Alias for typing
 char = str
 
 
 class AdminInfo(Info):
-    def __init__(self, master: Type[tk.Frame], bgColor: str=btn_color, editable: bool=False) -> None:
+    def __init__(self, master: 'Profile', bgColor: str=btn_color, editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
-
         self.grid_columnconfigure((0, 1), weight=1)
 
         self.fields  = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
@@ -26,6 +28,7 @@ class AdminInfo(Info):
         if self.editable:
             # Make Pay type an OptionMenu
             self.entries[0].destroy()
+            self.entries=typing.cast('list[tk.Widget]',self.entries)
             self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
             self.entries[0].grid(row=0, column=1)
 

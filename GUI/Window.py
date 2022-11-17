@@ -10,7 +10,7 @@ from GUI.Components.Navigation import Navigation
 from GUI.Screens.Login import Login
 from EmployeeContainer import EmployeeContainer
 from styles import background_color
-
+import typing
 
 class Window(tk.Tk):
     def __init__(self) -> None:
@@ -18,7 +18,7 @@ class Window(tk.Tk):
 
         self.title('Pay Roll')
         self.geometry('800x600')
-        self.resizable(0, 0)
+        self.resizable(False, False)
         self.frame = None
         self.configure(bg=background_color)
         self.navigation = NULL
@@ -26,9 +26,10 @@ class Window(tk.Tk):
         self.rowconfigure(1, weight=30)
         self.columnconfigure(0, weight=1)
 
-    def switchFrame(self, _frame: Type[tk.Frame], emp: Type[EmployeeContainer]='') -> None:
+    def switchFrame(self, _frame: tk.Frame|Type[tk.Frame], emp: typing.Optional[EmployeeContainer]=None) -> None:
         '''Destroys current frame and packs a new one'''
-
+        if issubclass(type(_frame) ,tk.Frame):
+            _frame=type(_frame)
         if self.frame is not None:
             self.frame.destroy()
 
@@ -38,4 +39,4 @@ class Window(tk.Tk):
             self.navigation = Navigation(self)
             self.navigation.highlight_section(str(_frame))
 
-        self.frame = _frame(self) if emp == '' else _frame(self, emp)
+        self.frame = typing.cast('type',_frame)(self) if emp ==None else typing.cast('type',_frame)(self, emp)

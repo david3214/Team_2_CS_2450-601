@@ -8,15 +8,17 @@
 '''
 import tkinter as tk
 from tkinter import filedialog
-from GUI.Components.Navigation import Navigation
 from GUI.Components.Image_Lbl import Image_Lbl
 from styles import med_bold, background_color, text_color, btn_color
 from typing import Type
 from pathlib import Path
 from config import DB
-
+import typing
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
 class Report (tk.Frame):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+    def __init__(self, master: 'Window', bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor, width=master.winfo_width())
         self.configure_columns_n_rows(master)
         # self.nav_bar = Navigation(master)
@@ -64,9 +66,9 @@ class Report (tk.Frame):
     
     def import_database(self):
         # Call the import database function
-        csvPath = filedialog.askopenfile(filetypes = (("csv file (*.csv)", "*.csv"),))
+        csvPath = filedialog.askopenfilename(filetypes = (("csv file (*.csv)", "*.csv"),))
         if csvPath != '':
-            DB.importDB(Path(csvPath.name))
+            DB.importDB(Path(csvPath))
 
 
     def export_database(self):
@@ -77,12 +79,12 @@ class Report (tk.Frame):
 
         # if the user cancels it will be blank
         if csvPath != '':
-            DB.exportDB(csvPath, adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
+            DB.exportDB(Path(csvPath), adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
         
         # call the export function, using these parameters
 
 
-    def __str__():
+    def __str__(self):
         return 'Report'
 
 

@@ -5,24 +5,26 @@
 '''
 
 import tkinter as tk
-from typing import Type
 
+import typing
 import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
 from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
 from config import DB, userSession
-
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
 class AdvancedSearch(tk.Frame):
 
     fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
                   'Phone #': 'oPhone', 'Start Date': 'StartDate', 'End Date': 'EndDate'}
-    def __init__(self, master: Type[tk.Tk], root: Type[tk.Tk], bg_color: str = background_color) -> None:
+    def __init__(self, master: 'Search', root: 'Window', bg_color: str = background_color) -> None:
 
         super().__init__(master, bg=bg_color)
-
-        self.root = root
+        self.master=typing.cast('Search',self.master)
+        self.root:Window = root
         # Creates/configures left-most frame for advanced search widgets
         self.grid_rowconfigure(0, weight=3)
         self.grid_rowconfigure(1, weight=1)
@@ -81,6 +83,7 @@ class AdvancedSearch(tk.Frame):
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
+        self.master=typing.cast('Search',self.master)
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
@@ -97,7 +100,8 @@ class AdvancedSearch(tk.Frame):
 
     # Removes default text in search bar when selected
     def delete_text(self, event):
+        self.master=typing.cast('Search',self.master)
         print(event)
         if self.default_text:
-            self.search_bar.delete(0, tk.END)
+            self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

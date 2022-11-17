@@ -6,10 +6,10 @@ from asyncio.windows_events import NULL
 import tkinter as tk
 from PIL import ImageTk, Image
 from typing import Type
-from config import fetch_resource
+from Config.fetch_resource import fetch_resource
 
-TGL_ON = fetch_resource('./images/on.png')
-TGL_OFF = fetch_resource('./images/off.png')
+TGL_ON = fetch_resource('./Resources/images/on.png')
+TGL_OFF = fetch_resource('./Resources/images/off.png')
 class Image_Lbl(tk.Label):
     
     def __init__(self, master: Type[tk.Frame], bgColor: str, width, height, command = NULL, 

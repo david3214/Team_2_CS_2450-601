@@ -14,8 +14,9 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from config import userSession, DB, fetch_resource
-from styles import background_color, text_color, btn_color, med_bold
+from Config.config import userSession, DB
+from Config.fetch_resource import fetch_resource
+from Config.styles import background_color, text_color, btn_color, med_bold
 
 
 class User(Profile):
@@ -60,4 +61,4 @@ class User(Profile):
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
 
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.exportDB(fetch_resource('./Resources/database.csv'), True)

@@ -12,12 +12,13 @@
 
 import tkinter as tk
 from typing import Type
-from PayReport import generate_pay_report
-from EmployeeContainer import EmployeeContainer
+from Config.PayReport import generate_pay_report
+from Employee.EmployeeContainer import EmployeeContainer
 from .AddEmployee import AddEmployee as AE
 from .Archived import Archived
-from config import DB, fetch_resource
-from styles import background_color,  med_bold, btn_color, text_color
+from Config.config import DB
+from Config.fetch_resource import fetch_resource
+from Config.styles import background_color,  med_bold, btn_color, text_color
 
 
 class Admin(AE):
@@ -42,7 +43,7 @@ class Admin(AE):
 
     def archive(self):
         self.emp.Active = False
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.exportDB(fetch_resource('./Resources/database.csv'), True)
         self.master.switchFrame(Archived, self.emp)
 
 
@@ -74,4 +75,4 @@ class Admin(AE):
         self.emp.DOB = self.adminInfo.variables[6][1].get()
         self.emp.SSNum = self.adminInfo.variables[7][1].get()
 
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.exportDB(fetch_resource('./Resources/database.csv'), True)

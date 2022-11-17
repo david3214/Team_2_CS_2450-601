@@ -6,8 +6,8 @@
 import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
-from Address import Address
-from styles import btn_color, med_bold_underline, text_color
+from Employee.Address import Address
+from Config.styles import btn_color, med_bold_underline, text_color
 
 
 class PermittedInfo(Info):

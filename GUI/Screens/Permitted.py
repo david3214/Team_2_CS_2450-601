@@ -10,8 +10,8 @@ import tkinter as tk
 from typing import Type
 from .Profile import Profile
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from EmployeeContainer import EmployeeContainer
-from styles import background_color, btn_color
+from Employee.EmployeeContainer import EmployeeContainer
+from Config.styles import background_color, btn_color
 
 class Permitted(Profile):
     def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:

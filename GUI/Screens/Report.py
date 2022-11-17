@@ -10,10 +10,10 @@ import tkinter as tk
 from tkinter import filedialog
 from GUI.Components.Navigation import Navigation
 from GUI.Components.Image_Lbl import Image_Lbl
-from styles import med_bold, background_color, text_color, btn_color
+from Config.styles import med_bold, background_color, text_color, btn_color
 from typing import Type
 from pathlib import Path
-from config import DB
+from Config.config import DB
 
 class Report (tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:

@@ -8,8 +8,8 @@ import tkinter as tk
 from typing import Type
 from GUI.Components.Navigation import Navigation
 from GUI.Screens.Login import Login
-from EmployeeContainer import EmployeeContainer
-from styles import background_color
+from Employee.EmployeeContainer import EmployeeContainer
+from Config.styles import background_color
 
 
 class Window(tk.Tk):

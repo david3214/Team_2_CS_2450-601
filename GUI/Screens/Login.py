@@ -10,8 +10,9 @@
 from PIL import Image, ImageTk
 import tkinter as tk
 from GUI.Screens.Search import Search
-from styles import background_color, text_color, lg_bold, med_bold, med_text, btn_color, sm_text
-from config import DB, userSession, fetch_resource
+from Config.styles import background_color, text_color, lg_bold, med_bold, med_text, btn_color, sm_text
+from Config.config import DB, userSession
+from Config.fetch_resource import fetch_resource
 
 class Login (tk.Frame):
     def __init__(self, master=None, bg_color = background_color) -> None:
@@ -30,7 +31,7 @@ class Login (tk.Frame):
 
 
         # Image
-        self.header_image = ImageTk.PhotoImage(Image.open(fetch_resource('images/employee-image.png')).resize([400, 400]))
+        self.header_image = ImageTk.PhotoImage(Image.open(fetch_resource('./Resources/images/employee-image.png')).resize([400, 400]))
         self.image_label = tk.Label(self, image=self.header_image, background=bg_color)
         self.image_label.grid(column=0, row=0, rowspan=7)
 
@@ -67,6 +68,7 @@ class Login (tk.Frame):
 
         user = DB.search(Employee_ID=given_username)
         
+        print(given_username, given_password, user)
         if len(user) == 1 and user[0].isCorrectLogin(str(given_password)): # Put actuall check here
             global userSession
             userSession = userSession.ChangeEmployee(user[0]._employee)

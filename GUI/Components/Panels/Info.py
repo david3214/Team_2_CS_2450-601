@@ -5,7 +5,7 @@
 
 import tkinter as tk
 from typing import Type
-from styles import background_color, med_bold, text_color, med_text
+from Config.styles import background_color, med_bold, text_color, med_text
 
 
 # Custom Type Aliases

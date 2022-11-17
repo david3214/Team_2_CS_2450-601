@@ -6,7 +6,7 @@
 import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
-from styles import btn_color
+from Config.styles import btn_color
 
 
 # Alias for typing

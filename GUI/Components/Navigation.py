@@ -5,13 +5,14 @@
 import tkinter as tk
 from turtle import back
 from typing import Type
-from styles import nav_color, med_bold, text_color, med_bold_underline
+from Config.styles import nav_color, med_bold, text_color, med_bold_underline
 import GUI.Screens as Screens
 from PIL import Image, ImageTk
 from GUI.Screens.User import User
 from GUI.Screens.Admin import Admin
-from EmployeeContainer import EmployeeAdmin
-from config import userSession, fetch_resource
+from Employee.EmployeeContainer import EmployeeAdmin
+from Config.config import userSession
+from Config.fetch_resource import fetch_resource
 
 class Navigation(tk.Frame):
     def __init__(self, master: Type[tk.Tk], bgColor: str=nav_color) -> None:
@@ -37,7 +38,7 @@ class Navigation(tk.Frame):
     def create_gui_elements(self):
 
         # Profile Button
-        img = Image.open(fetch_resource('./images/profile.png'))
+        img = Image.open(fetch_resource('./Resources/images/profile.png'))
         img = img.resize((25, 40))
         self.profile_image = ImageTk.PhotoImage(image=img)
         self.profile_img = tk.Label(self, bg=nav_color)
@@ -50,7 +51,7 @@ class Navigation(tk.Frame):
 
 
         # Search Button
-        img = Image.open(fetch_resource('./images/Search.png'))
+        img = Image.open(fetch_resource('./Resources/images/Search.png'))
         img = img.resize((35, 40))
         self.search_image = ImageTk.PhotoImage(image=img)
         self.search_img = tk.Label(self, bg=nav_color)
@@ -63,7 +64,7 @@ class Navigation(tk.Frame):
         
         if userSession.PermissionLevel == 1:
             # Reports Button
-            img = Image.open(fetch_resource('./images/Reports.png'))
+            img = Image.open(fetch_resource('./Resources/images/Reports.png'))
             img = img.resize((35, 40))
             self.reports_image = ImageTk.PhotoImage(image=img)
             self.reports_img = tk.Label(self, bg=nav_color)

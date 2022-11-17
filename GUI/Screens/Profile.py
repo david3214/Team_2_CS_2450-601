@@ -9,9 +9,9 @@ import tkinter as tk
 from typing import Type
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from EmployeeContainer import EmployeeContainer
-from styles import background_color
-from config import fetch_resource
+from Employee.EmployeeContainer import EmployeeContainer
+from Config.styles import background_color
+from Config.fetch_resource import fetch_resource
 
 class Profile (tk.Frame):
     def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
@@ -28,7 +28,7 @@ class Profile (tk.Frame):
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=(0, 15))
 
         self.canvas = tk.Canvas(self, bg=bgColor, width=300, height=300, borderwidth=0, highlightthickness=0)
-        self.img = tk.PhotoImage(file=fetch_resource('images/employee-image1.png'))
+        self.img = tk.PhotoImage(file=fetch_resource('./Resources/images/employee-image1.png'))
         self.canvas.create_image(150, 150, image=self.img)
         self.canvas.grid(column=1, row=0, sticky='w', padx=15, pady=15)
 

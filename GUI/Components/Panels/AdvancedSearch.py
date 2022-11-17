@@ -11,8 +11,8 @@ import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
 from GUI.Components.UnderlineEntry import UnderlineEntry
-from styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
-from config import DB, userSession
+from Config.styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
+from Config.config import DB, userSession
 
 class AdvancedSearch(tk.Frame):
 

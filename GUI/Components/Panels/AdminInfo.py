@@ -5,12 +5,14 @@
 
 import tkinter as tk
 import typing
+
 from GUI.Components.Panels.Info import Info
 from styles import btn_color
-import typing
+
 if typing.TYPE_CHECKING:
-    from GUI.Window import Window
     from Screens.Profile import Profile
+
+    from GUI.Window import Window
 
 # Alias for typing
 char = str
@@ -19,7 +21,7 @@ char = str
 class AdminInfo(Info):
     def __init__(self, master: 'Profile', bgColor: str=btn_color, editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
-        self.grid_columnconfigure((0, 1), weight=1)
+        self.grid_columnconfigure((0, 1), weight=1)#type:ignore
 
         self.fields  = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
         self.values  = [master.emp.PayMethod, master.emp.BankInfo, master.emp.Route, master.emp.Salary, master.emp.Hourly, master.emp.Commission, master.emp.DOB, master.emp.SSNum] if master.emp else ['' for _ in range(len(self.fields))]

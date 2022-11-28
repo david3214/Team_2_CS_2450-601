@@ -15,7 +15,7 @@ class PermittedInfo(Info):
     def __init__(self, master: 'Profile', bgColor: str=btn_color, editable: bool=False, locked: bool=True) -> None:
         super().__init__(master, bgColor, editable)
 
-        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)  # type: ignore
 
         self.fields = ['Street Addr.', 'City', 'State', 'Zipcode', 'Personal #', 'Home Email']
         self.values = [master.emp.Address, master.emp.City, master.emp.State, master.emp.Zip, master.emp.HomePhone, master.emp.HomeEmail] if master.emp else ['' for _ in range(len(self.fields))]

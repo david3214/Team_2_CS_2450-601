@@ -10,9 +10,9 @@ from config import DB
 from Database import Database
 from pathlib import Path
 from GUI.Components.Panels.PermittedInfo import PermittedInfo
+from config import userSession, DB, fetch_resource
+from EmployeeContainer import EmployeeAdmin
 def main():
-    #this is debug must remove for use versions
-    DB.search(name="Karina Gay")[0].Password="688997"
     window = GUI.Window.Window()
     window.switchFrame(Login)
     window.mainloop()

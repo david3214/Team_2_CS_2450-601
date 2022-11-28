@@ -46,8 +46,7 @@ class Navigation(tk.Frame):
         self.profile_img = tk.Label(self, bg=nav_color)
         self.profile_img.config(image=self.profile_image)
 
-        self.profile = tk.Label(self, text='Profile', font=med_bold, 
-                                bg=nav_color, foreground=text_color)
+        self.profile = tk.Label(self, text='Profile', font=med_bold,  bg=nav_color, foreground=text_color)
         self.profile_img.bind('<Button-1>', lambda x: self.switch_frame('Profile'))    
         self.profile.bind('<Button-1>', lambda x: self.switch_frame('Profile'))    
 
@@ -59,8 +58,7 @@ class Navigation(tk.Frame):
         self.search_img = tk.Label(self, bg=nav_color)
         self.search_img.config(image=self.search_image)
 
-        self.search = tk.Label(self, text='Search', font=med_bold, 
-                                bg=nav_color, foreground=text_color)
+        self.search = tk.Label(self, text='Search', font=med_bold,  bg=nav_color, foreground=text_color)
         self.search_img.bind('<Button-1>', lambda x: self.switch_frame('Search'))    
         self.search.bind('<Button-1>', lambda x: self.switch_frame('Search'))    
         
@@ -72,8 +70,7 @@ class Navigation(tk.Frame):
             self.reports_img = tk.Label(self, bg=nav_color)
             self.reports_img.config(image=self.reports_image)
 
-            self.reports = tk.Label(self, text='Reports', font=med_bold, 
-                                    bg=nav_color, foreground=text_color)
+            self.reports = tk.Label(self, text='Reports', font=med_bold,  bg=nav_color, foreground=text_color)
             self.reports_img.bind('<Button-1>', lambda x: self.switch_frame('Reports'))    
             self.reports.bind('<Button-1>', lambda x: self.switch_frame('Reports'))
         else:

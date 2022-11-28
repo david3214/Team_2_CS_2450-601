@@ -12,8 +12,7 @@ TGL_ON = fetch_resource('./images/on.png')
 TGL_OFF = fetch_resource('./images/off.png')
 class Image_Lbl(tk.Label):
     
-    def __init__(self, master: tk.Frame, bgColor: str, width, height, command = NULL, 
-                  start_img = TGL_ON, off_image = TGL_OFF, **kwargs) -> None:
+    def __init__(self, master: tk.Frame, bgColor: str, width, height, command = NULL, start_img = TGL_ON, off_image = TGL_OFF, **kwargs) -> None:
         super().__init__(master, bg=bgColor, width=width, height=height, **kwargs)
         self.IsEnabled = True
         img = Image.open(start_img)

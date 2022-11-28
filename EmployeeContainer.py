@@ -5,8 +5,7 @@ from Employee import INVALID_STR, INVALID_DATETIME, INVALID_STR, Employee
 from datetime import datetime
 from types import MappingProxyType
 import typing
-adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum',
-               'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
+adminFields = ['Address', 'DOB', 'Password', 'HomeEmail', 'HomePhone', 'SSNum', 'PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'PermissionLevel', 'Commission']
 
 
 class EmployeeContainer():

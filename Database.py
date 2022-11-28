@@ -24,8 +24,7 @@ finally:
     with open('config.ini', 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
-importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name)
-                        for k in dataclasses.fields(Employee)])
+importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name)for k in dataclasses.fields(Employee)])
 empToOut = dict([(importTranslator[k], k)for k in importTranslator])
 
 
@@ -44,9 +43,7 @@ class Database:
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
-                    params = dict([(importTranslator[k], row[k])
-                                  for k in row if k in importTranslator])
-                    # if there are different fields from Employee class they are treated as the param **garbage
+                    params = dict([(importTranslator[k], row[k]) for k in row if k in importTranslator])
                     self.employeeList.append(Employee(**params))
         elif str(initFPath) != str(INVALID_PATH):
             print("not a filepath\n")
@@ -114,8 +111,7 @@ class Database:
             with importFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
-                    params = dict([(importTranslator[k], row[k])
-                                  for k in row if k in importTranslator])
+                    params = dict([(importTranslator[k], row[k]) for k in row if k in importTranslator])
                     # if there are different fields from Employee class they are treated as the param **garbage
                     impList.append(Employee(**params))
             for emp in impList:
@@ -131,8 +127,7 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-            self.exportDB(self.initFPath, adminInfo=True,
-                          showArchivedEmployees=True)
+            self.exportDB(self.initFPath, adminInfo=True,showArchivedEmployees=True)
         elif importFPath != str(INVALID_PATH):
             print("not a filepath\n")
 
@@ -162,8 +157,7 @@ class Database:
 
                 if not showArchivedEmployees and not emp.Active:
                     continue
-                out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k))
-                           for k in fieldnames])
+                out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k)) for k in fieldnames])
                 writer.writerow(out)
 
     def __employeeContainment(self, targetEmployee: Employee, selfEmployee: EmployeeSelf):

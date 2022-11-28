@@ -68,12 +68,9 @@ class ScrollableSearch(ScrolledFrame):
             id_text = 'ID: '
 
           # Create the labels for the row
-          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white')\
-                  .grid(row=0, column=1, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white')\
-                    .grid(row=0, column=2, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white')\
-                  .grid(row=0, column=3, padx=(0, 15), sticky='ENS')
+          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white').grid(row=0, column=1, sticky='WNS')
+          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white').grid(row=0, column=2, sticky='WNS')
+          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white').grid(row=0, column=3, padx=(0, 15), sticky='ENS')
 
     def redraw(self):
       # this is to make sure when we switch to advanced search we switch the label texts

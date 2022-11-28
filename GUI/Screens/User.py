@@ -62,4 +62,4 @@ class User(Profile):
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
 
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.save()

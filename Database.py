@@ -8,7 +8,7 @@ import csv
 from tkinter import messagebox
 import configparser
 import dataclasses
-
+from config import fetch_resource, DB_PATH
 
 empToContainer = {'active': 'Active', 'address': 'Address', 'apartment': 'Apartment', 'bank_info': 'BankInfo', 'city': 'City', 'commission': 'Commission', 'country': 'Country', 'D_O_B': 'DOB', 'Dept': 'Dept', 'Emp_ID': 'EmpID', 'End_Date': 'EndDate', 'home_email': 'HomeEmail', 'home_phone': 'HomePhone', 'hourly': 'Hourly',
                   'name': 'Name', 'Office_email': 'OfficeEmail', 'office_phone': 'OfficePhone', 'hashed_password': 'Password', 'pay_method': 'PayMethod', 'Permission_level': 'PermissionLevel', 'permitted_lock_on': 'PermittedLockOn', 'route': 'Route', 'SS_num': 'SSNum', 'salary': 'Salary', 'Start_Date': 'StartDate', 'state': 'State', 'Title': 'Title', 'zip': 'Zip'}
@@ -159,6 +159,9 @@ class Database:
                     continue
                 out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k)) for k in fieldnames])
                 writer.writerow(out)
+
+    def save(self):
+        self.exportDB(fetch_resource(DB_PATH), True,True)
 
     def __employeeContainment(self, targetEmployee: Employee, selfEmployee: EmployeeSelf):
         """takes employee and puts it in a container based on who the user is

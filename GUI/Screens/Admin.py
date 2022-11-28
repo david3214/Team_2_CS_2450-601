@@ -46,7 +46,7 @@ class Admin(AE):
     def archive(self):
         self.master=typing.cast('Window',self.master)
         self.emp.Active = False
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.save()
         self.master.switchFrame(Archived, self.emp)
 
 
@@ -78,4 +78,4 @@ class Admin(AE):
         self.emp.DOB = self.adminInfo.variables[6][1].get()
         self.emp.SSNum = self.adminInfo.variables[7][1].get()
 
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.save()

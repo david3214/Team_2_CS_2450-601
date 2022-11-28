@@ -43,7 +43,7 @@ class Archived(Profile):
     def unarchive(self):
         from Admin import Admin
         self.emp.Active = True
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.save()
         self.master=typing.cast('Window',self.master)
         #Switch to admin, since only admins can view or create archived
         self.master.switchFrame(Admin, self.emp)

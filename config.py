@@ -9,7 +9,8 @@ from EmployeeContainer import EmployeeSelf
 import os
 import sys
 from pathlib import Path
-
+from typing import Final
+DB_PATH: Final[str]=r"database/database.csv"
 
 def fetch_resource(rsrc_path):
     """Loads resources from the temp dir used by pyinstaller executables"""
@@ -22,7 +23,7 @@ def fetch_resource(rsrc_path):
 
 
 #if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-DB = Database(fetch_resource(r"database/database.csv"))
+DB = Database(fetch_resource(DB_PATH))
 #else:
 #DB = Database(Path(os.path.abspath("database.csv")))
 userSession = EmployeeSelf(Employee(Permission_level=1))

@@ -44,4 +44,4 @@ class AddEmployee(Profile):
 
     def addEmp(self) -> None:
         DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()))
-        DB.exportDB(fetch_resource('database/database.csv'), True)
+        DB.save()

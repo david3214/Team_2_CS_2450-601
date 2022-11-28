@@ -1,5 +1,5 @@
 ('C:\\Users\\David '
- 'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\build\\debug\\main.exe',
+ 'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\build\\debug\\debug.exe',
  True,
  False,
  True,
@@ -16,7 +16,7 @@
  None,
  None,
  'C:\\Users\\David '
- 'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\build\\debug\\main.pkg',
+ 'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\build\\debug\\debug.pkg',
  [('PYZ-00.pyz',
    'C:\\Users\\David '
    'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\build\\debug\\PYZ-00.pyz',
@@ -76,7 +76,7 @@
  [],
  False,
  False,
- 1668647733,
+ 1669661035,
  [('run.exe',
    'C:\\Users\\David '
    'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',

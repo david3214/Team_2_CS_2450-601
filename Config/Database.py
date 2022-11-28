@@ -45,9 +45,13 @@ class Database:
         elif initFPath.is_file():
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
+                print(importTranslator)
                 for row in csvReader:
+
                     params = dict([(importTranslator[k], row[k])
                                   for k in row if k in importTranslator])
+                    print(row.keys())
+                    print(importTranslator.keys())
                     # if there are different fields from Employee class they are treated as the param **garbage
                     self.employeeList.append(Employee(**params))
         elif str(initFPath) != str(INVALID_PATH):

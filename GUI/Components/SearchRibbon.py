@@ -6,17 +6,19 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-from typing import Type
+import typing
 
 import GUI.Components.Panels.AdvancedSearch
 from GUI.Screens.AddEmployee import AddEmployee
 from GUI.Components.UnderlineEntry import UnderlineEntry
 from styles import background_color, btn_color, sm_bold, med_text, text_color
 from config import userSession, fetch_resource
-
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
 class SearchRibbon(tk.Frame):
 
-    def __init__(self, master: Type[tk.Frame], root: Type[tk.Tk], searchFunc, bg_color: str = background_color) -> None:
+    def __init__(self, master: tk.Frame, root: 'Window', searchFunc, bg_color: str = background_color) -> None:
 
         super().__init__(master, bg=bg_color)
         self.root = root
@@ -30,10 +32,9 @@ class SearchRibbon(tk.Frame):
         self.grid(row=0, column=0, sticky='NSEW')
 
         # Creates buttons and entry field
-        tk.Button(self, text='Advanced Search', font=sm_bold, bg=btn_color, foreground=text_color,
-                  command=lambda: self.switch_frame('advanced_search')).grid(row=0, column=0, padx=25, sticky='EW')
+        tk.Button(self, text='Advanced Search', font=sm_bold, bg=btn_color, foreground=text_color, command=lambda: self.switch_frame('advanced_search')).grid(row=0, column=0, padx=25, sticky='EW')
 
-        self.search_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./images/Search.png')).resize([40, 40]))
+        self.search_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./images/Search.png')).resize(tuple([40, 40])))
         self.search_image = tk.Label(self, bg=bg_color)
         self.search_image.config(image=self.search_img)
         self.search_image.grid(row=0, column=1)
@@ -47,11 +48,11 @@ class SearchRibbon(tk.Frame):
         self.search_bar.bind('<Return>', searchFunc)
 
         if userSession.PermissionLevel == 1:
-            tk.Button(self, text='Add Employee', font=sm_bold, bg=btn_color, foreground=text_color,
-                  command=lambda: self.switch_frame('add_employee')).grid(row=0, column=3, padx=25, sticky='EW')
+            tk.Button(self, text='Add Employee', font=sm_bold, bg=btn_color, foreground=text_color,command=lambda: self.switch_frame('add_employee')).grid(row=0, column=3, padx=25, sticky='EW')
 
     # Switches to frame depending on which button is pushed
     def switch_frame(self, frame):
+        self.master=typing.cast('Search',self.master)
         match frame:
             case 'advanced_search':
                 self.master.advancedSearch()

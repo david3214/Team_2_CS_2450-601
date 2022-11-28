@@ -12,9 +12,9 @@ from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from EmployeeContainer import EmployeeContainer
 from styles import background_color
 from config import fetch_resource
-
+import typing
 class Profile (tk.Frame):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor)
 
         self.grid_columnconfigure(1, weight=1)

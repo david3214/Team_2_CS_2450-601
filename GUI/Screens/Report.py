@@ -7,16 +7,18 @@
     Button to generate the report
 '''
 import tkinter as tk
-from tkinter import filedialog
-from GUI.Components.Navigation import Navigation
-from GUI.Components.Image_Lbl import Image_Lbl
-from styles import med_bold, background_color, text_color, btn_color
-from typing import Type
+import typing
 from pathlib import Path
-from config import DB
+from tkinter import filedialog
 
+from config import DB
+from GUI.Components.Image_Lbl import Image_Lbl
+from styles import background_color, btn_color, med_bold, text_color
+
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
 class Report (tk.Frame):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+    def __init__(self, master: 'Window', bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor, width=master.winfo_width())
         self.configure_columns_n_rows(master)
         # self.nav_bar = Navigation(master)
@@ -37,19 +39,15 @@ class Report (tk.Frame):
     def create_gui_elements(self):
         ## Create the archived label and toggle
         self.archived_enabled = Image_Lbl(self, background_color, width=60, height=30)
-        self.archived_lbl = tk.Label(self, text='Archived Employees', 
-                                     font=med_bold, bg=background_color, foreground=text_color)
+        self.archived_lbl = tk.Label(self, text='Archived Employees',  font=med_bold, bg=background_color, foreground=text_color)
         
         ## Create the admin Label and toggle
         self.admin_enabled = Image_Lbl(self, background_color, width=60, height=30)
-        self.admin_lbl = tk.Label(self, text='Admin Info', 
-                                     font=med_bold, bg=background_color, foreground=text_color)
+        self.admin_lbl = tk.Label(self, text='Admin Info',  font=med_bold, bg=background_color, foreground=text_color)
         
         ## Create the import and export buttons
-        self.export_btn = tk.Button(self, text='Export Database Report', font=med_bold, foreground=text_color, 
-                                        background=btn_color, command=self.export_database)
-        self.import_btn = tk.Button(self, text='Import Database File', font=med_bold, foreground=text_color, 
-                                        background=btn_color, command=self.import_database)
+        self.export_btn = tk.Button(self, text='Export Database Report', font=med_bold, foreground=text_color,  background=btn_color, command=self.export_database)
+        self.import_btn = tk.Button(self, text='Import Database File', font=med_bold, foreground=text_color,  background=btn_color, command=self.import_database)
 
         ## Place the first row of items    
         self.archived_lbl.grid(row=0, column=0, pady=10)
@@ -64,9 +62,9 @@ class Report (tk.Frame):
     
     def import_database(self):
         # Call the import database function
-        csvPath = filedialog.askopenfile(filetypes = (("csv file (*.csv)", "*.csv"),))
+        csvPath = filedialog.askopenfilename(filetypes = (("csv file (*.csv)", "*.csv"),))
         if csvPath != '':
-            DB.importDB(Path(csvPath.name))
+            DB.importDB(Path(csvPath))
 
 
     def export_database(self):
@@ -77,12 +75,12 @@ class Report (tk.Frame):
 
         # if the user cancels it will be blank
         if csvPath != '':
-            DB.exportDB(csvPath, adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
+            DB.exportDB(Path(csvPath), adminInfo=adminInfo, showArchivedEmployees=archivedInfo)
         
         # call the export function, using these parameters
 
 
-    def __str__():
+    def __str__(self):
         return 'Report'
 
 

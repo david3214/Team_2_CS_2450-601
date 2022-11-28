@@ -16,6 +16,8 @@ from config import DB, userSession
 if typing.TYPE_CHECKING:
     from GUI.Window import Window
     from Screens.Search import Search
+from Employee import Employee
+from EmployeeContainer import EmployeeContainer
 class AdvancedSearch(tk.Frame):
 
     fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
@@ -42,8 +44,7 @@ class AdvancedSearch(tk.Frame):
         self.grid_columnconfigure(1, weight=2)
 
         # Defines the advanced search categories
-        self.fields = ['Department', 'First Name', 'Last Name', 'Employee ID', 'Title', 'Phone #', 'Start Date',
-                       'End Date', 'View Archived']
+        self.fields = ['Department', 'First Name', 'Last Name', 'Employee ID', 'Title', 'Phone #', 'Start Date', 'End Date', 'View Archived']
 
         # Creates labels for advanced search tab
         tk.Label(self, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
@@ -51,8 +52,7 @@ class AdvancedSearch(tk.Frame):
         for i, field in enumerate(self.fields):
             if field == 'View Archived' and userSession.PermissionLevel != 1:
                 continue
-            tk.Label(self, text=field, font=med_text, bg=bg_color,
-                     foreground=text_color).grid(row=i + 1, column=0, sticky='W')
+            tk.Label(self, text=field, font=med_text, bg=bg_color,foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
         # Creates entry fields for advanced search tab
         self.entries = {}
@@ -79,7 +79,7 @@ class AdvancedSearch(tk.Frame):
 
     # Switches windows when button is pressed
     def addEmployee(self):
-        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root))
+        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root,EmployeeContainer(Employee())))
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())

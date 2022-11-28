@@ -438,7 +438,7 @@ class EmployeeOther(EmployeeContainer):
 class EmployeeSelf(EmployeeContainer):
 
     permissionList = MappingProxyType({'name': [True, True], 'address': [True, True],'apartment': [True, True], 'city': [True, True], 'state': [True, True], 'country': [True, True], 'zip': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, False], 'D_O_B': [True, False], 'SS_num': [True, False], 'Start_Date': [True, False], 'End_Date': [True, False], 'Permission_level': [True, False], 'Title': [True, False], 'Dept': [True, False], 'Office_email': [
-        True, False], 'hashed_password': [False, False], 'active': [True, False], 'permitted_lock_on': [True, True], 'home_email': [True, True], 'home_phone': [True, True], 'pay_method': [True, False], 'bank_info': [True, False], 'route': [True, False], 'salary': [True, False], 'hourly': [True, False], 'commission': [True, False]})
+        True, False], 'hashed_password': [True, True], 'active': [True, False], 'permitted_lock_on': [True, True], 'home_email': [True, True], 'home_phone': [True, True], 'pay_method': [True, False], 'bank_info': [True, False], 'route': [True, False], 'salary': [True, False], 'hourly': [True, False], 'commission': [True, False]})
 
 class EmployeeAdmin(EmployeeContainer):
     permissionList = MappingProxyType({'name': [True, True], 'address': [True, True], 'apartment': [True, True], 'city': [True, True], 'state': [True, True], 'country': [True, True], 'zip': [True, True], 'office_phone': [True, True], 'Emp_ID': [True, True], 'D_O_B': [True, True], 'SS_num': [True, True], 'Start_Date': [True, True], 'End_Date': [True, True], 'Permission_level': [True, True], 'Title': [True, True], 'Dept': [True, True], 'Office_email': [

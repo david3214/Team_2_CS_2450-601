@@ -8,7 +8,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('.\\images\\', 'images'), ('database.csv', 'database')],
+    datas=[('.\\images\\', 'images'), ('.\\database\\database.csv', 'database')],
     hiddenimports=['tkinter', 'passlib.handlers.pbkdf2'],
     hookspath=[],
     hooksconfig={},

@@ -66,6 +66,8 @@ class Employee:
                 else:
                     val = t(self.__getattribute__(field.name))
                 setattr(self, field.name, val)
+        if self.hashed_password == '':
+            self.setPwd(str(self.Emp_ID))
 
     def isCorrectLogin(self, textPassword: str):
         return pwd_context.verify(textPassword, self.hashed_password)

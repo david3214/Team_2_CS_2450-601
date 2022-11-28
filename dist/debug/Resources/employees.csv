@@ -30,3 +30,5 @@ ID,Name,Address,City,State,Zip,Classification,PayMethod,Salary,Hourly,Commission
 4,Joshua Kruegar, P.O. Box 1,Orem,UT,84000,3,2,69765.24,84.73,13,24639186-6,433898-4976
 5,Joseph Ware, P.O. Box 1,Orem,UT,84000,3,2,69765.24,84.73,13,24639186-6,433898-4976
 6,Mike Crowther, P.O. Box 1,Orem,UT,84000,3,2,69765.24,84.73,13,24639186-6,433898-4976
+7,Test Admin, P.O. Box 1,Orem,UT,84000,3,2,69765.24,84.73,13,24639186-6,433898-4976
+8,Test NonAdmin, P.O. Box 1,Orem,UT,84000,3,2,69765.24,84.73,13,24639186-6,433898-4976

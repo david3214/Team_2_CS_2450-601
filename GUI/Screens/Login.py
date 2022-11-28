@@ -68,7 +68,6 @@ class Login (tk.Frame):
 
         user = DB.search(Employee_ID=given_username)
         
-        print(given_username, given_password, user)
         if len(user) == 1 and user[0].isCorrectLogin(str(given_password)): # Put actuall check here
             global userSession
             userSession = userSession.ChangeEmployee(user[0]._employee)

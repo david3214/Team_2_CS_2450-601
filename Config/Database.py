@@ -18,12 +18,12 @@ contToEmp = dict((empToContainer[k], k)for k in empToContainer)
 readcfg = configparser.ConfigParser()
 readcfg.optionxform = lambda optionstr: optionstr
 try:
-    with open(fetch_resource('./Resources/example.ini'), 'r') as configfile:
+    with open(fetch_resource('./Resources/config.ini'), 'r') as configfile:
         readcfg.read_file(configfile)
 except (configparser.ParsingError, FileNotFoundError):
-    readcfg['TRANSLATION'] = empToContainer
+    readcfg['TRANSLATION'] = contToEmp
 finally:
-    with open(fetch_resource('./Resources/example.ini'), 'w') as configfile:
+    with open(fetch_resource('./Resources/config.ini'), 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
 importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name)
@@ -45,13 +45,10 @@ class Database:
         elif initFPath.is_file():
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
-                print(importTranslator)
                 for row in csvReader:
 
                     params = dict([(importTranslator[k], row[k])
-                                  for k in row if k in importTranslator])
-                    print(row.keys())
-                    print(importTranslator.keys())
+                                  for k in row if k in importTranslator]) 
                     # if there are different fields from Employee class they are treated as the param **garbage
                     self.employeeList.append(Employee(**params))
         elif str(initFPath) != str(INVALID_PATH):
@@ -152,13 +149,13 @@ class Database:
         """
         from Config.config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
-            fieldnames = dir(EmployeeContainer)
-            # Switched to this because it was getting hard to keep track of all the functions on the employee container
-            badnames = [method for method in fieldnames if callable(
-                getattr(EmployeeContainer, method))] + ['permissionList']
-            badnames = badnames if adminInfo else adminFields + badnames
-            fieldnames = list(
-                filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
+            # fieldnames = dir(EmployeeContainer)
+            # # Switched to this because it was getting hard to keep track of all the functions on the employee container
+            # badnames = [method for method in fieldnames if callable(
+            #     getattr(EmployeeContainer, method))] + ['permissionList']
+            # badnames = badnames if adminInfo else adminFields + badnames
+            # fieldnames = list(
+            #     filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
 
             writer = csv.DictWriter(
                 csvfile, fieldnames=importTranslator, restval='')
@@ -172,7 +169,7 @@ class Database:
                 if not showArchivedEmployees and not emp.Active:
                     continue
                 out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k))
-                           for k in fieldnames])
+                           for k in importTranslator])
                 writer.writerow(out)
 
     def __employeeContainment(self, targetEmployee: Employee, selfEmployee: EmployeeSelf):

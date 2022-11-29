@@ -7,7 +7,7 @@ import tkinter as tk
 import re
 from typing import Type
 from styles import background_color, med_bold, text_color, med_text
-
+from abc import ABC,abstractmethod,abstractproperty
 
 # Custom Type Aliases
 tkLabelOptions = tkEntryOptions = dict
@@ -15,12 +15,15 @@ tkGridOptions = tuple
 char = str
 
 
-class Info(tk.Frame):
-    def __init__(self, master: Type[tk.Frame], bgColor: str=background_color, editable: bool=False) -> None:
+class Info(tk.Frame,ABC):
+    def __init__(self, master: tk.Frame, bgColor: str=background_color, editable: bool=False) -> None:
         super().__init__(master, bg=bgColor)
 
         self.editable = editable
         self.bgColor = bgColor
+
+    fields:list[str]
+    values:list
 
     def generate(self, labelOptions: tkLabelOptions, entryOptions: tkEntryOptions, valueLOptions: tkLabelOptions, layoutOptions: tkGridOptions):
         '''All options except layout are optional'''
@@ -32,7 +35,7 @@ class Info(tk.Frame):
             self.entries = [tk.Entry(self, **entryOptions) for variable in self.variables] if entryOptions else [tk.Entry(self, textvariable=variable[1], validate='key') for variable in self.variables]
             [entry.insert(0, self.values[i]) for i, entry in enumerate(self.entries)]
         else:
-            self.valueLabels = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
+            self.valueLabels:list[tk.Widget] = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
 
         [self.children[child].grid(row=layoutOptions[0](i, len(self.fields)), column=layoutOptions[1](i, len(self.fields)), **layoutOptions[2]) for i, child in enumerate(self.children)]
 

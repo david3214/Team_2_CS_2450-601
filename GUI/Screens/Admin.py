@@ -9,21 +9,24 @@
     Pay report can be generated
 '''
 
-
+from datetime import datetime
 import tkinter as tk
 from typing import Type
 from PayReport import generate_pay_report
 from EmployeeContainer import EmployeeContainer
 from .AddEmployee import AddEmployee as AE
 from .Archived import Archived
-from config import DB
+from config import DB, fetch_resource
 from styles import background_color,  med_bold, btn_color, text_color
-
+import typing
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
 
 class Admin(AE):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+    def __init__(self, master: 'Window', emp:EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
-
+        self.master=typing.cast('Window',self.master)
         self.addEmployeeBtn.destroy()
 
         self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
@@ -41,17 +44,18 @@ class Admin(AE):
 
 
     def archive(self):
+        self.master=typing.cast('Window',self.master)
         self.emp.Active = False
-        DB.exportDB('database.csv', True)
+        DB.save()
         self.master.switchFrame(Archived, self.emp)
 
 
     def update(self) -> None:
         # Can certainly be improved
-        self.emp.Address.address = self.permittedInfo.variables[0][1].get()
-        self.emp.Address.city = self.permittedInfo.variables[1][1].get()
-        self.emp.Address.state = self.permittedInfo.variables[2][1].get()
-        self.emp.Address.zip = self.permittedInfo.variables[3][1].get()
+        self.emp.Address = self.permittedInfo.variables[0][1].get()
+        self.emp.City = self.permittedInfo.variables[1][1].get()
+        self.emp.State = self.permittedInfo.variables[2][1].get()
+        self.emp.Zip = self.permittedInfo.variables[3][1].get()
         self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
         self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
    
@@ -74,4 +78,4 @@ class Admin(AE):
         self.emp.DOB = self.adminInfo.variables[6][1].get()
         self.emp.SSNum = self.adminInfo.variables[7][1].get()
 
-        DB.exportDB('database.csv', True)
+        DB.save()

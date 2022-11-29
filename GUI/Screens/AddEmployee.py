@@ -8,18 +8,18 @@
 
 
 import tkinter as tk
-from typing import Type
+import typing
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
 from EmployeeContainer import EmployeeContainer
-from config import DB
+from config import DB, fetch_resource
 from styles import background_color, btn_color, text_color, med_bold
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer]=None, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
 
         self.img = None
@@ -44,4 +44,4 @@ class AddEmployee(Profile):
 
     def addEmp(self) -> None:
         DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()))
-        DB.exportDB('database.csv', True)
+        DB.save()

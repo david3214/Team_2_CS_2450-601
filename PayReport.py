@@ -5,6 +5,7 @@
 from fpdf import FPDF
 from tkinter import filedialog
 from Employee import Employee
+from config import fetch_resource
 
 WIDTH = 210
 HEIGHT = 297
@@ -26,7 +27,7 @@ def set_fonts(pdf, type="header"):
         pdf.set_font('Arial', '', 13)
 
 def create_heading(pdf, emp):
-    pdf.image("./images/border.png", BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
+    pdf.image(str(fetch_resource("./images/border.png").absolute()), BORDER_MARGIN, MARGIN, WIDTH-(BORDER_MARGIN * 2))
 
     pdf.ln(MARGIN)
     set_fonts(pdf, "header")
@@ -79,10 +80,8 @@ def generate_pay_report(emp):
     pdf.add_page()
     create_heading(pdf, emp)
     create_payment_info(pdf, emp)
-
-    pdf.image("./images/employee-image.png", 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
+    pdf.image(str(fetch_resource("./images/employee-image.png").absolute()), 25, 110, WIDTH - (MARGIN * 2 + BORDER_MARGIN * 2))
     
     pdfPath = filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
     if pdfPath:
         pdf.output(pdfPath, 'F')
-

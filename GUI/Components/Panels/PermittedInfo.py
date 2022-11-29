@@ -4,10 +4,15 @@
 
 
 import tkinter as tk
+import re
 from typing import Type
 from GUI.Components.Panels.Info import Info
 from Address import Address
 from styles import btn_color, med_bold_underline, text_color
+
+
+# Alias for typing
+char = str
 
 
 class PermittedInfo(Info):
@@ -24,7 +29,55 @@ class PermittedInfo(Info):
         else:
             self.configure(height=100)
 
+        if self.editable:
+            self.entries[2].destroy()
+            self.entries[2] = tk.OptionMenu(self, self.variables[2][1], 'AL', 'AK', 'AZ', 'AR', 'AS', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'TT', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY')
+            self.entries[2].grid(row=0, column=1)
+
+            self.validationMethods = [(self.streetAddrValidate, 0), (self.cityValidate, 1), (self.zipValidate, 3), (self.phoneValidate, 4), (self.emailValidate, 5)]
+            self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
+            for i, wrapper in enumerate(self.validationWrappers):
+                self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper)
+
     def vals(self) -> dict:
         remap = {key: self.variables[i][1].get() for i, key in enumerate(['Address', 'City', 'State', 'Zip', 'HomePhone', 'HomeEmail'])}
 
         return remap
+
+
+    # Not sure if these could be made using a generator, since the wrappers need to be initialized before setting the validation command
+    @staticmethod
+    def streetAddrValidate(input: char) -> bool:
+        return re.match('[*,()"\':;@&-]', input) is None and len(input) <= 100
+
+
+    @staticmethod
+    def cityValidate(input: char, operation: str) -> bool:
+        validString = re.match('^([a-zA-Z\u0080-\u024F]+(?:. |-| |\'))*[a-zA-Z\u0080-\u024F]*$', input) is not None
+        if operation == 'key':
+            validInput = re.match('.', input) is not None and len(input) <= 100
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def zipValidate(input: char, operation: str) -> bool:
+        validString = re.match('^\d{5}([-\s]?\d{4})?$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\d\s-]$', input) is not None and len(input) <= 10
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString

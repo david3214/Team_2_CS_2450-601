@@ -4,6 +4,7 @@
 
 
 import tkinter as tk
+import re
 from typing import Type
 from GUI.Components.Panels.Info import Info
 from styles import btn_color
@@ -29,23 +30,108 @@ class AdminInfo(Info):
             self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
             self.entries[0].grid(row=0, column=1)
 
-            # Template for testing the validation of Entries
-            # self.testValidateWrapper = (self.master.register(self.testValidate), '%P')
-            # self.entries[1].configure(validatecommand=self.testValidateWrapper)
-            # self.variables[1][1].trace_add('write', self.testUpdate)
-
-
-    # @staticmethod
-    # def testUpdate(*args: tuple) -> None:
-    #     for arg in args:
-    #         print(arg)
-
-
-    # @staticmethod
-    # def testValidate(input: char) -> bool:
-    #     print(input)
-    #     return False
+            self.validationMethods = [(self.bankInfoValidate, 1), (self.routeValidate, 2), (self.salaryValidate, 3), (self.hourlyValidate, 4), (self.commissionValidate, 5), (self.SSNValidate, 7)]
+            self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
+            for i, wrapper in enumerate(self.validationWrappers):
+                self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper)
 
 
     def vals(self) -> dict:
         return {key: self.variables[i][1].get() for i, key in enumerate(['PayMethod', 'Account', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN'])}
+
+
+    # Not sure if these could be made using a generator, since the wrappers need to be initialized before setting the validation command
+    @staticmethod
+    def bankInfoValidate(input: char, operation: str) -> bool:
+        validString = re.match('^\d{6}-?\d{4}$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\d-]$', input) is not None and len(input) <= 11
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def routeValidate(input: char, operation: str) -> bool:
+        validString = re.match('^\d{8}-?[\dA-Za-z]$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\dA-Za-z-]&', input) is not None and len(input) <= 10
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def salaryValidate(input: char, operation: str) -> bool:
+        validString = re.match('^\d{1,9}(\.\d{1,2})?$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\d\.]&', input) is not None and len(input) <= 12
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def hourlyValidate(input: char, operation: str) -> bool:
+        validString = re.match('^\d{1,6}(\.\d{1,2})?$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\d\.]$', input) is not None and len(input) <= 9
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def commissionValidate(input: char, operation: str) -> bool:
+        validString = re.match('^0{0,2}(?:[0-9][0-9]?|100)$', input) is not None
+        if operation == 'key':
+            validInput = re.match('^[\d]$', input) is not None and len(input) <= 3
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString
+
+
+    @staticmethod
+    def SSNValidate(input: char, operation: str) -> bool:
+        validString = re.match('^(?!(000|666|9))\d{3}[-\s]?(?!00)\d{2}[-\s]?(?!0000)\d{4}$', input) is not None
+        if operation == 'key':
+            validInput = re.match('\d\-\s', input) is not None and len(input) <= 11
+            if not validInput:
+                # error msg
+                pass
+            return validInput
+        elif operation == 'focusout':
+            if not validString:
+                # error msg
+                pass
+        return validString

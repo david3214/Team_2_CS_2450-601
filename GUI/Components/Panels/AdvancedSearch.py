@@ -5,8 +5,8 @@
 '''
 
 import tkinter as tk
-from typing import Type
 
+import typing
 import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
@@ -14,15 +14,22 @@ from GUI.Components.UnderlineEntry import UnderlineEntry
 from Config.styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
 from Config.config import DB, userSession
 
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
+from Employee.Employee import Employee
+from Employee.EmployeeContainer import EmployeeContainer
+
+
 class AdvancedSearch(tk.Frame):
 
     fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
                   'Phone #': 'oPhone', 'Start Date': 'StartDate', 'End Date': 'EndDate'}
-    def __init__(self, master: Type[tk.Tk], root: Type[tk.Tk], bg_color: str = background_color) -> None:
+    def __init__(self, master: 'Search', root: 'Window', bg_color: str = background_color) -> None:
 
         super().__init__(master, bg=bg_color)
-
-        self.root = root
+        self.master=typing.cast('Search',self.master)
+        self.root:Window = root
         # Creates/configures left-most frame for advanced search widgets
         self.grid_rowconfigure(0, weight=3)
         self.grid_rowconfigure(1, weight=1)
@@ -40,8 +47,7 @@ class AdvancedSearch(tk.Frame):
         self.grid_columnconfigure(1, weight=2)
 
         # Defines the advanced search categories
-        self.fields = ['Department', 'First Name', 'Last Name', 'Employee ID', 'Title', 'Phone #', 'Start Date',
-                       'End Date', 'View Archived']
+        self.fields = ['Department', 'First Name', 'Last Name', 'Employee ID', 'Title', 'Phone #', 'Start Date', 'End Date', 'View Archived']
 
         # Creates labels for advanced search tab
         tk.Label(self, text='Advanced Search', font=med_text, bg=bg_color, foreground=text_color) \
@@ -49,8 +55,7 @@ class AdvancedSearch(tk.Frame):
         for i, field in enumerate(self.fields):
             if field == 'View Archived' and userSession.PermissionLevel != 1:
                 continue
-            tk.Label(self, text=field, font=med_text, bg=bg_color,
-                     foreground=text_color).grid(row=i + 1, column=0, sticky='W')
+            tk.Label(self, text=field, font=med_text, bg=bg_color,foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
         # Creates entry fields for advanced search tab
         self.entries = {}
@@ -77,7 +82,7 @@ class AdvancedSearch(tk.Frame):
 
     # Switches windows when button is pressed
     def addEmployee(self):
-        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root))
+        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root,EmployeeContainer(Employee())))
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
@@ -97,7 +102,6 @@ class AdvancedSearch(tk.Frame):
 
     # Removes default text in search bar when selected
     def delete_text(self, event):
-        print(event)
         if self.default_text:
-            self.search_bar.delete(0, tk.END)
+            self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

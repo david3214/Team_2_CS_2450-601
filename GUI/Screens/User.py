@@ -10,7 +10,7 @@
 
 
 import tkinter as tk
-from typing import Type
+import typing
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
@@ -20,7 +20,7 @@ from Config.styles import background_color, text_color, btn_color, med_bold
 
 
 class User(Profile):
-    def __init__(self, master: Type[tk.Tk], bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, bgColor: str=background_color) -> None:
         super().__init__(master, userSession, bgColor)
 
         self.img  = None
@@ -33,7 +33,7 @@ class User(Profile):
             self.generalInfo.valueLabels[i].destroy()
             self.generalInfo.variables.append((self.generalInfo.fields[i], tk.StringVar()))
             self.generalInfo.valueLabels[i] = tk.Entry(self.generalInfo, textvariable=self.generalInfo.variables[i][1], validate='key')
-            self.generalInfo.valueLabels[i].insert(0, self.generalInfo.values[i])
+            typing.cast('tk.Entry',self.generalInfo.valueLabels[i]).insert(0, self.generalInfo.values[i])
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
 
         self.adminInfo = AI(self)
@@ -50,10 +50,12 @@ class User(Profile):
 
     def update(self) -> None:
         # Can certainly be improved
-        self.emp.Address.address = self.permittedInfo.variables[0][1].get()
-        self.emp.Address.city = self.permittedInfo.variables[1][1].get()
-        self.emp.Address.state = self.permittedInfo.variables[2][1].get()
-        self.emp.Address.zip = self.permittedInfo.variables[3][1].get()
+        if self.emp==None:
+            return
+        self.emp.Address = self.permittedInfo.variables[0][1].get()
+        self.emp.City = self.permittedInfo.variables[1][1].get()
+        self.emp.State = self.permittedInfo.variables[2][1].get()
+        self.emp.Zip = self.permittedInfo.variables[3][1].get()
         self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
         self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
    
@@ -61,4 +63,4 @@ class User(Profile):
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
 
-        DB.exportDB(fetch_resource('./Resources/database.csv'), True)
+        DB.save()

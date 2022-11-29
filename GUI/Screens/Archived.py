@@ -13,14 +13,17 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from Employee.EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
+from Employee.EmployeeContainer import EmployeeContainer
 from Config.config import DB, userSession
 from Config.fetch_resource import fetch_resource
 from Config.styles import background_color, btn_color, text_color, med_bold
 
+import typing
+if typing.TYPE_CHECKING:
+    from Window import Window
 
 class Archived(Profile):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+    def __init__(self, master: 'Window', emp: EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor)
 
         self.img = None
@@ -40,9 +43,9 @@ class Archived(Profile):
 
 
     def unarchive(self):
-        from .Admin import Admin
+        from GUI.Screens.Admin import Admin
         self.emp.Active = True
-        DB.exportDB(fetch_resource('./Resources/database.csv'), True)
-        
+        DB.save()
+        self.master=typing.cast('Window',self.master)
         #Switch to admin, since only admins can view or create archived
         self.master.switchFrame(Admin, self.emp)

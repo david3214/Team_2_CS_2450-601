@@ -8,9 +8,13 @@ from typing import Type
 from GUI.Components.Panels.Info import Info
 from Config.styles import background_color
 from Config.fetch_resource import fetch_resource
+import typing
+if typing.TYPE_CHECKING:
+    from GUI.Screens.Profile import Profile
+
 
 class GeneralInfo(Info):
-    def __init__(self, master: Type[tk.Frame], bgColor: str=background_color, editable: bool=False) -> None:
+    def __init__(self, master: 'Profile', bgColor: str=background_color, editable: bool=False) -> None:
         super().__init__(master, bgColor, editable)
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']

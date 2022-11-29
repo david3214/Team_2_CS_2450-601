@@ -13,9 +13,11 @@ from GUI.Screens.Search import Search
 from Config.styles import background_color, text_color, lg_bold, med_bold, med_text, btn_color, sm_text
 from Config.config import DB, userSession
 from Config.fetch_resource import fetch_resource
-
+import typing
+if typing.TYPE_CHECKING:
+    from Window import Window
 class Login (tk.Frame):
-    def __init__(self, master=None, bg_color = background_color) -> None:
+    def __init__(self, master:'Window', bg_color = background_color) -> None:
         super().__init__(master, background=bg_color)
 
         # Configure grid
@@ -71,12 +73,13 @@ class Login (tk.Frame):
         if len(user) == 1 and user[0].isCorrectLogin(str(given_password)): # Put actuall check here
             global userSession
             userSession = userSession.ChangeEmployee(user[0]._employee)
+            self.master=typing.cast('Window',self.master)
             self.master.switchFrame(Search)
         else:
             self.error_msg.grid(column=1, row=5, sticky="WN", padx=(12, 0))
 
 
-    def __str__() -> str:
+    def __str__(self) -> str:
         return 'Login'
 
 # Create and place labels, inputs, buttons, etc.

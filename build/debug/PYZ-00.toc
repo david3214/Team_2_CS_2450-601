@@ -992,14 +992,6 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\tkinter\\constants.py',
    'PYMODULE'),
-  ('tracemalloc',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\tracemalloc.py',
-   'PYMODULE'),
-  ('_py_abc',
-   'C:\\Program '
-   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\_py_abc.py',
-   'PYMODULE'),
   ('getpass',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\getpass.py',
@@ -1020,14 +1012,28 @@
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\http\\cookiejar.py',
    'PYMODULE'),
-  ('Config.Database',
-   'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\Database.py',
+  ('tracemalloc',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\tracemalloc.py',
    'PYMODULE'),
-  ('Config', '-', 'PYMODULE'),
+  ('_py_abc',
+   'C:\\Program '
+   'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\_py_abc.py',
+   'PYMODULE'),
+  ('GUI.Screens.Login',
+   'C:\\Users\\David '
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Screens\\Login.py',
+   'PYMODULE'),
+  ('GUI.Screens', '-', 'PYMODULE'),
+  ('GUI', '-', 'PYMODULE'),
   ('Config.fetch_resource',
    'C:\\Users\\David '
    'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\fetch_resource.py',
+   'PYMODULE'),
+  ('Config', '-', 'PYMODULE'),
+  ('Config.config',
+   'C:\\Users\\David '
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\config.py',
    'PYMODULE'),
   ('Employee.EmployeeContainer',
    'C:\\Users\\David '
@@ -1042,19 +1048,17 @@
    'C:\\Users\\David '
    'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\passlib\\context.py',
    'PYMODULE'),
-  ('Config.config',
+  ('Config.Database',
    'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\config.py',
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\Database.py',
+   'PYMODULE'),
+  ('Config.styles',
+   'C:\\Users\\David '
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\styles.py',
    'PYMODULE'),
   ('GUI.Screens.Search',
    'C:\\Users\\David '
    'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Screens\\Search.py',
-   'PYMODULE'),
-  ('GUI.Screens', '-', 'PYMODULE'),
-  ('GUI', '-', 'PYMODULE'),
-  ('Config.styles',
-   'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\Config\\styles.py',
    'PYMODULE'),
   ('GUI.Components.Panels.AdvancedSearch',
    'C:\\Users\\David '
@@ -1305,6 +1309,14 @@
   ('GUI.Components.SearchRibbon',
    'C:\\Users\\David '
    'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Components\\SearchRibbon.py',
+   'PYMODULE'),
+  ('tkscrolledframe',
+   'C:\\Users\\David '
+   'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\tkscrolledframe\\__init__.py',
+   'PYMODULE'),
+  ('tkscrolledframe.widget',
+   'C:\\Users\\David '
+   'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\tkscrolledframe\\widget.py',
    'PYMODULE'),
   ('PIL.ImageTk',
    'C:\\Users\\David '
@@ -1602,31 +1614,19 @@
    'C:\\Users\\David '
    'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\PIL\\_version.py',
    'PYMODULE'),
-  ('tkscrolledframe',
+  ('GUI.Window',
    'C:\\Users\\David '
-   'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\tkscrolledframe\\__init__.py',
-   'PYMODULE'),
-  ('tkscrolledframe.widget',
-   'C:\\Users\\David '
-   'Westwood\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python310\\site-packages\\tkscrolledframe\\widget.py',
-   'PYMODULE'),
-  ('GUI.Screens.Report',
-   'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Screens\\Report.py',
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Window.py',
    'PYMODULE'),
   ('GUI.Components.Navigation',
    'C:\\Users\\David '
    'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Components\\Navigation.py',
    'PYMODULE'),
+  ('GUI.Screens.Report',
+   'C:\\Users\\David '
+   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Screens\\Report.py',
+   'PYMODULE'),
   ('turtle',
    'C:\\Program '
    'Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_3.10.2288.0_x64__qbz5n2kfra8p0\\lib\\turtle.py',
-   'PYMODULE'),
-  ('GUI.Screens.Login',
-   'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Screens\\Login.py',
-   'PYMODULE'),
-  ('GUI.Window',
-   'C:\\Users\\David '
-   'Westwood\\Documents\\School\\github\\Team_2_CS_2450-601\\GUI\\Window.py',
    'PYMODULE')])

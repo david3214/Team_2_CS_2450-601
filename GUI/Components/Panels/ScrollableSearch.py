@@ -11,10 +11,14 @@ from typing import Type
 from Config.styles import background_color, sm_text
 from Config.config import userSession
 from Config.fetch_resource import fetch_resource
-
+import typing
+if typing.TYPE_CHECKING:
+    from GUI.Window import Window
+    from Screens.Search import Search
+    
 class ScrollableSearch(ScrolledFrame):
 
-    def __init__(self, master: Type[tk.Tk], root: Type[tk.Tk], bg_color: str = background_color) -> None:
+    def __init__(self, master: 'Search', root: 'Window', bg_color: str = background_color) -> None:
         super().__init__(master, bg=bg_color)
         self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./Resources/images/ListEmp.png')).resize((35,35)))
 
@@ -67,12 +71,9 @@ class ScrollableSearch(ScrolledFrame):
             id_text = 'ID: '
 
           # Create the labels for the row
-          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white')\
-                  .grid(row=0, column=1, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white')\
-                    .grid(row=0, column=2, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white')\
-                  .grid(row=0, column=3, padx=(0, 15), sticky='ENS')
+          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white').grid(row=0, column=1, sticky='WNS')
+          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white').grid(row=0, column=2, sticky='WNS')
+          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white').grid(row=0, column=3, padx=(0, 15), sticky='ENS')
 
     def redraw(self):
       # this is to make sure when we switch to advanced search we switch the label texts

@@ -12,9 +12,13 @@ from .Profile import Profile
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from Employee.EmployeeContainer import EmployeeContainer
 from Config.styles import background_color, btn_color
+import typing
+if typing.TYPE_CHECKING:
+    from Window import Window
 
+    
 class Permitted(Profile):
-    def __init__(self, master: Type[tk.Tk], emp: Type[EmployeeContainer], bgColor: str=background_color) -> None:
+    def __init__(self, master: 'Window', emp: EmployeeContainer, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor)
 
         self.permittedInfo.destroy()

@@ -3,10 +3,10 @@ from datetime import datetime
 import dataclasses
 # passlib import should be moved elsewhere
 from passlib.context import CryptContext
-
+import typing
 from typing import Final
 from pathlib import Path
-INVALID_STR: Final[str] = ""
+INVALID_STR: Final[str] = str("")
 #INVALID_ADDRESS: Final[Address] = Address()
 INVALID_DATETIME: Final[datetime] = datetime.min
 
@@ -23,7 +23,7 @@ pwd_context = CryptContext(
 @dataclasses.dataclass
 class Employee:
 
-    active: bool = False
+    active: bool = bool(False)
     address: str = INVALID_STR
     apartment: str = INVALID_STR
     bank_info: str = INVALID_STR
@@ -42,7 +42,7 @@ class Employee:
     Office_email: str = INVALID_STR
     office_phone: str = INVALID_STR
     pay_method: str = INVALID_STR
-    Permission_level: int = 0
+    Permission_level: int = int(0)
     permitted_lock_on: bool = True
     route: str = INVALID_STR
     salary: str = INVALID_STR
@@ -53,21 +53,7 @@ class Employee:
     zip: str = INVALID_STR
 
     def __post_init__(self):
-        for field in dataclasses.fields(Employee):
-            if type(self.__getattribute__(field.name)) == type(field.default):
-                continue
-            else:
-                t = type(field.default)
-                if t == bool:
-                    val = self.__getattribute__(field.name) == 'True'
-                elif t == datetime:
-                    val = datetime.fromisoformat(
-                        self.__getattribute__(field.name))
-                else:
-                    val = t(self.__getattribute__(field.name))
-                setattr(self, field.name, val)
-        if self.hashed_password == '':
-            self.setPwd(str(self.Emp_ID))
+        self.strCleanup()
 
     def isCorrectLogin(self, textPassword: str):
         return pwd_context.verify(textPassword, self.hashed_password)
@@ -78,6 +64,36 @@ class Employee:
     def __eq__(self, other: Employee):
         return self.__dict__ == other.__dict__
 
+    def strCleanup(self):
+        for field in dataclasses.fields(Employee):
+            if type(self.__getattribute__(field.name)) == type(field.default):
+                continue
+            else:
+                t = type(field.default)
+                if t == bool:
+                    val = self.__getattribute__(field.name) == 'True'
+                elif t == datetime:
+                    val = datetime.fromisoformat(self.__getattribute__(field.name))
+                else:
+                    val = t(self.__getattribute__(field.name))
+                setattr(self, field.name, val)
 
-EMP_FIELDS: Final[dict[str, type]] = dict(
-    [(k, type(Employee().__dict__[k])) for k in Employee().__dict__.keys()])
+        if self.hashed_password == '':
+            self.setPwd(str(self.Emp_ID))
+
+
+    def set(self,name:str,val):
+        if type(val) == EMP_FIELDS[name]:
+            setattr(self,name,val)
+        else:
+            t = EMP_FIELDS[name]
+            if t == bool:
+                setattr(self,name,val == 'True')
+            elif t == datetime:
+                setattr(self,name, datetime.fromisoformat(val))
+            else:
+                setattr(self,name, t(val))
+
+
+EMP_FIELDS: Final[dict[str, type]] = dict([(k.name, type(k.default)) for k in dataclasses.fields(Employee)])
+

@@ -12,12 +12,13 @@
 from datetime import datetime
 import tkinter as tk
 from typing import Type
-from PayReport import generate_pay_report
-from EmployeeContainer import EmployeeContainer
+from Config.PayReport import generate_pay_report
+from Employee.EmployeeContainer import EmployeeContainer
 from .AddEmployee import AddEmployee as AE
 from .Archived import Archived
-from config import DB, fetch_resource
-from styles import background_color,  med_bold, btn_color, text_color
+from Config.config import DB
+from Config.fetch_resource import fetch_resource
+from Config.styles import background_color,  med_bold, btn_color, text_color
 import typing
 if typing.TYPE_CHECKING:
     from GUI.Window import Window

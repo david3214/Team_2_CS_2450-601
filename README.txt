@@ -12,7 +12,8 @@ Click on the EmployeeViewer.exe file to open the application to the login page
 
 Step 3: User Login
 Login using your employee ID and password. For demonstrative purposes use the
-username: 7  and the password: 7 for a demonstrative admin account
+username: 7 and the password: 7 for a demonstrative admin account
+username: 8 and the password: 8 for a demonstrative employee account
 
 From there you should have access to the application, if you would like 
 further instruction on how to use the application please view our User Guide

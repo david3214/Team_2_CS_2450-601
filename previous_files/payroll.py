@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from functools import reduce
 
 from turtle import width
-from Employee import Employee
+from Employee.Employee import Employee
 
 employees = []
 

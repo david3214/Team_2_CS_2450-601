@@ -13,9 +13,10 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
-from EmployeeContainer import EmployeeContainer
-from config import DB, fetch_resource
-from styles import background_color, btn_color, text_color, med_bold
+from Employee.EmployeeContainer import EmployeeContainer
+from Config.config import DB
+from Config.fetch_resource import fetch_resource
+from Config.styles import background_color, btn_color, text_color, med_bold
 
 
 class AddEmployee(Profile):

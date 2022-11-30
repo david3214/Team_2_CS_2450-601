@@ -6,7 +6,7 @@
 import tkinter as tk
 import re
 from typing import Type
-from styles import background_color, med_bold, text_color, med_text
+from Config.styles import background_color, med_bold, text_color, med_text
 from abc import ABC,abstractmethod,abstractproperty
 
 # Custom Type Aliases

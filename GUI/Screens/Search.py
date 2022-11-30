@@ -16,12 +16,15 @@ import typing
 from GUI.Components.SearchRibbon import SearchRibbon
 from GUI.Components.Panels.ScrollableSearch import ScrollableSearch
 from GUI.Components.Panels.AdvancedSearch import AdvancedSearch
-from styles import background_color, sm_text
-from config import DB, fetch_resource
+from Config.styles import background_color, sm_text
+from Config.config import DB
+from Config.fetch_resource import fetch_resource
 import typing
 if typing.TYPE_CHECKING:
     from GUI.Window import Window
     from Screens.Search import Search
+
+
 class Search(tk.Frame):
 
     def __init__(self, master: 'Window', bg_color: str = background_color) -> None:
@@ -56,9 +59,7 @@ class Search(tk.Frame):
     def updateScrollableSearch(self, employees):
         self.scrollableSearch.changeList(employees)
 
-        # Loads in employees from the database
-        with open('employees.csv', 'r') as file:
-            self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./images/profile.png')))
+        self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./Resources/images/profile.png')))
 
     def advancedSearch(self):
         # the grid configuration changes when we have the advanced sidebar open

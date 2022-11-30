@@ -6,10 +6,10 @@
 import tkinter as tk
 import re
 from GUI.Components.Panels.Info import Info
-import typing 
+from Config.styles import btn_color, med_bold_underline, text_color
+
+import typing
 from .Info import Info
-from Address import Address
-from styles import btn_color, med_bold_underline, text_color
 if typing.TYPE_CHECKING:
     from GUI.Screens.Profile import Profile
 

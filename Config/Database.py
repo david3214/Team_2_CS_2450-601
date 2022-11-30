@@ -19,7 +19,7 @@ try:
     with open('./Resources/config.ini', 'r') as configfile:
         readcfg.read_file(configfile)
 except (configparser.ParsingError, FileNotFoundError):
-    readcfg['TRANSLATION'] = contToEmp
+    readcfg['TRANSLATION'] = empToContainer
 finally:
     with open('./Resources/config.ini', 'w') as configfile:
         readcfg.write(configfile)

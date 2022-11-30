@@ -126,3 +126,5 @@ dmypy.json
 pyre/
 vscode/settings.json
 build/
+dist/debug
+dist/main

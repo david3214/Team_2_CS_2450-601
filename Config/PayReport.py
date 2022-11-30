@@ -84,4 +84,4 @@ def generate_pay_report(emp):
     
     pdfPath = filedialog.asksaveasfilename(defaultextension = "*.pdf", filetypes = (("PDF Files", "*.pdf"),))
     if pdfPath:
-        pdf.output(pdfPath, 'F')
+        pdf.output(pdfPath, 'F')  # type: ignore

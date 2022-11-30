@@ -36,7 +36,7 @@ class SearchRibbon(tk.Frame):
         # Creates buttons and entry field
         tk.Button(self, text='Advanced Search', font=sm_bold, bg=btn_color, foreground=text_color, command=lambda: self.switch_frame('advanced_search')).grid(row=0, column=0, padx=25, sticky='EW')
 
-        self.search_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./Resources/images/Search.png')).resize([40, 40]))
+        self.search_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./Resources/images/Search.png')).resize((40, 40)))
         self.search_image = tk.Label(self, bg=bg_color)
         self.search_image.config(image=self.search_img)
         self.search_image.grid(row=0, column=1)

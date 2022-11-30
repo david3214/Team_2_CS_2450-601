@@ -33,7 +33,7 @@ class Login (tk.Frame):
 
 
         # Image
-        self.header_image = ImageTk.PhotoImage(Image.open(fetch_resource('./Resources/images/employee-image.png')).resize([400, 400]))
+        self.header_image = ImageTk.PhotoImage(Image.open(fetch_resource('./Resources/images/employee-image.png')).resize((400, 400)))
         self.image_label = tk.Label(self, image=self.header_image, background=bg_color)
         self.image_label.grid(column=0, row=0, rowspan=7)
 

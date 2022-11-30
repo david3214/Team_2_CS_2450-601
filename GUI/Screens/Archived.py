@@ -13,9 +13,11 @@ from typing import Type
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
-from EmployeeContainer import EmployeeContainer, EmployeeAdmin, EmployeeOther, EmployeeSelf
-from config import DB, fetch_resource
-from styles import background_color, btn_color, text_color, med_bold
+from Employee.EmployeeContainer import EmployeeContainer
+from Config.config import DB, userSession
+from Config.fetch_resource import fetch_resource
+from Config.styles import background_color, btn_color, text_color, med_bold
+
 import typing
 if typing.TYPE_CHECKING:
     from Window import Window
@@ -41,7 +43,7 @@ class Archived(Profile):
 
 
     def unarchive(self):
-        from Admin import Admin
+        from GUI.Screens.Admin import Admin
         self.emp.Active = True
         DB.save()
         self.master=typing.cast('Window',self.master)

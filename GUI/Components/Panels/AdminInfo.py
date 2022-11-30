@@ -7,7 +7,7 @@ import tkinter as tk
 import typing
 
 from GUI.Components.Panels.Info import Info
-from styles import btn_color
+from Config.styles import btn_color
 
 if typing.TYPE_CHECKING:
     from Screens.Profile import Profile

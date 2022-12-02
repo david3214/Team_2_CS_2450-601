@@ -11,13 +11,16 @@ import GUI.Window
 import GUI.Screens.AddEmployee
 from GUI.Components.Image_Lbl import Image_Lbl
 from GUI.Components.UnderlineEntry import UnderlineEntry
-from styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
-from config import DB, userSession
+from Config.styles import background_color, text_color, btn_color, sm_text, med_bold, med_text
+from Config.config import DB, userSession
+
 if typing.TYPE_CHECKING:
     from GUI.Window import Window
     from Screens.Search import Search
-from Employee import Employee
-from EmployeeContainer import EmployeeContainer
+from Employee.Employee import Employee
+from Employee.EmployeeContainer import EmployeeContainer
+
+
 class AdvancedSearch(tk.Frame):
 
     fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
@@ -83,7 +86,6 @@ class AdvancedSearch(tk.Frame):
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
-        self.master=typing.cast('Search',self.master)
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
@@ -100,8 +102,6 @@ class AdvancedSearch(tk.Frame):
 
     # Removes default text in search bar when selected
     def delete_text(self, event):
-        self.master=typing.cast('Search',self.master)
-        print(event)
         if self.default_text:
             self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

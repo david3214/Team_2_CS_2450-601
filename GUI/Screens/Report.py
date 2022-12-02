@@ -7,16 +7,20 @@
     Button to generate the report
 '''
 import tkinter as tk
+from tkinter import filedialog
+from GUI.Components.Image_Lbl import Image_Lbl
+from Config.styles import med_bold, background_color, text_color, btn_color
+from typing import Type
+from pathlib import Path
+from Config.config import DB
 import typing
 from pathlib import Path
 from tkinter import filedialog
-
-from config import DB
 from GUI.Components.Image_Lbl import Image_Lbl
-from styles import background_color, btn_color, med_bold, text_color
 
 if typing.TYPE_CHECKING:
     from GUI.Window import Window
+
 class Report (tk.Frame):
     def __init__(self, master: 'Window', bgColor: str=background_color) -> None:
         super().__init__(master, bg=bgColor, width=master.winfo_width())

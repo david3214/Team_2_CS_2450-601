@@ -6,18 +6,21 @@ from GUI.Screens.Admin import Admin
 from GUI.Screens.Permitted import Permitted
 from GUI.Screens.User import User
 from GUI.Screens.Archived import Archived
-from EmployeeContainer import EmployeeSelf, EmployeeAdmin, EmployeeOther
+from Employee.EmployeeContainer import EmployeeSelf, EmployeeAdmin, EmployeeOther, EmployeeContainer
+from typing import Type
+from Config.styles import background_color, sm_text
+from Config.config import userSession
+from Config.fetch_resource import fetch_resource
 import typing
-from styles import background_color, sm_text
-from config import userSession, fetch_resource
 if typing.TYPE_CHECKING:
     from GUI.Window import Window
     from Screens.Search import Search
+    
 class ScrollableSearch(ScrolledFrame):
 
     def __init__(self, master: 'Search', root: 'Window', bg_color: str = background_color) -> None:
         super().__init__(master, bg=bg_color)
-        self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./images/ListEmp.png')).resize((35,35)))
+        self.employee_img = ImageTk.PhotoImage(image=Image.open(fetch_resource('./Resources/images/ListEmp.png')).resize((35,35)))
 
         self.root = root
         self.grid_rowconfigure(0, weight=1)
@@ -59,6 +62,7 @@ class ScrollableSearch(ScrolledFrame):
           self.employee_image = tk.Label(self.employeeFrames[i], background='white')
           self.employee_image.config(image=self.employee_img)
           self.employee_image.grid(row=0, column=0, pady=6, padx=(6, 0), sticky='W')
+          self.employee_image.bind('<Button-1>', self.selectEmployeeLabel)
 
           # If we have less room shorten these texts
           employee_text = f'Employee: '
@@ -68,9 +72,18 @@ class ScrollableSearch(ScrolledFrame):
             id_text = 'ID: '
 
           # Create the labels for the row
-          tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white').grid(row=0, column=1, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white').grid(row=0, column=2, sticky='WNS')
-          tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white').grid(row=0, column=3, padx=(0, 15), sticky='ENS')
+          emp_name = tk.Label(self.employeeFrames[i], text=employee_text + emp.Name, font=sm_text, background='white')
+          emp_id = tk.Label(self.employeeFrames[i], text=id_text + emp.EmpID, font=sm_text, background='white')
+          emp_dept = tk.Label(self.employeeFrames[i], text=f'Dept: {emp.Dept}', font=sm_text, background='white')
+          
+          emp_name.grid(row=0, column=1, sticky='WNS')
+          emp_id.grid(row=0, column=2, sticky='WNS')
+          emp_dept.grid(row=0, column=3, padx=(0, 15), sticky='ENS')
+          
+          emp_name.bind('<Button-1>', self.selectEmployeeLabel)
+          emp_id.bind('<Button-1>', self.selectEmployeeLabel)
+          emp_dept.bind('<Button-1>', self.selectEmployeeLabel)
+
 
     def redraw(self):
       # this is to make sure when we switch to advanced search we switch the label texts
@@ -83,8 +96,14 @@ class ScrollableSearch(ScrolledFrame):
       for child in self.inner_frame.winfo_children():
         child.destroy()
 
-    def selectEmployee(self, event):
-        emp_container = event.widget.emp
+    def selectEmployeeLabel(self, event):
+      print(event.widget.master)
+      self.selectEmployee(event, emp_container = event.widget.master.emp)
+
+    def selectEmployee(self, event, emp_container: EmployeeContainer = None):
+        if emp_container == None:
+          emp_container = event.widget.emp
+
         if emp_container.EmpID == userSession.EmpID and userSession.PermissionLevel != 1:
             emp_container = userSession
         frame = self.selectFrame(emp_container)

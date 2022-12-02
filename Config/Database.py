@@ -16,12 +16,12 @@ contToEmp = dict((empToContainer[k], k)for k in empToContainer)
 readcfg = configparser.ConfigParser()
 readcfg.optionxform = lambda optionstr: optionstr
 try:
-    with open('./Resources/config.ini', 'r') as configfile:
+    with open('config.ini', 'r') as configfile:
         readcfg.read_file(configfile)
 except (configparser.ParsingError, FileNotFoundError):
     readcfg['TRANSLATION'] = empToContainer
 finally:
-    with open('./Resources/config.ini', 'w') as configfile:
+    with open('config.ini', 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
 #if a key is missing from config.ini then default is the name of the attribute of Employee

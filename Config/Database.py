@@ -16,16 +16,21 @@ contToEmp = dict((empToContainer[k], k)for k in empToContainer)
 readcfg = configparser.ConfigParser()
 readcfg.optionxform = lambda optionstr: optionstr
 try:
-    with open('./Resources/config.ini', 'r') as configfile:
+    with open('config.ini', 'r') as configfile:
         readcfg.read_file(configfile)
 except (configparser.ParsingError, FileNotFoundError):
     readcfg['TRANSLATION'] = empToContainer
 finally:
-    with open('./Resources/config.ini', 'w') as configfile:
+    with open('config.ini', 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
 #if a key is missing from config.ini then default is the name of the attribute of Employee
-importTranslator = dict([(readcfg['TRANSLATION'].get(k.name, empToContainer[k.name]), k.name) for k in dataclasses.fields(Employee)])
+importTranslator=dict()
+for k in dataclasses.fields(Employee):
+    try:
+        importTranslator[readcfg['TRANSLATION'][k.name]]= k.name
+    except KeyError:
+        messagebox.showerror(title="bad config.ini",message="config.ini is missing key:\""+k.name+"\"\n\nIt is recommended that you delete config.ini, run this program then close it, then set up config.ini if needed")
 empToOut = dict([(importTranslator[k], k)for k in importTranslator])
 
 
@@ -44,7 +49,8 @@ class Database:
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
-                    params = dict([(importTranslator[k], row[k]) for k in row if k in importTranslator])
+                    #the internal database.csv should always be in the format of field names being the EmployeeContainer field names
+                    params = dict([(contToEmp[k], row[k]) for k in row if k in contToEmp])
                     self.employeeList.append(Employee(**params))
         elif str(initFPath) != str(INVALID_PATH):
             print("not a filepath\n")
@@ -114,9 +120,11 @@ class Database:
             with importFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
-                    params = dict([(importTranslator[k], row[k]) for k in row if k in importTranslator])
+                    params = dict()
                     for k in row:
-                        if k not in importTranslator:
+                        if k in importTranslator:
+                            params[importTranslator[k]]= row[k]
+                        else:
                             print("translation missing from config.ini for: "+str(k))
 
                     # if there are different fields from Employee class they are treated as the param **garbage
@@ -138,6 +146,7 @@ class Database:
         elif importFPath != str(INVALID_PATH):
             print("not a filepath\n")
 #save should only be True if this is called from self.save()
+#will always export in default format
     def exportDB(self, exportPath: Path = INVALID_PATH, adminInfo: Boolean = False, showArchivedEmployees: Boolean = True, save:Boolean=False) -> None:
         """_summary_
 
@@ -148,7 +157,12 @@ class Database:
         """
         from Config.config import userSession
         with open(exportPath, 'w', newline='') as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=importTranslator, restval='')
+            fieldnames = dir(EmployeeContainer)
+            # Switched to this because it was getting hard to keep track of all the functions on the employee container
+            badnames = [method for method in fieldnames if callable(getattr(EmployeeContainer, method))] + ['permissionList']
+            fieldnames = list(filter(lambda x: x[:1] != "_" and x not in badnames, fieldnames))
+
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, restval='')
             writer.writeheader()
             for emp in self.employeeList:
                 if save:
@@ -160,8 +174,7 @@ class Database:
 
                 if not save and not showArchivedEmployees and not emp.Active:
                     continue
-                out = dict([(empToOut[contToEmp[k]], emp.__getattribute__(k))
-                           for k in importTranslator])
+                out = dict([(k, emp.__getattribute__(k)) for k in fieldnames])
                 writer.writerow(out)
 
     def save(self):

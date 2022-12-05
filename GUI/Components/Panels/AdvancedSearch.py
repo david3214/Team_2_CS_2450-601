@@ -23,13 +23,14 @@ from Employee.EmployeeContainer import EmployeeContainer
 
 class AdvancedSearch(tk.Frame):
 
-    fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title':'Title', 
+    fieldsToDB = {'Department': 'Department', 'First Name': 'fName', 'Last Name': 'lName', 'Employee ID': 'Employee_ID', 'Title': 'Title',
                   'Phone #': 'oPhone', 'Start Date': 'StartDate', 'End Date': 'EndDate'}
+
     def __init__(self, master: 'Search', root: 'Window', bg_color: str = background_color) -> None:
 
         super().__init__(master, bg=bg_color)
-        self.master=typing.cast('Search',self.master)
-        self.root:Window = root
+        self.master = typing.cast('Search', self.master)
+        self.root: Window = root
         # Creates/configures left-most frame for advanced search widgets
         self.grid_rowconfigure(0, weight=3)
         self.grid_rowconfigure(1, weight=1)
@@ -55,16 +56,16 @@ class AdvancedSearch(tk.Frame):
         for i, field in enumerate(self.fields):
             if field == 'View Archived' and userSession.PermissionLevel != 1:
                 continue
-            tk.Label(self, text=field, font=med_text, bg=bg_color,foreground=text_color).grid(row=i + 1, column=0, sticky='W')
+            tk.Label(self, text=field, font=med_text, bg=bg_color, foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
         # Creates entry fields for advanced search tab
-        self.entries:dict[str,UnderlineEntry] = {}
+        self.entries: dict[str, UnderlineEntry] = {}
         for i, field in enumerate(self.fields[:8]):
             entry_field = UnderlineEntry(self, name=field, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
             entry_field.grid(row=i+1, column=1, sticky='E')
             entry_field.bind('<Return>', self.searchAdvanced)
             self.entries[field] = entry_field
-        
+
         if userSession.PermissionLevel == 1:
             self.archive_toggle = Image_Lbl(self, bgColor=bg_color, width=60, height=30)
             self.archive_toggle.grid(row=9, column=1, sticky='E')
@@ -77,16 +78,16 @@ class AdvancedSearch(tk.Frame):
         self.search_btn.grid(row=10, column=0, columnspan=2, sticky='EW', padx=20)
         if userSession.PermissionLevel == 1:
             self.add_btn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color,
-                                    foreground=text_color, command=self.addEmployee)
+                                     foreground=text_color, command=self.addEmployee)
             self.add_btn.grid(row=11, column=0, columnspan=2, sticky='SEW', padx=20)
 
     # Switches windows when button is pressed
     def addEmployee(self):
-        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root,EmployeeContainer(Employee())))
+        self.root.switchFrame(GUI.Screens.AddEmployee.AddEmployee(self.root, EmployeeContainer(Employee())))
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
-        self.master=typing.cast(Search,self.master)
+        self.master = typing.cast('Search', self.master)
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
@@ -104,6 +105,6 @@ class AdvancedSearch(tk.Frame):
     # Removes default text in search bar when selected
     def delete_text(self, event):
         if self.default_text:
-            self.master=typing.cast(Search,self.master)
+            self.master = typing.cast('Search', self.master)
             self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

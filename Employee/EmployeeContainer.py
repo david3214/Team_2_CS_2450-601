@@ -37,7 +37,7 @@ class EmployeeContainer():
             return name
         else:
             if len(name.split()) >= 2:
-                return name.split()[1]
+                return ' '.join(name.split()[1:])
             else:
                 return INVALID_STR
 

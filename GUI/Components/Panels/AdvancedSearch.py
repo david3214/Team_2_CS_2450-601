@@ -86,7 +86,7 @@ class AdvancedSearch(tk.Frame):
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
-        self.master=typing.cast(Search,self.master)
+        self.master=typing.cast('Search',self.master)
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
@@ -104,6 +104,6 @@ class AdvancedSearch(tk.Frame):
     # Removes default text in search bar when selected
     def delete_text(self, event):
         if self.default_text:
-            self.master=typing.cast(Search,self.master)
+            self.master=typing.cast('Search',self.master)
             self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

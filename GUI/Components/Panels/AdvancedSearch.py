@@ -58,7 +58,7 @@ class AdvancedSearch(tk.Frame):
             tk.Label(self, text=field, font=med_text, bg=bg_color,foreground=text_color).grid(row=i + 1, column=0, sticky='W')
 
         # Creates entry fields for advanced search tab
-        self.entries = {}
+        self.entries:dict[str,UnderlineEntry] = {}
         for i, field in enumerate(self.fields[:8]):
             entry_field = UnderlineEntry(self, name=field, background=bg_color, font=sm_text, foreground=text_color,  insertbackground=text_color)
             entry_field.grid(row=i+1, column=1, sticky='E')
@@ -86,6 +86,7 @@ class AdvancedSearch(tk.Frame):
 
     def searchAdvanced(self, *args):
         employees = DB.search(**self.getAllNonEmptyEntries())
+        self.master=typing.cast(Search,self.master)
         self.master.updateScrollableSearch(employees)
 
     def getAllNonEmptyEntries(self):
@@ -103,5 +104,6 @@ class AdvancedSearch(tk.Frame):
     # Removes default text in search bar when selected
     def delete_text(self, event):
         if self.default_text:
+            self.master=typing.cast(Search,self.master)
             self.master.searchRibbon.search_bar.delete(0, tk.END)
             self.default_text = False

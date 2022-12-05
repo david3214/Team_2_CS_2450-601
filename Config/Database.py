@@ -64,7 +64,7 @@ class Database:
         Returns:
             Boolean: true if add success
         """
-        if len(self.search(Employee_ID=kwargs["EmpID"])) > 0:
+        if len(self.search(Employee_ID=kwargs["Emp_ID"])) > 0:
             return False
         emp = Employee(**kwargs)
         if emp.hashed_password == INVALID_STR and emp.Emp_ID != INVALID_STR:

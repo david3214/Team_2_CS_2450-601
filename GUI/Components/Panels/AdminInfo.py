@@ -53,4 +53,4 @@ class AdminInfo(Info):
 
 
     def vals(self) -> dict:
-        return {key: self.variables[i][1].get() for i, key in enumerate(['PayMethod', 'Account', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN'])}
+        return {key: self.variables[i][1].get() for i, key in enumerate(['PayMethod', 'BankInfo', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSNum'])}

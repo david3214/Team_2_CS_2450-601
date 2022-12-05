@@ -124,7 +124,7 @@ dmypy.json
 
 # Pyre type checker
 pyre/
-vscode/settings.json
+.vscode
 build/
 dist/debug
 dist/main

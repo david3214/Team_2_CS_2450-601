@@ -7,6 +7,7 @@ import tkinter as tk
 from typing import Type
 from GUI.Components.Panels.Info import Info
 from Config.styles import btn_color, med_bold_underline, text_color
+from Config.fetch_resource import fetch_resource
 
 import typing 
 from .Info import Info
@@ -25,7 +26,12 @@ class PermittedInfo(Info):
         if not locked:
             self.generate({'font': med_bold_underline, 'bg': self.bgColor, 'fg': text_color}, {}, {}, ((lambda i, l: [0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 3, 3][i]), (lambda i, l: [0, 1, 2, 3, 0, 1, 0, 1, 2, 3, 0, 1][i]), {'sticky': 'w'}))
         else:
-            self.configure(height=100)
+            # self.canvas = tk.Canvas(self, bd=bgColor, width=50, height=50, borderwidth=0, highlightthickness=0)
+            # self.img = tk.PhotoImage(file=fetch_resource('./Resources/images/lock.png'))
+            # self.canvas.create_image(25, 25, image=self.img)
+            # self.canvas.grid()# column=1, row=3, sticky='nsew')
+            pass
+
     def vals(self) -> dict:
         remap = {key: self.variables[i][1].get() for i, key in enumerate(['Address', 'City', 'State', 'Zip', 'HomePhone', 'HomeEmail'])}
 

@@ -14,6 +14,7 @@ import typing
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
+from ..Components.Image_Lbl import Image_Lbl
 from Config.config import userSession, DB
 from Config.fetch_resource import fetch_resource
 from Config.styles import background_color, text_color, btn_color, med_bold
@@ -43,6 +44,11 @@ class User(Profile):
         self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
 
+        self.permittedInfo.lockToggle = Image_Lbl(self.permittedInfo, bgColor, 40, 40, None, fetch_resource('./Resources/images/locked.png'), fetch_resource('./Resources/images/unlocked.png'))
+        if not self.emp.PermittedLockOn:
+            self.permittedInfo.lockToggle.change_state()
+        self.permittedInfo.lockToggle.grid(column=3, row=2, rowspan=2, sticky='e', padx=(0, 10), pady=(10, 0))
+
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
         self.updateBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
 
@@ -62,5 +68,7 @@ class User(Profile):
         self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
+
+        self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
 
         DB.save()

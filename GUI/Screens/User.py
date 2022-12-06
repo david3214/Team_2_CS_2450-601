@@ -37,14 +37,14 @@ class User(Profile):
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
 
         self.adminInfo = AI(self)
-        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+        self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
         self.permittedInfo = PI(self, btn_color, True, False)
-        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+        self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
-        self.updateBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+        self.updateBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
         self.grid()
 

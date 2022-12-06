@@ -20,7 +20,7 @@ from Config.styles import background_color, btn_color, text_color, med_bold
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer = None, bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
 
         self.img = None
@@ -31,14 +31,14 @@ class AddEmployee(Profile):
         self.generalInfo.grid(column=0, row=0, rowspan=3, sticky='n')
 
         self.adminInfo = AI(self, editable=True)
-        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+        self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
         self.permittedInfo = PI(self, btn_color, True, False)
-        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+        self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=self.addEmp)
-        self.addEmployeeBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+        self.addEmployeeBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
         self.grid()
 

@@ -32,7 +32,7 @@ class GeneralInfo(Info):
         if self.editable:
             self.entries[9].destroy()
             self.entries[9] = tk.OptionMenu(self, self.variables[9][1], 'General', 'Admin')
-            self.entries[9].grid(row=0, column=1)
+            self.entries[9].grid(row=10, column=1)
 
             self.validationMethods = [(self.nameValidate, 0), (self.nameValidate, 1), (self.phoneValidate, 2), (self.emailValidate, 3), (self.IDValidate, 4), (self.dateValidate, 7), (self.dateValidate, 8)]
             self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
@@ -48,13 +48,12 @@ class GeneralInfo(Info):
 
 
     # Not sure if these could be made using a generator, since the wrappers need to be initialized before setting the validation command
-    @staticmethod
     def nameValidate(input: char, operation: str) -> bool:
         validString = re.match('^[\w\'\-,.]*[^_!¡?÷?¿\/\\+=@#$%ˆ&*(){}|~<>;:[\]]*$', input) is not None
         if operation == 'key':
             validInput = re.match('^[\w\'\-,.]*[^_!¡?÷?¿\/\\+=@#$%ˆ&*(){}|~<>;:[\]]*$', input) is not None and len(input) <= 100
             if not validInput:
-                # error msg
+                self.master.errorMsg.set('Invalid input')
                 pass
             return validInput
         elif operation == 'focusout':

@@ -33,8 +33,8 @@ class PermittedInfo(Info):
 
         if self.editable:
             self.entries[2].destroy()
-            self.entries[2] = tk.OptionMenu(self, self.variables[2][1], 'AL', 'AK', 'AZ', 'AR', 'AS', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'TT', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY')
-            self.entries[2].grid(row=0, column=1)
+            self.entries[2] = tk.ttk.Combobox(self, textvariable=self.variables[2][1], state='readonly', values=['AL', 'AK', 'AZ', 'AR', 'AS', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'TT', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY'])
+            self.entries[2].grid(row=1, column=2)
 
             self.validationMethods = [(self.streetAddrValidate, 0), (self.cityValidate, 1), (self.zipValidate, 3), (self.phoneValidate, 4), (self.emailValidate, 5)]
             self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]

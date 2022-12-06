@@ -30,14 +30,14 @@ class Archived(Profile):
         self.canvas.destroy()
 
         self.adminInfo = AI(self)
-        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+        self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
         self.permittedInfo = PI(self, btn_color, locked=False)
-        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+        self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=self.unarchive)
-        self.unarchiveBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+        self.unarchiveBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
         self.grid()
 

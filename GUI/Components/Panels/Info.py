@@ -40,25 +40,24 @@ class Info(tk.Frame,ABC):
         [self.children[child].grid(row=layoutOptions[0](i, len(self.fields)), column=layoutOptions[1](i, len(self.fields)), **layoutOptions[2]) for i, child in enumerate(self.children)]
 
 
-    @staticmethod
-    def validateGenerator(strReg: str, vChars: str, mxLen: int, idName: str, errMsg: str) -> typing.Callable:
-        def template(this, val: str, op: str) -> bool:
+    def validateGenerator(self, strReg: str, vChars: str, mxLen: int, idName: str, errMsg: str) -> typing.Callable:
+        def template(val: str, op: str) -> bool:
             vStr = re.match(strReg, val) is not None
             if op == 'key':
                 if val == '':
                     return True
                 vChange = re.match(vChars, input[-1]) is not None and len(val) <= mxLen
                 if not vChange:
-                    this.master.invalidInput()
+                    self.master.invalidInput()
                 return vChange
             elif op == 'focusout':
                 if not vStr:
-                    if idName in this.ids:
-                        this.master.alert(this.ids[idName])
+                    if idName in self.ids:
+                        self.master.alert(self.ids[idName])
                     else:
-                        this.ids[idName] = this.master.addError(errMsg + 'is invalid')
-                elif idName in this.ids:
-                    this.master.clearError(this.ids[idName])
-                    del this.ids[idName]
+                        self.ids[idName] = self.master.addError(errMsg + 'is invalid')
+                elif idName in self.ids:
+                    self.master.clearError(self.ids[idName])
+                    del self.ids[idName]
             return vStr
         return template

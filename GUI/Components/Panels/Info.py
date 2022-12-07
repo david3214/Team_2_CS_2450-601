@@ -41,23 +41,28 @@ class Info(tk.Frame,ABC):
 
 
     def validateGenerator(self, strReg: str, vChars: str, mxLen: int, idName: str, errMsg: str) -> typing.Callable:
-        def template(val: str, op: str) -> bool:
-            vStr = re.match(strReg, val) is not None
-            if op == 'key':
-                if val == '':
-                    return True
-                vChange = re.match(vChars, input[-1]) is not None and len(val) <= mxLen
+        # %d = Type of action (1=insert, 0=delete, -1 for others)
+        # %P = value of the entry if the edit is allowed
+        # %S = the text string being inserted or deleted, if any
+        # %V = the type of validation that triggered the callback
+        def template(d: str, P: str, S: str, V: str) -> bool:
+            vStr = re.match(strReg, P) is not None
+            if vStr:
+                if idName in self.ids:
+                    self.master.clearError(self.ids[idName])
+                    del self.ids[idName]
+                return vStr
+            if d == '0':
+                return True
+            elif d == '1':
+                vChange = re.match(vChars, S) is not None and len(P) <= mxLen
                 if not vChange:
                     self.master.invalidInput()
                 return vChange
-            elif op == 'focusout':
-                if not vStr:
-                    if idName in self.ids:
-                        self.master.alert(self.ids[idName])
-                    else:
-                        self.ids[idName] = self.master.addError(errMsg + 'is invalid')
-                elif idName in self.ids:
-                    self.master.clearError(self.ids[idName])
-                    del self.ids[idName]
+            if V == 'focusout':
+                if idName in self.ids:
+                    self.master.alert(self.ids[idName])
+                else:
+                    self.ids[idName] = self.master.addError(errMsg + ' is invalid')
             return vStr
         return template

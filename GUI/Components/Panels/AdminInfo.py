@@ -34,7 +34,7 @@ class AdminInfo(Info):
             self.entries[0].grid(row=0, column=1)
 
             self.validationMethods = [(self.validateGenerator(v.bank, v.bankChars, 11, 'bankinfo', self.fields[1]), 1), (self.validateGenerator(v.route, v.routeChars, 10, 'route', self.fields[2]), 2), (self.validateGenerator(v.float, v.floatChars, 12, 'salary', self.fields[3]), 3), (self.validateGenerator(v.float, v.floatChars, 12, 'hourly', self.fields[4]), 4), (self.validateGenerator(v.commission, '\d', 3, 'commission', self.fields[5]), 5), (self.validateGenerator(v.ssn, v.dsd, 11, 'ssn', self.fields[7]), 7)]
-            self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
+            self.validationWrappers = [(self.master.register(method[0]), '%d', '%P', '%S', '%V') for method in self.validationMethods]
             for i, wrapper in enumerate(self.validationWrappers):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 

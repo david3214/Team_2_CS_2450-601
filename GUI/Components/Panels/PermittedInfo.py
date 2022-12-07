@@ -35,7 +35,7 @@ class PermittedInfo(Info):
             self.entries[2].grid(row=1, column=2)
 
             self.validationMethods = [(self.validateGenerator(v.city, '.', 100, 'city', self.fields[1]), 1), (self.validateGenerator(v.zip, v.dsd, 10, 'zip', self.fields[3]), 3), (self.validateGenerator(v.phone, v.phoneChars, 18, 'hphone', self.fields[4]), 4), (self.validateGenerator(v.email, '.', 100, 'hemail', self.fields[5]), 5)]
-            self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
+            self.validationWrappers = [(self.master.register(method[0]), '%d', '%P', '%S', '%V') for method in self.validationMethods]
             for i, wrapper in enumerate(self.validationWrappers):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 

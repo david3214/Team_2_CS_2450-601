@@ -39,8 +39,8 @@ class GeneralInfo(Info):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 
 
-    def vals(self) -> dict:
-        remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['OfficePhone', 'Email', 'EmpID', 'Title', 'Dept', 'StartDate', 'EndDate', 'Permission Level'])}
+    def vals(self) -> dict[str,str]:
+        remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['OfficePhone', 'OfficeEmail', 'EmpID', 'Title', 'Dept', 'StartDate', 'EndDate', 'PermissionLevel'])}
         remap['Name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
 
         return remap

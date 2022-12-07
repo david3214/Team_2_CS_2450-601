@@ -6,21 +6,23 @@
     Inherits the active Window which already has the Navigation Bar as an active component
 '''
 
-
+from tkinter import messagebox
 import tkinter as tk
 import typing
 from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
-from Employee.EmployeeContainer import EmployeeContainer
+from Employee.EmployeeContainer import EmployeeContainer,EmployeeAdmin
+from Employee.Employee import Employee
 from Config.config import DB
 from Config.fetch_resource import fetch_resource
 from Config.styles import background_color, btn_color, text_color, med_bold
+from Config.Database import contToEmp
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: tk.Tk, emp: EmployeeContainer = None, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer=EmployeeAdmin(Employee()), bgColor: str=background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
 
         self.img = None
@@ -44,5 +46,9 @@ class AddEmployee(Profile):
 
 
     def addEmp(self) -> None:
-        DB.addEmployee(**(self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()))
-        DB.save()
+        params=dict([(contToEmp[k], v) for k,v in (self.generalInfo.vals()| self.adminInfo.vals() | self.permittedInfo.vals()).items()])
+        res=DB.addEmployee(**params)
+        if res:
+            DB.save()
+        else:
+            messagebox.showerror("employee ID already exists in database")

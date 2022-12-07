@@ -1,6 +1,7 @@
 from Config.Database import Database
-import Employee.Employee as Employee
-import Employee.EmployeeContainer as EmployeeContainer
+import Employee.Employee as EmployeeModule
+from Employee.Employee import Employee
+from Employee.EmployeeContainer import EmployeeContainer,EmployeeAdmin,EmployeeOther,EmployeeSelf
 import pytest
 from pathlib import Path
 import filecmp
@@ -8,6 +9,9 @@ import copy
 from tkinter import messagebox
 from datetime import datetime
 from Employee.Address import Address
+from GUI.Components.Panels.GeneralInfo import GeneralInfo
+from GUI.Screens.AddEmployee import AddEmployee
+import tkinter as tk
 # at some point monkey patch this to user input
 big_list_of_naughty_strings = [
     "",
@@ -528,7 +532,7 @@ big_list_of_naughty_strings = [
 ]
 
 
-@pytest.fixture(params=["Resources/employees.csv", "Resources/database.csv", ])
+@pytest.fixture(params=["tests/database1.csv", "Resources/database.csv", ])
 def database(request):
     return Database(Path(request.param))
 
@@ -555,18 +559,18 @@ def genericVal(paramType: type):
 # gives the kwargs to be passed to the employee constructor. params are weird
 @pytest.fixture()
 def empFullParamWeird(weirdString: str):
-    return dict([(k, weirdString+k)for k in Employee.EMP_FIELDS])
+    return dict([(k, weirdString+k)for k in EmployeeModule.EMP_FIELDS])
 
 
 @pytest.fixture()
 def empFullParamNorm():
-    return dict([(k, genericVal(Employee.EMP_FIELDS[k]))for k in Employee.EMP_FIELDS])
+    return dict([(k, genericVal(EmployeeModule.EMP_FIELDS[k]))for k in EmployeeModule.EMP_FIELDS])
 
 
 def test_name_set():
-    emp = Employee.Employee(name="bob")
+    emp = Employee(name="bob")
     assert emp.name == "bob"
-    empC = EmployeeContainer.EmployeeAdmin(emp)
+    empC = EmployeeAdmin(emp)
     assert empC.Name == "bob"
     empC.Name = "joe"
     assert emp.name == "joe" == empC.Name
@@ -615,3 +619,6 @@ def test_database_import_export_full_weird(empFullParamWeird: dict, tmp_path, mo
 
 def test_genericValFunc():
     assert genericVal(type(69)).__class__ is int
+    assert genericVal(bool).__class__ is bool
+    assert genericVal(datetime).__class__ is datetime
+

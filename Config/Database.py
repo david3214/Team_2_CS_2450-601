@@ -24,13 +24,13 @@ finally:
     with open('config.ini', 'w') as configfile:
         readcfg.write(configfile)
 # importTranslator[keyFromFile]=corresponding attribute of Employee
-#if a key is missing from config.ini then default is the name of the attribute of Employee
-importTranslator=dict()
+# if a key is missing from config.ini then default is the name of the attribute of Employee
+importTranslator = dict()
 for k in dataclasses.fields(Employee):
     try:
-        importTranslator[readcfg['TRANSLATION'][k.name]]= k.name
+        importTranslator[readcfg['TRANSLATION'][k.name]] = k.name
     except KeyError:
-        messagebox.showerror(title="bad config.ini",message="config.ini is missing key:\""+k.name+"\"\n\nIt is recommended that you delete config.ini, run this program then close it, then set up config.ini if needed")
+        messagebox.showerror(title="bad config.ini", message="config.ini is missing key:\""+k.name+"\"\n\nIt is recommended that you delete config.ini, run this program then close it, then set up config.ini if needed")
 empToOut = dict([(importTranslator[k], k)for k in importTranslator])
 
 
@@ -49,12 +49,12 @@ class Database:
             with initFPath.open() as csvfile:
                 csvReader = csv.DictReader(csvfile)
                 for row in csvReader:
-                    #the internal database.csv should always be in the format of field names being the EmployeeContainer field names
+                    # the internal database.csv should always be in the format of field names being the EmployeeContainer field names
                     params = dict([(contToEmp[k], row[k]) for k in row if k in contToEmp])
                     self.employeeList.append(Employee(**params))
         elif str(initFPath) != str(INVALID_PATH):
             print("not a filepath\n")
-        
+
         print(self.employeeList[0])
 
     # do we need to do any validity checks before adding?
@@ -117,17 +117,37 @@ class Database:
         """
         if importFPath.is_file():
             impList: list[Employee] = list()
+
+            # contains all Employee field names for which there is not a fieldname in the import file that translates to them
+            # determines this by checking if any row has a value for that fieldname. will say a field is missing if now rows have a value for it
+            missingFields: set[str] = set(empToContainer.keys())
+            # contains fieldnames in the imported database file that are not translated to an Employee field
+            missingTL: set[str] = set()
+            # key is employee ID, val is all of the fields that that employee is missing
+            empWithMissingField: dict[str, set[str]] = dict()
             with importFPath.open() as csvfile:
-                csvReader = csv.DictReader(csvfile)
+                csvReader = csv.DictReader(csvfile, restkey=None, restval=None)
                 for row in csvReader:
                     params = dict()
+                    empMissingFields: set[str] = set()
                     for k in row:
-                        if k in importTranslator:
-                            params[importTranslator[k]]= row[k]
-                        else:
-                            print("translation missing from config.ini for: "+str(k))
+                        if k is None:  # if a row has more fields than there are fieldnames
+                            continue
+                        elif row[k] is None:  # if a row does not have a field for all fieldnames
+                            empMissingFields.add(k)
+                        elif k in importTranslator:  # if everything is good
+                            params[importTranslator[k]] = row[k]
+                        else:  # if a row has a field that isn't translated to an Employee field
+                            missingTL.add(str(k))
+                    if len(empMissingFields) > 0:
+                        empWithMissingField[params['Emp_ID']] = empMissingFields
 
-                    # if there are different fields from Employee class they are treated as the param **garbage
+                    # finds fieldnames missing from imported database. only really needs to run once
+                    mfields = set()
+                    for k in empToContainer.keys():
+                        if k not in params.keys():
+                            mfields.add(k)
+                    missingFields = missingFields & mfields
                     impList.append(Employee(**params))
             for emp in impList:
                 dupeList: list[Employee] = list()
@@ -142,12 +162,30 @@ class Database:
                     if overwrite:
                         self.employeeList.remove(dupeList[0])
                         self.employeeList.append(emp)
-            self.exportDB(self.initFPath, adminInfo=True,showArchivedEmployees=True)
+            self.exportDB(self.initFPath, adminInfo=True, showArchivedEmployees=True)
+
+            # if a field or translation is missing then it will be reported for the whole file, it does not need to also be reported for each individual employee
+            for fname in missingFields | missingTL:
+                for emp in empWithMissingField:
+                    try:
+                        empWithMissingField[emp].remove(fname)
+                    except KeyError:
+                        pass
+            # if employee not missing any other fields then don't mention it
+            empWithMissingField = dict((emp, empWithMissingField[emp]) for emp in empWithMissingField if len(empWithMissingField[emp]) > 0)
+
+            if len(missingFields) > 0:
+                messagebox.showwarning(title="Missing Fields in Imported Database", message=str(missingFields))
+            if len(missingTL) > 0:
+                messagebox.showwarning(title="Translation Missing from config.ini for:", message=str(missingTL))
+            for emp in empWithMissingField:
+                messagebox.showwarning(title="Employee " + emp + " is missing:", message=str(empWithMissingField[emp]))
         elif importFPath != str(INVALID_PATH):
             print("not a filepath\n")
-#save should only be True if this is called from self.save()
-#will always export in default format
-    def exportDB(self, exportPath: Path = INVALID_PATH, adminInfo: Boolean = False, showArchivedEmployees: Boolean = True, save:Boolean=False) -> None:
+# save should only be True if this is called from self.save()
+# will always export in default format
+
+    def exportDB(self, exportPath: Path = INVALID_PATH, adminInfo: Boolean = False, showArchivedEmployees: Boolean = True, save: Boolean = False) -> None:
         """_summary_
 
         Args:
@@ -166,7 +204,7 @@ class Database:
             writer.writeheader()
             for emp in self.employeeList:
                 if save:
-                    emp=EmployeeAdmin(emp)
+                    emp = EmployeeAdmin(emp)
                 elif adminInfo:
                     emp = self.__employeeContainment(emp, userSession)
                 else:

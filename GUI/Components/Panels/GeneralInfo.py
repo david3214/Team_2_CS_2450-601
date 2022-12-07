@@ -11,10 +11,8 @@ from Config.fetch_resource import fetch_resource
 import typing
 if typing.TYPE_CHECKING:
     from GUI.Screens.Profile import Profile
+import Config.regexValidators as v
 
-
-# Alias for typing
-char = str
 
 class GeneralInfo(Info):
     def __init__(self, master: 'Profile', bgColor: str=background_color, editable: bool=False) -> None:
@@ -31,13 +29,13 @@ class GeneralInfo(Info):
 
         if self.editable:
             self.entries[9].destroy()
-            self.entries[9] = tk.OptionMenu(self, self.variables[9][1], 'General', 'Admin')
+            self.entries[9] = tk.OptionMenu(self, self.variables[9][1], '0', '1')
             self.entries[9].grid(row=10, column=1)
 
-            self.validationMethods = [(self.nameValidate, 0), (self.nameValidate, 1), (self.phoneValidate, 2), (self.emailValidate, 3), (self.IDValidate, 4), (self.dateValidate, 7), (self.dateValidate, 8)]
-            self.validationWrappers = [(self.master.register(method[0]), '%P', '%V') for method in self.validationMethods]
+            self.validationMethods = [(self.validateGenerator(v.name, '.', 100, 'fname', self.fields[0]), 0), (self.validateGenerator(v.name, '.', 100, 'lname', self.fields[1]), 1), (self.validateGenerator(v.phone, v.phoneChars, 18, 'ophone', self.fields[2]), 2), (self.validateGenerator(v.email, '.', 100, 'oemail', self.fields[3]), 3), (self.validateGenerator(v.empID, '\d', 15, 'id', self.fields[4]), 4), (self.validateGenerator(v.date, v.dateChars, 10, 'sDate', self.fields[7]), 7), (self.validateGenerator(v.date, v.dateChars, 10, 'eDate', self.fields[8]), 8)]
+            self.validationWrappers = [(self.master.register(method[0]), self, '%P', '%V') for method in self.validationMethods]
             for i, wrapper in enumerate(self.validationWrappers):
-                self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper)
+                self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 
 
     def vals(self) -> dict:
@@ -45,35 +43,3 @@ class GeneralInfo(Info):
         remap['Name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
 
         return remap
-
-
-    # Not sure if these could be made using a generator, since the wrappers need to be initialized before setting the validation command
-    def nameValidate(input: char, operation: str) -> bool:
-        validString = re.match('^[\w\'\-,.]*[^_!¡?÷?¿\/\\+=@#$%ˆ&*(){}|~<>;:[\]]*$', input) is not None
-        if operation == 'key':
-            validInput = re.match('^[\w\'\-,.]*[^_!¡?÷?¿\/\\+=@#$%ˆ&*(){}|~<>;:[\]]*$', input) is not None and len(input) <= 100
-            if not validInput:
-                self.master.errorMsg.set('Invalid input')
-                pass
-            return validInput
-        elif operation == 'focusout':
-            if not validString:
-                # error msg
-                pass
-        return validString
-
-
-    @staticmethod
-    def IDValidate(input: char, operation: str) -> bool:
-        validString = re.match('^\d{1, 15}', input) is not None
-        if operation == 'key':
-            validInput = re.match('\d', input) is not None and len(input) <= 15
-            if not validInput:
-                # error msg
-                pass
-            return validInput
-        elif operation == 'focusout':
-            if not validString:
-                # error msg
-                pass
-        return validString

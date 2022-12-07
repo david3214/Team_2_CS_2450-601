@@ -5,14 +5,13 @@
 
 import tkinter as tk
 import re
-from typing import Type
 from Config.styles import background_color, med_bold, text_color, med_text
 from abc import ABC,abstractmethod,abstractproperty
+import typing
 
 # Custom Type Aliases
 tkLabelOptions = tkEntryOptions = dict
 tkGridOptions = tuple
-char = str
 
 
 class Info(tk.Frame,ABC):
@@ -21,6 +20,7 @@ class Info(tk.Frame,ABC):
 
         self.editable = editable
         self.bgColor = bgColor
+        self.ids = {}
 
     fields:list[str]
     values:list
@@ -40,51 +40,25 @@ class Info(tk.Frame,ABC):
         [self.children[child].grid(row=layoutOptions[0](i, len(self.fields)), column=layoutOptions[1](i, len(self.fields)), **layoutOptions[2]) for i, child in enumerate(self.children)]
 
 
-    # Not sure if these could be made using a generator, since the wrappers need to be initialized before setting the validation command
-    # These validation functions are used by multiple child classes
     @staticmethod
-    def phoneValidate(input: char, operation: str) -> bool:
-        validString = re.match('^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', input) is not None
-        if operation == 'key':
-            validInput = re.match('[\d\-\(\)\.\+\s', input) is not None and len(input) <= 18
-            if not validInput:
-                # error msg
-                pass
-            return validInput
-        elif operation == 'focusout':
-            if not validString:
-                # error msg
-                pass
-        return validString
-
-
-    @staticmethod
-    def emailValidate(input: char, operation: str) -> bool:
-        validString = re.match('(?:[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])', input) is not None
-        if operation == 'key':
-            validInput = re.match('.', input) is not None and len(input) <= 100
-            if not validInput:
-                # error msg
-                pass
-            return validInput
-        elif operation == 'focusout':
-            if not validString:
-                # error msg
-                pass
-        return validString
-
-
-    @staticmethod
-    def dateValidate(input: char, operation: str) -> bool:
-        validString = re.match('^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$', input) is not None
-        if operation == 'key':
-            validInput = re.match('\d/\-\.', input) is not None and len(input) <= 10
-            if not validInput:
-                # error msg
-                pass
-            return validInput
-        elif operation == 'focusout':
-            if not validString:
-                # error msg
-                pass
-        return validString
+    def validateGenerator(strReg: str, vChars: str, mxLen: int, idName: str, errMsg: str) -> typing.Callable:
+        def template(this, val: str, op: str) -> bool:
+            vStr = re.match(strReg, val) is not None
+            if op == 'key':
+                if val == '':
+                    return True
+                vChange = re.match(vChars, input[-1]) is not None and len(val) <= mxLen
+                if not vChange:
+                    this.master.invalidInput()
+                return vChange
+            elif op == 'focusout':
+                if not vStr:
+                    if idName in this.ids:
+                        this.master.alert(this.ids[idName])
+                    else:
+                        this.ids[idName] = this.master.addError(errMsg + 'is invalid')
+                elif idName in this.ids:
+                    this.master.clearError(this.ids[idName])
+                    del this.ids[idName]
+            return vStr
+        return template

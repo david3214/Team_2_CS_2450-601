@@ -49,16 +49,13 @@ class User(Profile):
         self.grid()
 
     def update(self) -> None:
-        # Can certainly be improved
-        if self.emp==None:
+        if self.emp == None:
             return
-        self.emp.Address = self.permittedInfo.variables[0][1].get()
-        self.emp.City = self.permittedInfo.variables[1][1].get()
-        self.emp.State = self.permittedInfo.variables[2][1].get()
-        self.emp.Zip = self.permittedInfo.variables[3][1].get()
-        self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
-        self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
-   
+
+        vals = self.permittedInfo.vals()
+        for val in vals:
+            setattr(self.emp, val, vals[val])
+
         self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()

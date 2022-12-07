@@ -22,3 +22,6 @@ floatChars = '[\d\.]'
 
 # Other
 states = ['AL', 'AK', 'AZ', 'AR', 'AS', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'TT', 'UT', 'VT', 'VA', 'VI', 'WA', 'WV', 'WI', 'WY']
+genValidationArgs = [(name, '.', 100, 'fname'), (name, '.', 100, 'lname'), (phone, phoneChars, 18, 'ophone'), (email, '.', 100, 'oemail'), (empID, '\d', 15, 'id'), (date, dateChars, 10, 'sDate'), (date, dateChars, 10, 'eDate')]
+perValidationArgs = [(city, '.', 100, 'city'), (zip, dsd, 10, 'zip'), (phone, phoneChars, 18, 'hphone'), (email, '.', 100, 'hemail')]
+admValidationArgs = [(bank, bankChars, 11, 'bankinfo'), (route, routeChars, 10, 'route'), (float, floatChars, 12, 'salary'), (float, floatChars, 12, 'hourly'), (commission, '\d', 3, 'commission'), (ssn, dsd, 11, 'ssn')]

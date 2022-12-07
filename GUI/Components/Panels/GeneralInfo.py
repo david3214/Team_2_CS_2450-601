@@ -20,6 +20,7 @@ class GeneralInfo(Info):
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
         self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
+        self.validationIndexes = [0, 1, 2, 3, 4, 7, 8]
 
         self.img  = tk.PhotoImage(file=fetch_resource('./Resources/images/userProfile.png'))
         self.imgL = tk.Label(self, image=self.img)
@@ -32,7 +33,7 @@ class GeneralInfo(Info):
             self.entries[9] = tk.OptionMenu(self, self.variables[9][1], '0', '1')
             self.entries[9].grid(row=10, column=1)
 
-            self.validationMethods = [(self.validateGenerator(v.name, '.', 100, 'fname', self.fields[0]), 0), (self.validateGenerator(v.name, '.', 100, 'lname', self.fields[1]), 1), (self.validateGenerator(v.phone, v.phoneChars, 18, 'ophone', self.fields[2]), 2), (self.validateGenerator(v.email, '.', 100, 'oemail', self.fields[3]), 3), (self.validateGenerator(v.empID, '\d', 15, 'id', self.fields[4]), 4), (self.validateGenerator(v.date, v.dateChars, 10, 'sDate', self.fields[7]), 7), (self.validateGenerator(v.date, v.dateChars, 10, 'eDate', self.fields[8]), 8)]
+            self.validationMethods = [(self.validateGenerator(*v.genValidationArgs[i], self.fields[idx]), idx) for i, idx in enumerate(self.validationIndexes)]
             self.validationWrappers = [(self.master.register(method[0]), '%d', '%P', '%S', '%V') for method in self.validationMethods]
             for i, wrapper in enumerate(self.validationWrappers):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')

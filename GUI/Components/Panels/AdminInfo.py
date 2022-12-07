@@ -24,6 +24,8 @@ class AdminInfo(Info):
 
         self.fields  = ['Pay Type', 'Bank Info', 'Route', 'Salary', 'Hourly', 'Commission', 'DOB', 'SSN']
         self.values  = [master.emp.PayMethod, master.emp.BankInfo, master.emp.Route, master.emp.Salary, master.emp.Hourly, master.emp.Commission, master.emp.DOB, master.emp.SSNum] if master.emp else ['' for _ in range(len(self.fields))]
+        self.validationIndexes = [1, 2, 3, 4, 5, 7]
+
         self.generate({}, {}, {}, ((lambda i, l: i if i < l else i - l), (lambda i, l: 0 if i < l else 1), {}))
 
         if self.editable:
@@ -33,7 +35,7 @@ class AdminInfo(Info):
             self.entries[0] = tk.OptionMenu(self, self.variables[0][1], '1', '2', '3')
             self.entries[0].grid(row=0, column=1)
 
-            self.validationMethods = [(self.validateGenerator(v.bank, v.bankChars, 11, 'bankinfo', self.fields[1]), 1), (self.validateGenerator(v.route, v.routeChars, 10, 'route', self.fields[2]), 2), (self.validateGenerator(v.float, v.floatChars, 12, 'salary', self.fields[3]), 3), (self.validateGenerator(v.float, v.floatChars, 12, 'hourly', self.fields[4]), 4), (self.validateGenerator(v.commission, '\d', 3, 'commission', self.fields[5]), 5), (self.validateGenerator(v.ssn, v.dsd, 11, 'ssn', self.fields[7]), 7)]
+            self.validationMethods = [(self.validateGenerator(*v.admValidationArgs[i], self.fields[idx]), idx) for i, idx in enumerate(self.validationIndexes)]
             self.validationWrappers = [(self.master.register(method[0]), '%d', '%P', '%S', '%V') for method in self.validationMethods]
             for i, wrapper in enumerate(self.validationWrappers):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')

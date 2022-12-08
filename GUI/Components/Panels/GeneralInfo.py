@@ -4,13 +4,14 @@
 
 
 import tkinter as tk
-from typing import Type
+import re
 from GUI.Components.Panels.Info import Info
 from Config.styles import background_color
 from Config.fetch_resource import fetch_resource
 import typing
 if typing.TYPE_CHECKING:
     from GUI.Screens.Profile import Profile
+import Config.regexValidators as v
 
 
 class GeneralInfo(Info):
@@ -19,12 +20,23 @@ class GeneralInfo(Info):
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
         self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
+        self.validationIndexes = [0, 1, 2, 3, 4, 7, 8]
 
         self.img  = tk.PhotoImage(file=fetch_resource('./Resources/images/userProfile.png'))
         self.imgL = tk.Label(self, image=self.img)
         self.generate({}, {}, {}, ((lambda i, l: i if i <= l else i - l), (lambda i, l: 0 if i <= l else 1), {'sticky': 'w'}))
 
         self.imgL.grid(columnspan=2)
+
+        if self.editable:
+            self.entries[9].destroy()
+            self.entries[9] = tk.OptionMenu(self, self.variables[9][1], '0', '1')
+            self.entries[9].grid(row=10, column=1)
+
+            self.validationMethods = [(self.validateGenerator(*v.genValidationArgs[i], self.fields[idx]), idx) for i, idx in enumerate(self.validationIndexes)]
+            self.validationWrappers = [(self.master.register(method[0]), '%d', '%P', '%S', '%V') for method in self.validationMethods]
+            for i, wrapper in enumerate(self.validationWrappers):
+                self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 
 
     def vals(self) -> dict[str,str]:

@@ -33,13 +33,13 @@ class Admin(AE):
         self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
 
         self.genPayReportBtn = tk.Button(self, text='Generate Pay Report', **self.options, command=lambda: generate_pay_report(self.emp))
-        self.genPayReportBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+        self.genPayReportBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
         self.archiveBtn = tk.Button(self, text='Archive', **self.options, command=self.archive)
-        self.archiveBtn.grid(column=2, row=2, padx=(0, 15))
+        self.archiveBtn.grid(column=2, row=3, padx=(0, 15))
 
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
-        self.updateBtn.grid(column=3, row=2, padx=(0, 15))
+        self.updateBtn.grid(column=3, row=3, padx=(0, 15))
 
         self.grid()
 
@@ -52,31 +52,16 @@ class Admin(AE):
 
 
     def update(self) -> None:
-        # Can certainly be improved
-        self.emp.Address = self.permittedInfo.variables[0][1].get()
-        self.emp.City = self.permittedInfo.variables[1][1].get()
-        self.emp.State = self.permittedInfo.variables[2][1].get()
-        self.emp.Zip = self.permittedInfo.variables[3][1].get()
-        self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
-        self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
-   
-        self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
-        self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
-        self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
-        self.emp.EmpID = self.generalInfo.variables[4][1].get()
-        self.emp.Title = self.generalInfo.variables[5][1].get()
-        self.emp.Dept = self.generalInfo.variables[6][1].get()
-        self.emp.StartDate = self.generalInfo.variables[7][1].get()
-        self.emp.EndDate = self.generalInfo.variables[8][1].get()
-        self.emp.PermissionLevel = self.generalInfo.variables[9][1].get()
+        vals = self.permittedInfo.vals()
+        for val in vals:
+            setattr(self.emp, val, vals[val])
 
-        self.emp.PayMethod = self.adminInfo.variables[0][1].get()
-        self.emp.BankInfo = self.adminInfo.variables[1][1].get()
-        self.emp.Route = self.adminInfo.variables[2][1].get()
-        self.emp.Salary = self.adminInfo.variables[3][1].get()
-        self.emp.Hourly = self.adminInfo.variables[4][1].get()
-        self.emp.Commission = self.adminInfo.variables[5][1].get()
-        self.emp.DOB = self.adminInfo.variables[6][1].get()
-        self.emp.SSNum = self.adminInfo.variables[7][1].get()
+        vals = self.generalInfo.vals()
+        for val in vals:
+            setattr(self.emp, val, vals[val])
+
+        vals = self.adminInfo.vals()
+        for val in vals:
+            setattr(self.emp, val, vals[val])
 
         DB.save()

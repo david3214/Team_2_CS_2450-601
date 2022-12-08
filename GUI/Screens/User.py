@@ -38,11 +38,11 @@ class User(Profile):
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
 
         self.adminInfo = AI(self)
-        self.adminInfo.grid(column=1, row=0, sticky='nsew', padx=15, pady=15, columnspan=3)
+        self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
         self.permittedInfo = PI(self, btn_color, True, False)
-        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, columnspan=3)
+        self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.permittedInfo.lockToggle = Image_Lbl(self.permittedInfo, btn_color, 40, 40, None, fetch_resource('./Resources/images/locked.png'), fetch_resource('./Resources/images/unlocked.png'))
         if not self.emp.PermittedLockOn:
@@ -50,21 +50,18 @@ class User(Profile):
         self.permittedInfo.lockToggle.grid(column=3, row=2, rowspan=2, sticky='e', padx=(0, 10), pady=(10, 0))
 
         self.updateBtn = tk.Button(self, text='Update', **self.options, command=self.update)
-        self.updateBtn.grid(column=1, row=2, padx=(0, 15), sticky='e')
+        self.updateBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
         self.grid()
 
     def update(self) -> None:
-        # Can certainly be improved
-        if self.emp==None:
+        if self.emp == None:
             return
-        self.emp.Address = self.permittedInfo.variables[0][1].get()
-        self.emp.City = self.permittedInfo.variables[1][1].get()
-        self.emp.State = self.permittedInfo.variables[2][1].get()
-        self.emp.Zip = self.permittedInfo.variables[3][1].get()
-        self.emp.HomePhone = self.permittedInfo.variables[4][1].get()
-        self.emp.HomeEmail = self.permittedInfo.variables[5][1].get()
-   
+
+        vals = self.permittedInfo.vals()
+        for val in vals:
+            setattr(self.emp, val, vals[val])
+
         self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()

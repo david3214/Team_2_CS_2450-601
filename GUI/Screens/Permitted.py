@@ -23,6 +23,6 @@ class Permitted(Profile):
 
         self.permittedInfo.destroy()
         self.permittedInfo = PI(self, btn_color, locked=False)
-        self.permittedInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=(0, 15), columnspan=3)
+        self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, pady=(0, 15), columnspan=3)
 
         self.grid()

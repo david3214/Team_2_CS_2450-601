@@ -19,7 +19,7 @@ class GeneralInfo(Info):
         super().__init__(master, bgColor, editable)
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
-        self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
+        self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate.date(), master.emp.EndDate.date(), master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
         self.validationIndexes = [i for i in range(5)]
 
         self.img  = tk.PhotoImage(file=fetch_resource('./Resources/images/userProfile.png'))

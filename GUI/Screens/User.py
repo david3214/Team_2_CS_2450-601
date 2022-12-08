@@ -18,6 +18,7 @@ from ..Components.Image_Lbl import Image_Lbl
 from Config.config import userSession, DB
 from Config.fetch_resource import fetch_resource
 from Config.styles import background_color, text_color, btn_color, med_bold
+import Config.regexValidators as v
 
 
 class User(Profile):
@@ -36,6 +37,10 @@ class User(Profile):
             self.generalInfo.valueLabels[i] = tk.Entry(self.generalInfo, textvariable=self.generalInfo.variables[i][1], validate='key')
             typing.cast('tk.Entry',self.generalInfo.valueLabels[i]).insert(0, self.generalInfo.values[i])
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
+
+        self.generalInfo.validationWrappers = [(self.register(self.generalInfo.validateGenerator(*v.genValidationArgs[i], self.generalInfo.fields[i])), '%d', '%P', '%S', '%V') for i in range(4)]
+        for i, wrapper in enumerate(self.generalInfo.validationWrappers):
+            self.generalInfo.valueLabels[i].configure(validatecommand=wrapper, validate='all')
 
         self.adminInfo = AI(self)
         self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)

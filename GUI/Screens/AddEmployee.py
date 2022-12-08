@@ -19,6 +19,7 @@ from Config.config import DB
 from Config.fetch_resource import fetch_resource
 from Config.styles import background_color, btn_color, text_color, med_bold
 from Config.Database import contToEmp
+from ..Components.Image_Lbl import Image_Lbl
 
 
 class AddEmployee(Profile):
@@ -39,6 +40,11 @@ class AddEmployee(Profile):
         self.permittedInfo = PI(self, btn_color, True, False)
         self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
+        self.permittedInfo.lockToggle = Image_Lbl(self.permittedInfo, btn_color, 40, 40, None, fetch_resource('./Resources/images/locked.png'), fetch_resource('./Resources/images/unlocked.png'))
+        if not self.emp.PermittedLockOn:
+            self.permittedInfo.lockToggle.change_state()
+        self.permittedInfo.lockToggle.grid(column=3, row=2, rowspan=2, sticky='e', padx=(0, 10), pady=(10, 0))
+
         self.addEmployeeBtn = tk.Button(self, text='Add Employee', font=med_bold, bg=btn_color, fg=text_color, command=self.addEmp)
         self.addEmployeeBtn.grid(column=1, row=3, padx=(0, 15), sticky='e')
 
@@ -49,6 +55,7 @@ class AddEmployee(Profile):
         params=dict([(contToEmp[k], v) for k,v in (self.generalInfo.vals()| self.adminInfo.vals() | self.permittedInfo.vals()).items()])
         res=DB.addEmployee(**params)
         if res:
+            self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
             DB.save()
         else:
             messagebox.showerror("employee ID already exists in database")

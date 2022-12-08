@@ -118,7 +118,7 @@ class ScrollableSearch(ScrolledFrame):
             elif isinstance(emp_container, EmployeeAdmin) or emp_container.PermissionLevel == 1:
                 return Admin
             elif isinstance(emp_container, EmployeeOther):
-                return Permitted if emp_container.PermittedLockOn else Permitted
+                return Permitted if emp_container.PermittedLockOn else Profile
 
         return Archived
 

@@ -3,6 +3,7 @@ background_color = 'grey'
 nav_color = '#4D4D4D'
 text_color = 'white'
 btn_color = '#40719A'
+error_color = '#CB0000'
 
 ## Fonts
 sm_text = 'Arial 10' 

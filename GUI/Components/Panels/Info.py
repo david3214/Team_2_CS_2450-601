@@ -8,6 +8,7 @@ import re
 from Config.styles import background_color, med_bold, text_color, med_text
 from abc import ABC,abstractmethod,abstractproperty
 import typing
+import datetime
 
 # Custom Type Aliases
 tkLabelOptions = tkEntryOptions = dict
@@ -21,6 +22,8 @@ class Info(tk.Frame,ABC):
         self.editable = editable
         self.bgColor = bgColor
         self.ids = {}
+
+        self.dateWrapper = (self.master.register(self.dateValidation), '%P')
 
     fields:list[str]
     values:list
@@ -66,3 +69,19 @@ class Info(tk.Frame,ABC):
                     self.ids[idName] = self.master.addError(errMsg + ' is invalid')
             return vStr
         return template
+
+
+    def dateValidation(self, P: str) -> bool:
+        try:
+            datetime.datetime.strptime(P, '%Y-%m-%d')
+            if 'date' in self.ids:
+                    self.master.clearError(self.ids['date'])
+                    del self.ids['date']
+            return True
+        except ValueError:
+            if 'date' in self.ids:
+                self.master.alert(self.ids['date'])
+            else:
+                self.ids['date'] = self.master.addError('Invalid date, should be formatted as YYYY-MM-DD')
+
+        return False

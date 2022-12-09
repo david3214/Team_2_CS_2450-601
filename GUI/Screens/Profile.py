@@ -14,8 +14,9 @@ from Config.styles import background_color, sm_text, text_color, error_color
 from Config.fetch_resource import fetch_resource
 import typing
 
+
 class Profile (tk.Frame):
-    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer, bgColor: str = background_color) -> None:
         super().__init__(master, bg=bgColor)
 
         self.grid_columnconfigure(1, weight=1)
@@ -41,7 +42,6 @@ class Profile (tk.Frame):
 
         self.grid(row=1, column=0, sticky='nsew')
 
-
     def alert(self, id: int):
         for i, error in enumerate(self.errors):
             if error[1] == id:
@@ -51,8 +51,7 @@ class Profile (tk.Frame):
         self.errorMsg.set(self.errors[0][0])
         self.errorMsgL.config(bg=error_color)
 
-
-    def addError(self, msg: str, id: int = None) -> None:
+    def addError(self, msg: str, id: typing.Optional[int] = None) -> int:
         if id is not None:
             self.errors.insert(0, (msg, id))
         else:
@@ -64,12 +63,10 @@ class Profile (tk.Frame):
 
         return id if id is not None else self.id - 1
 
-
     def invalidInput(self) -> None:
         self.addError('Invalid input', self.id)
         self.after(700, self.clearError, self.id)
         self.id += 1
-
 
     def clearError(self, id: int) -> None:
         for i, error in enumerate(self.errors):

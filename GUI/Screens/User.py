@@ -70,7 +70,7 @@ class User(Profile):
         self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
-
+        self.permittedInfo.lockToggle = typing.cast(Image_Lbl, self.permittedInfo.lockToggle)
         self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
 
         DB.save()

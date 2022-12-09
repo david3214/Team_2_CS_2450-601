@@ -2,7 +2,7 @@
     An abstraction of all the employee's permitted level information to be used by multiple screens
 '''
 
-
+from tkinter import ttk
 import tkinter as tk
 import re
 from GUI.Components.Panels.Info import Info
@@ -34,7 +34,7 @@ class PermittedInfo(Info):
 
         if self.editable:
             self.entries[2].destroy()
-            self.entries[2] = tk.ttk.Combobox(self, textvariable=self.variables[2][1], state='readonly', values=v.states)
+            self.entries[2] = ttk.Combobox(self, textvariable=self.variables[2][1], state='readonly', values=v.states)
             self.entries[2].grid(row=1, column=2)
 
             self.validationMethods = [(self.validateGenerator(*v.perValidationArgs[i], self.fields[idx]), idx) for i, idx in enumerate(self.validationIndexes)]

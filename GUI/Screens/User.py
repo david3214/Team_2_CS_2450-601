@@ -38,7 +38,8 @@ class User(Profile):
             typing.cast('tk.Entry',self.generalInfo.valueLabels[i]).insert(0, self.generalInfo.values[i])
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
 
-        self.generalInfo.validationWrappers = [(self.register(self.generalInfo.validateGenerator(*v.genValidationArgs[i], self.generalInfo.fields[i])), '%d', '%P', '%S', '%V') for i in range(4)]
+        self.generalInfo.validationMethods = [self.generalInfo.validateGenerator(*v.genValidationArgs[i], self.generalInfo.fields[i]) for i in range(4)]
+        self.generalInfo.validationWrappers = [(self.register(method), '%d', '%P', '%S', '%V') for method in self.generalInfo.validationMethods]
         for i, wrapper in enumerate(self.generalInfo.validationWrappers):
             self.generalInfo.valueLabels[i].configure(validatecommand=wrapper, validate='all')
 
@@ -61,6 +62,9 @@ class User(Profile):
 
     def update(self) -> None:
         if self.emp == None:
+            return
+
+        if not self.generalInfo.validateFour() or not self.permittedInfo.validateAll():
             return
 
         vals = self.permittedInfo.vals()

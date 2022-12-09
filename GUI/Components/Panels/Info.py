@@ -85,3 +85,10 @@ class Info(tk.Frame,ABC):
                 self.ids['date'] = self.master.addError('Invalid date, should be formatted as YYYY-MM-DD')
 
         return False
+
+
+    def validateAll(self) -> None:
+        for method in self.validationMethods:
+            if not method[0]('-1', self.variables[method[1]][1].get(), '', 'focusout'):
+                return False
+        return True

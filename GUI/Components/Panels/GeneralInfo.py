@@ -47,3 +47,10 @@ class GeneralInfo(Info):
         remap['Name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
 
         return remap
+
+
+    def validateFour(self):
+        for i, method in enumerate(self.validationMethods):
+            if not method('-1', self.variables[i][1].get(), '', 'focusout'):
+                return False
+        return True

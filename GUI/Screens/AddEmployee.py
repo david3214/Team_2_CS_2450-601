@@ -52,6 +52,9 @@ class AddEmployee(Profile):
 
 
     def addEmp(self) -> None:
+        if not self.generalInfo.validateAll() or not self.permittedInfo.validateAll() or not self.adminInfo.validateAll():
+            return
+
         params=dict([(contToEmp[k], v) for k,v in (self.generalInfo.vals()| self.adminInfo.vals() | self.permittedInfo.vals()).items()])
         res=DB.addEmployee(**params)
         if res:

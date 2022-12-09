@@ -13,7 +13,7 @@ from .Profile import Profile
 from ..Components.Panels.AdminInfo import AdminInfo as AI
 from ..Components.Panels.PermittedInfo import PermittedInfo as PI
 from ..Components.Panels.GeneralInfo import GeneralInfo as GI
-from Employee.EmployeeContainer import EmployeeContainer,EmployeeAdmin
+from Employee.EmployeeContainer import EmployeeContainer, EmployeeAdmin
 from Employee.Employee import Employee
 from Config.config import DB
 from Config.fetch_resource import fetch_resource
@@ -23,7 +23,7 @@ from ..Components.Image_Lbl import Image_Lbl
 
 
 class AddEmployee(Profile):
-    def __init__(self, master: tk.Tk, emp: EmployeeContainer=EmployeeAdmin(Employee()), bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, emp: EmployeeContainer = EmployeeAdmin(Employee()), bgColor: str = background_color) -> None:
         super().__init__(master, emp, bgColor=bgColor)
 
         self.img = None
@@ -50,13 +50,13 @@ class AddEmployee(Profile):
 
         self.grid()
 
-
     def addEmp(self) -> None:
         if not self.generalInfo.validateAll() or not self.permittedInfo.validateAll() or not self.adminInfo.validateAll():
             return
 
-        params=dict([(contToEmp[k], v) for k,v in (self.generalInfo.vals()| self.adminInfo.vals() | self.permittedInfo.vals()).items()])
-        res=DB.addEmployee(**params)
+        self.permittedInfo.lockToggle = typing.cast(Image_Lbl, self.permittedInfo.lockToggle)
+        params = dict([(contToEmp[k], v) for k, v in (self.generalInfo.vals() | self.adminInfo.vals() | self.permittedInfo.vals()).items()])
+        res = DB.addEmployee(**params)
         if res:
             self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
             DB.save()

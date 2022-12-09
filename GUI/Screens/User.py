@@ -22,10 +22,10 @@ import Config.regexValidators as v
 
 
 class User(Profile):
-    def __init__(self, master: tk.Tk, bgColor: str=background_color) -> None:
+    def __init__(self, master: tk.Tk, bgColor: str = background_color) -> None:
         super().__init__(master, userSession, bgColor)
 
-        self.img  = None
+        self.img = None
         self.canvas.destroy()
 
         self.options = {'font': med_bold, 'bg': btn_color, 'fg': text_color}
@@ -35,13 +35,13 @@ class User(Profile):
             self.generalInfo.valueLabels[i].destroy()
             self.generalInfo.variables.append((self.generalInfo.fields[i], tk.StringVar()))
             self.generalInfo.valueLabels[i] = tk.Entry(self.generalInfo, textvariable=self.generalInfo.variables[i][1], validate='key')
-            typing.cast('tk.Entry',self.generalInfo.valueLabels[i]).insert(0, self.generalInfo.values[i])
+            typing.cast('tk.Entry', self.generalInfo.valueLabels[i]).insert(0, self.generalInfo.values[i])
             self.generalInfo.valueLabels[i].grid(row=i + 1, column=1, sticky='w')
 
         self.generalInfo.validationMethods = [self.generalInfo.validateGenerator(*v.genValidationArgs[i], self.generalInfo.fields[i]) for i in range(4)]
         self.generalInfo.validationWrappers = [(self.register(method), '%d', '%P', '%S', '%V') for method in self.generalInfo.validationMethods]
         for i, wrapper in enumerate(self.generalInfo.validationWrappers):
-            self.generalInfo.valueLabels[i].configure(validatecommand=wrapper, validate='all')
+            self.generalInfo.valueLabels[i].configure(**dict(validatecommand=wrapper, validate='all'))
 
         self.adminInfo = AI(self)
         self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
@@ -74,7 +74,7 @@ class User(Profile):
         self.emp.Name = self.generalInfo.variables[0][1].get() + ' ' + self.generalInfo.variables[1][1].get()
         self.emp.OfficePhone = self.generalInfo.variables[2][1].get()
         self.emp.OfficeEmail = self.generalInfo.variables[3][1].get()
-
+        self.permittedInfo.lockToggle = typing.cast(Image_Lbl, self.permittedInfo.lockToggle)
         self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
 
         DB.save()

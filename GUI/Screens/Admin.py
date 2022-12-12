@@ -67,4 +67,6 @@ class Admin(AE):
         for val in vals:
             setattr(self.emp, val, vals[val])
 
+        self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
+
         DB.save()

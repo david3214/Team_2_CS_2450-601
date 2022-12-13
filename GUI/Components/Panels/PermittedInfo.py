@@ -7,6 +7,7 @@ import tkinter as tk
 import re
 from GUI.Components.Panels.Info import Info
 from Config.styles import btn_color, med_bold_underline, text_color
+from Config.config import userSession
 from Config.fetch_resource import fetch_resource
 
 import typing
@@ -18,7 +19,7 @@ from ..Image_Lbl import Image_Lbl
 
 
 class PermittedInfo(Info):
-    def __init__(self, master: 'Profile', bgColor: str = btn_color, editable: bool = False, locked: bool = True) -> None:
+    def __init__(self, master: 'Profile', bgColor: str = btn_color, editable: bool = False) -> None:
         super().__init__(master, bgColor, editable)
 
         self.grid_columnconfigure((0, 1, 2, 3), weight=1)  # type: ignore
@@ -27,7 +28,7 @@ class PermittedInfo(Info):
         self.values = [master.emp.Address, master.emp.City, master.emp.State, master.emp.Zip, master.emp.HomePhone, master.emp.HomeEmail] if master.emp else ['' for _ in range(len(self.fields))]
         self.validationIndexes = [1, 3, 4, 5]
 
-        if not locked:
+        if userSession.PermissionLevel == 1 or not self.master.emp.PermittedLockOn:
             self.generate({'font': med_bold_underline, 'bg': self.bgColor, 'fg': text_color}, {}, {}, ((lambda i, l: [0, 0, 0, 0, 2, 2, 1, 1, 1, 1, 3, 3][i]), (lambda i, l: [0, 1, 2, 3, 0, 1, 0, 1, 2, 3, 0, 1][i]), {'sticky': 'w'}))
         else:
             self.configure(height=100)

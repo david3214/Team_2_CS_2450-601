@@ -37,7 +37,7 @@ class AddEmployee(Profile):
         self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, btn_color, True, False)
+        self.permittedInfo = PI(self, btn_color, True)
         self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.permittedInfo.lockToggle = Image_Lbl(self.permittedInfo, btn_color, 40, 40, None, fetch_resource('./Resources/images/locked.png'), fetch_resource('./Resources/images/unlocked.png'))

@@ -6,24 +6,28 @@
 import tkinter as tk
 import re
 from Config.styles import background_color, med_bold, text_color, med_text
-from abc import ABC,abstractmethod,abstractproperty
+from abc import ABC, abstractmethod, abstractproperty
 import typing
-
+import datetime
+if typing.TYPE_CHECKING:
+    from GUI.Screens.Profile import Profile
 # Custom Type Aliases
 tkLabelOptions = tkEntryOptions = dict
 tkGridOptions = tuple
 
 
-class Info(tk.Frame,ABC):
-    def __init__(self, master: tk.Frame, bgColor: str=background_color, editable: bool=False) -> None:
+class Info(tk.Frame, ABC):
+    def __init__(self, master: 'Profile', bgColor: str = background_color, editable: bool = False) -> None:
         super().__init__(master, bg=bgColor)
 
         self.editable = editable
         self.bgColor = bgColor
         self.ids = {}
 
-    fields:list[str]
-    values:list
+        self.dateWrapper = (self.master.register(self.dateValidation), '%P')
+
+    fields: list[str]
+    values: list
 
     def generate(self, labelOptions: tkLabelOptions, entryOptions: tkEntryOptions, valueLOptions: tkLabelOptions, layoutOptions: tkGridOptions):
         '''All options except layout are optional'''
@@ -35,10 +39,9 @@ class Info(tk.Frame,ABC):
             self.entries = [tk.Entry(self, **entryOptions) for variable in self.variables] if entryOptions else [tk.Entry(self, textvariable=variable[1], validate='key') for variable in self.variables]
             [entry.insert(0, self.values[i]) for i, entry in enumerate(self.entries)]
         else:
-            self.valueLabels:list[tk.Widget] = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
+            self.valueLabels: list[tk.Widget] = [tk.Label(self, **valueLOptions) for _ in self.values] if valueLOptions else [tk.Label(self, text=value, font=med_text, bg=self.bgColor, fg=text_color) for value in self.values]
 
         [self.children[child].grid(row=layoutOptions[0](i, len(self.fields)), column=layoutOptions[1](i, len(self.fields)), **layoutOptions[2]) for i, child in enumerate(self.children)]
-
 
     def validateGenerator(self, strReg: str, vChars: str, mxLen: int, idName: str, errMsg: str) -> typing.Callable:
         # %d = Type of action (1=insert, 0=delete, -1 for others)
@@ -46,6 +49,7 @@ class Info(tk.Frame,ABC):
         # %S = the text string being inserted or deleted, if any
         # %V = the type of validation that triggered the callback
         def template(d: str, P: str, S: str, V: str) -> bool:
+            self.master = typing.cast('Profile', self.master)
             vStr = re.match(strReg, P) is not None
             if vStr:
                 if idName in self.ids:
@@ -66,3 +70,26 @@ class Info(tk.Frame,ABC):
                     self.ids[idName] = self.master.addError(errMsg + ' is invalid')
             return vStr
         return template
+
+    def dateValidation(self, P: str) -> bool:
+        self.master = typing.cast('Profile', self.master)
+        try:
+            datetime.datetime.strptime(P, '%Y-%m-%d')
+            if 'date' in self.ids:
+                self.master.clearError(self.ids['date'])
+                del self.ids['date']
+            return True
+        except ValueError:
+            if 'date' in self.ids:
+                self.master.alert(self.ids['date'])
+            else:
+                self.ids['date'] = self.master.addError('Invalid date, should be formatted as YYYY-MM-DD')
+
+        return False
+
+
+    def validateAll(self) -> None:
+        for method in self.validationMethods:
+            if not method[0]('-1', self.variables[method[1]][1].get(), '', 'focusout'):
+                return False
+        return True

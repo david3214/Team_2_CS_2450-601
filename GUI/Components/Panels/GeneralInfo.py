@@ -15,14 +15,14 @@ import Config.regexValidators as v
 
 
 class GeneralInfo(Info):
-    def __init__(self, master: 'Profile', bgColor: str=background_color, editable: bool=False) -> None:
+    def __init__(self, master: 'Profile', bgColor: str = background_color, editable: bool = False) -> None:
         super().__init__(master, bgColor, editable)
 
         self.fields = ['First Name', 'Last Name', 'Office #', 'Office Email', 'Employee ID', 'Title', 'Department', 'Start Date', 'End Date', 'Perm. Level']
-        self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate, master.emp.EndDate, master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
-        self.validationIndexes = [0, 1, 2, 3, 4, 7, 8]
+        self.values = [master.emp.getFName(), master.emp.getLName(), master.emp.OfficePhone, master.emp.OfficeEmail, master.emp.EmpID, master.emp.Title, master.emp.Dept, master.emp.StartDate.date(), master.emp.EndDate.date(), master.emp.PermissionLevel] if master.emp else ['' for _ in range(len(self.fields))]
+        self.validationIndexes = [i for i in range(5)]
 
-        self.img  = tk.PhotoImage(file=fetch_resource('./Resources/images/userProfile.png'))
+        self.img = tk.PhotoImage(file=fetch_resource('./Resources/images/userProfile.png'))
         self.imgL = tk.Label(self, image=self.img)
         self.generate({}, {}, {}, ((lambda i, l: i if i <= l else i - l), (lambda i, l: 0 if i <= l else 1), {'sticky': 'w'}))
 
@@ -30,7 +30,7 @@ class GeneralInfo(Info):
 
         if self.editable:
             self.entries[9].destroy()
-            self.entries[9] = tk.OptionMenu(self, self.variables[9][1], '0', '1')
+            self.entries[9] = tk.OptionMenu(self, self.variables[9][1], '0', '1')  # type: ignore
             self.entries[9].grid(row=10, column=1)
 
             self.validationMethods = [(self.validateGenerator(*v.genValidationArgs[i], self.fields[idx]), idx) for i, idx in enumerate(self.validationIndexes)]
@@ -38,9 +38,18 @@ class GeneralInfo(Info):
             for i, wrapper in enumerate(self.validationWrappers):
                 self.entries[self.validationMethods[i][1]].configure(validatecommand=wrapper, validate='all')
 
+            self.entries[7].configure(validatecommand=self.dateWrapper, validate='focusout')
+            self.entries[8].configure(validatecommand=self.dateWrapper, validate='focusout')
 
-    def vals(self) -> dict[str,str]:
+    def vals(self) -> dict[str, str]:
         remap = {key: self.variables[i + 2][1].get() for i, key in enumerate(['OfficePhone', 'OfficeEmail', 'EmpID', 'Title', 'Dept', 'StartDate', 'EndDate', 'PermissionLevel'])}
         remap['Name'] = self.variables[0][1].get() + ' ' + self.variables[1][1].get()
 
         return remap
+
+
+    def validateFour(self):
+        for i, method in enumerate(self.validationMethods):
+            if not method('-1', self.variables[i][1].get(), '', 'focusout'):
+                return False
+        return True

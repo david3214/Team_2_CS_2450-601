@@ -33,7 +33,7 @@ class Archived(Profile):
         self.adminInfo.grid(column=1, row=1, sticky='nsew', padx=15, pady=15, columnspan=3)
 
         self.permittedInfo.destroy()
-        self.permittedInfo = PI(self, btn_color, locked=False)
+        self.permittedInfo = PI(self, btn_color)
         self.permittedInfo.grid(column=1, row=2, sticky='nsew', padx=15, columnspan=3)
 
         self.unarchiveBtn = tk.Button(self, text='Unarchive', font=med_bold, bg=btn_color, fg=text_color, command=self.unarchive)

@@ -52,6 +52,9 @@ class Admin(AE):
 
 
     def update(self) -> None:
+        if not self.generalInfo.validateAll() or not self.permittedInfo.validateAll() or not self.adminInfo.validateAll():
+            return
+
         vals = self.permittedInfo.vals()
         for val in vals:
             setattr(self.emp, val, vals[val])
@@ -63,5 +66,7 @@ class Admin(AE):
         vals = self.adminInfo.vals()
         for val in vals:
             setattr(self.emp, val, vals[val])
+
+        self.emp.PermittedLockOn = self.permittedInfo.lockToggle.IsEnabled
 
         DB.save()
